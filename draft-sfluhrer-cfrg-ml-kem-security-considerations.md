@@ -32,11 +32,20 @@ NIST standardized ML-KEM as FIPS 203 in August 2024.  This document discusses ho
 
 A large reliable Quantum Computer (often termed a Cryptographically Relevant Quantum Computer or CRQC) would be able to break protocols which rely on the tradtional RSA, DH or ECDH methods of securely exchanging keys.  Even though we do not believe, at the time of this writing, there exists a CRQC, there still remains the possibility that a adversary may record the protocol exchange, and then later (when they have access to a CRQC) go ahead and read the traffic.
 
-Because of this potential threat, NIST has standardized ML-KEM, which is documented in FIPS 203.  ML-KEM is used to generate a shared secret between two parties. One party (Alice) generates a public/private keypair, and sends the public key to the other side (Bob).  Bob uses the public key and some randomness to generate both the shared secret and a ciphertext.  Bob then sends the ciphertext to Alice, who uses her private key to generate the same shared secret.
+Because of this potential threat, NIST has standardized ML-KEM (Module-Lattice-Based Key-Encapsulation Mechanism), which is documented in FIPS 203.  ML-KEM is used to generate a shared secret between two parties. One party (Alice) generates a public/private keypair, and sends the public key to the other side (Bob).  Bob uses the public key and some randomness to generate both the shared secret and a ciphertext.  Bob then sends the ciphertext to Alice, who uses her private key to generate the same shared secret.
 
 The fundamental security propery is that someone listening to the exchanges (and thus obtains both the public key and the ciphertext) cannot reconstruct the shared secret; and this is true even if the adversary has access to a CRQC.
 
-ML-KEM is what is termed a Key Encapsulation Method.  One common misunderstanding of that term is the expectation that Bob freely chooses the shared secret, and encrypts that when sending to Alice.  What actually happens is that ML-KEM internally generates the shared secret in a way that Bob cannot select the value.  Now, Bob can generate a number of ciphertext/shared secret pairs, and select the shared secret that he prefers, but he cannot freely choose it.
+ML-KEM is what is termed a Key Encapsulation Method.  One common misunderstanding of that term is the expectation that Bob freely chooses the shared secret, and encrypts that when sending to Alice.  Instead, randomness from both sides are used to contribute to the shared secret.  What actually happens is that ML-KEM internally generates the shared secret in a way that Bob cannot select the value.  Now, Bob can generate a number of ciphertext/shared secret pairs, and select the shared secret that he prefers, but he cannot freely choose it.  
+
+ML-KEM comes with three parameter sets; ML-KEM-512, ML-KEM-768 and ML-KEM-1024.  Here is a summary of how those parameter sets differ:
+
+|             | pk size  | ct size  | shared size  | as strong as |
+| :---------- | -------: | -------: | -----------: | -----------: |
+| ML-KEM-512  |      800 |      768 |           32 |      AES-128 |  
+| ML-KEM-768  |     1184 |     1088 |           32 |      AES-192 |
+| ML-KEM-1024 |     1568 |     1568 |           32 |      AES-256 |
+
 
 # Conventions and Definitions
 
