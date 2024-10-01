@@ -9,8 +9,8 @@ number:
 date:
 consensus: true
 v: 3
-area: AREA
-workgroup: CFRG
+area: "IRTF"
+workgroup: "Crypto Forum"
 
 author:
     fullname: Scott Fluhrer
