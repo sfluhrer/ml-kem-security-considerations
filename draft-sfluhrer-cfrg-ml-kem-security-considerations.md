@@ -19,45 +19,30 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
+title: ml-kem-security-considerations
+abbrev: "ml-kem security"
 category: info
 
-docname: draft-todo-yourname-protocol-latest
-submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
+docname: draft-sfluhrer-cfrg-ml-kem-security-considerations-latest
+submissiontype: IRTF
 number:
 date:
 consensus: true
 v: 3
 area: AREA
-workgroup: WG Working Group
-keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
-venue:
-  group: WG
-  type: Working Group
-  mail: WG@example.com
-  arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+workgroup: CFRG
 
 author:
- -
-    fullname: Your Name Here
-    organization: Your Organization Here
-    email: your.email@example.com
-
-normative:
+    fullname: Scott Fluhrer
+    organization: Cisco Systems
+    email: sfluhrer@cisco.com
 
 informative:
 
 
 --- abstract
 
-TODO Abstract
-
+NIST standardized ML-KEM as FIPS 203 in August 2024.  This document discusses how to use ML-KEM - that is, what problem it solves, and how to use it securely.
 
 --- middle
 
@@ -80,10 +65,9 @@ TODO Security
 
 This document has no IANA actions.
 
-
 --- back
 
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledge.
+Currently no acknowledgements
