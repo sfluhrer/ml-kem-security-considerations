@@ -48,7 +48,7 @@ To use ML-KEM, there are three steps involved
 
 The first step for Alice is to generate a public and private keypair.
 
-[MORE HERE]
+(MORE HERE}
 
 ## ML-KEM Encapsulation
 
@@ -82,7 +82,7 @@ I don't know if we need anything in this section.
 
 This section pertains to KEM (Key Encapsulation Mechanisms) in general, including ML-KEM
 
-To use a KEM, you need to use good random bits [better terminology here please] during both the public key generation and ciphertext generation steps.  If an adversary can recover the random bits used in either of these processes, he can recover the shared secret.
+To use a KEM, you need to use good random bits (better terminology here please) during both the public key generation and ciphertext generation steps.  If an adversary can recover the random bits used in either of these processes, he can recover the shared secret.
 
 Alice needs to keep her private key secret.  It is recommended that she zeroize her private key when she will have no further need of it.
 
