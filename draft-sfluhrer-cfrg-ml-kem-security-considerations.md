@@ -107,4 +107,4 @@ This document has no IANA actions.
 # Acknowledgments
 {:numbered="false"}
 
-If you lightly edit this text or just review it, please feel free to add yourself to the acknowledgements.
+[comment]: # If you lightly edit this text or just review it, please feel free to add yourself to the acknowledgements.
