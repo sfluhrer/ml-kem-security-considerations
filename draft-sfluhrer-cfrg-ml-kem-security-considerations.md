@@ -56,13 +56,19 @@ ML-KEM comes with three parameter sets; ML-KEM-512, ML-KEM-768 and ML-KEM-1024. 
 
 I don't know if we need anything in this section.
 
-# Security Considerations
+# KEM Security Considerations
 
-To use ML-KEM, you need to use good random bits [better terminology here please] during both the public key generation and ciphertext generation steps.  If an adversary can recover the random bits used in either of these processes, he can recover teh shared secret.
+This section pertains to KEM (Key Encapsulation Methods) in general, including ML-KEM
+
+To use a KEM, you need to use good random bits [better terminology here please] during both the public key generation and ciphertext generation steps.  If an adversary can recover the random bits used in either of these processes, he can recover the shared secret.
 
 Alice needs to keep her private key secret.
 
-ML-KEM provides no authentication; it is important that the protocol that uses ML-KEM lets Bob be able to verify that the public key he obtains comes from Alice and that the ciphertext that Alice receives came from Bob.
+A KEM provides no authentication; it is important that the protocol that uses a KEM lets Bob be able to verify that the public key he obtains comes from Alice and that the ciphertext that Alice receives came from Bob.
+
+# ML-KEM Security Considerations
+
+This section pertains specifically to ML-KEM; this is in addition to the security considerations that apply to all KEMs
 
 If the ciphertext that Alice receives from Bob is tampered with (either by small modification or by replacing it with an entirely different ciphertext), the shared secret that Alice derives will be uncorrelated with the shared secret that Bob obtains.  An attacker will not be able to determine any information about the correct shared secret or Alice's private key, even if he obtains Alice's modified shared secret.
 
