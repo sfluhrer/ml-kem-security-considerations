@@ -76,7 +76,7 @@ It may be that some libraries combine the validation and the decapsulation step;
 
 ## ML-KEM Parameter sets
 
-ML-KEM comes with three parameter sets; ML-KEM-512, ML-KEM-768 and ML-KEM-1024.  It is assumed that ALice and Bob both know which parameter sets they use (either by negotiation or by having one choice fixed in the protocol).
+ML-KEM comes with three parameter sets; ML-KEM-512, ML-KEM-768 and ML-KEM-1024.  It is assumed that Alice and Bob both know which parameter sets they use (either by negotiation or by having one selection fixed in the protocol).
 
 Here is a summary of how those parameter sets differ:
 
