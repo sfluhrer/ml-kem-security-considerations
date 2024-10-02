@@ -62,9 +62,9 @@ This section pertains to KEM (Key Encapsulation Mechanisms) in general, includin
 
 To use a KEM, you need to use good random bits [better terminology here please] during both the public key generation and ciphertext generation steps.  If an adversary can recover the random bits used in either of these processes, he can recover the shared secret.
 
-Alice needs to keep her private key secret.
+Alice needs to keep her private key secret.  It is recommended that she zeroize her private key when she will have no further need of it.
 
-A KEM provides no authentication; it is important that the protocol that uses a KEM lets Bob be able to verify that the public key he obtains comes from Alice and that the ciphertext that Alice receives came from Bob.
+A KEM provides no authentication; it is important that the protocol that uses a KEM lets Bob be able to verify that the public key he obtains comes from Alice and that the ciphertext that Alice receives came from Bob (or at least, an entity that Alice is willing to communicate with).
 
 # ML-KEM Security Considerations
 
@@ -74,7 +74,7 @@ If the ciphertext that Alice receives from Bob is tampered with (either by small
 
 It is secure to reuse a public key multiple times.  That is, instead of Alice generating a fresh public and private keypair for each exchange, Alice may generate a public key once, and then publish that public key, and use it for multiple incoming ciphertexts, generating multiple shared secrets.  While this is safe, it is recommended that if the protocol allows it (if Alice and Bob exchange messages anyways) that Alice generates a fresh keypair each time (and zeroize the private key immediately after) to obtain Perfect Forward Secrecy.  That is, if Alice's system is subverted (either by a hacker or a legal warrent), the previous communications remain secure (because Alice no longer has the information needed to recover the shared secret).
 
-The shared secret for all three parameter sets are 32 bytes which are indistinguishable from random (by someone observing only the public key and the ciphertext).  As such, it is suitable both to use directly as symmetric keying material, and for inserting into a Key Derivation Function.
+The shared secret for all three parameter sets are 32 bytes which are indistinguishable from random (by someone observing only the public key and the ciphertext).  As such, it is suitable both to use directly as symmetric keying material, and for inserting into a Key Derivation Function.  This is in contrast to a Diffie-Hellman (or ECDH) operation, where the output is distinguishable from random.
 
 # IANA Considerations
 
