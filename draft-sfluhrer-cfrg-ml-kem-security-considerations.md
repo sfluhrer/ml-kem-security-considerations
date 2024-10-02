@@ -40,7 +40,29 @@ ML-KEM is what is termed a Key Encapsulation Mechanism.  One common misunderstan
 
 A KEM (such as ML-KEM) sounds like it may be a drop-in replacement for Diffie-Hellman, however there is one scenario where this doesn't work.  If the protocol uses DH in a 'static-static' configuration, that is, if both sides have long-term public keys, then ML-KEM is not suitable.  That is because the ciphertext is necessarily a function of Alice's public key, and thus can only be useful only with that specific public key.
 
-ML-KEM comes with three parameter sets; ML-KEM-512, ML-KEM-768 and ML-KEM-1024.  Here is a summary of how those parameter sets differ:
+# Using ML-KEM
+
+To use ML-KEM, there are three steps involved
+
+## ML-KEM Key Generation
+
+The first step for Alice is to generate a public and private keypair.
+
+[MORE HERE]
+
+## ML-KEM Encapsulation
+
+The second step is for Bob to generate a ciphertext and shared secret.
+
+## ML-KEM Decapsulation
+
+The third and final step is for Alice to take the ciphertext and generate the shared secret.
+
+## ML-KEM Parameter sets
+
+ML-KEM comes with three parameter sets; ML-KEM-512, ML-KEM-768 and ML-KEM-1024.  It is assumed that ALice and Bob both know which parameter sets they use (either by negotiation or by having one choice fixed in the protocol).
+
+Here is a summary of how those parameter sets differ:
 
 |             | pk size  | sk size | ct size  | ss size  | as strong as |
 | :---------- | -------: | ------: | -------: | :------: | :----------: |
