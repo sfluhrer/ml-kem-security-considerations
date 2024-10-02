@@ -36,7 +36,7 @@ Because of this potential threat, NIST has standardized ML-KEM (Module-Lattice-B
 
 The fundamental security propery is that someone listening to the exchanges (and thus obtains both the public key and the ciphertext) cannot reconstruct the shared secret; and this is true even if the adversary has access to a CRQC.
 
-ML-KEM is what is termed a Key Encapsulation Method.  One common misunderstanding of that term is the expectation that Bob freely chooses the shared secret, and encrypts that when sending to Alice.  Instead, randomness from both sides are used to contribute to the shared secret.  What actually happens is that ML-KEM internally generates the shared secret in a way that Bob cannot select the value.  Now, Bob can generate a number of ciphertext/shared secret pairs, and select the shared secret that he prefers, but he cannot freely choose it.  
+ML-KEM is what is termed a Key Encapsulation Mechanism.  One common misunderstanding of that term is the expectation that Bob freely chooses the shared secret, and encrypts that when sending to Alice.  Instead, randomness from both sides are used to contribute to the shared secret.  What actually happens is that ML-KEM internally generates the shared secret in a way that Bob cannot select the value.  Now, Bob can generate a number of ciphertext/shared secret pairs, and select the shared secret that he prefers, but he cannot freely choose it.  
 
 A KEM (such as ML-KEM) sounds like it may be a drop-in replacement for Diffie-Hellman, however there is one scenario where this doesn't work.  If the protocol uses DH in a 'static-static' configuration, that is, if both sides have long-term public keys, then ML-KEM is not suitable.  That is because the ciphertext is necessarily a function of Alice's public key, and thus can only be useful only with that specific public key.
 
@@ -58,7 +58,7 @@ I don't know if we need anything in this section.
 
 # KEM Security Considerations
 
-This section pertains to KEM (Key Encapsulation Methods) in general, including ML-KEM
+This section pertains to KEM (Key Encapsulation Mechanisms) in general, including ML-KEM
 
 To use a KEM, you need to use good random bits [better terminology here please] during both the public key generation and ciphertext generation steps.  If an adversary can recover the random bits used in either of these processes, he can recover the shared secret.
 
