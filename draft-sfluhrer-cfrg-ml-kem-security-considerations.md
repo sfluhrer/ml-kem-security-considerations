@@ -17,7 +17,7 @@ author:
     organization: Cisco Systems
     email: sfluhrer@cisco.com
 
-If you contribute to this document, feel free to add yourself to the author list.
+[comment]: # If you contribute to this document, feel free to add yourself to the author list.
 
 informative:
 
