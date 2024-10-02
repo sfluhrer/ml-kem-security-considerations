@@ -64,7 +64,7 @@ To use a KEM, you need to use good random bits [better terminology here please] 
 
 Alice needs to keep her private key secret.  It is recommended that she zeroize her private key when she will have no further need of it.
 
-A KEM provides no authentication; it is important that the protocol that uses a KEM lets Bob be able to verify that the public key he obtains comes from Alice and that the ciphertext that Alice receives came from Bob (or at least, an entity that Alice is willing to communicate with).
+A KEM provides no authentication; it is important that the protocol that uses a KEM lets Bob be able to verify that the public key he obtains comes from Alice and that the ciphertext that Alice receives came from Bob (that is, an entity that Alice is willing to communicate with).
 
 # ML-KEM Security Considerations
 
