@@ -95,13 +95,15 @@ Table of Contents
    The fundamental security propery is that someone listening to the
    exchanges (and thus obtains both the public key and the ciphertext)
    cannot reconstruct the shared secret key and this is true even if the
-   adversary has access to a CRQC.  ML-KEM is IND-CCA2 secure.
-   Submitting invalid ciphertexts to a ML-KEM.Decap does not help the
-   attacker obtain information about the decryption key of the PKE-
-   Decrypt function inside the ML-KEM.Decap.  Subtituting the public key
-   Alice sends Bob by another public key chosen by the attacker will not
-   help the attacker get any information about Alice's private key, it
-   would just make Alice and Bob not have a same shared secret key.
+   adversary has access to a CRQC.  ML-KEM is IND-CCA2 secure, that is,
+   it remains secure even if an adversary is able to submit arbitrary
+   ciphertexts and observe the resulting shared key.  Submitting invalid
+   ciphertexts to a ML-KEM.Decap does not help the attacker obtain
+   information about the decryption key of the PKE-Decrypt function
+   inside the ML-KEM.Decap.  Subtituting the public key Alice sends Bob
+   by another public key chosen by the attacker will not help the
+   attacker get any information about Alice's private key, it would just
+   make Alice and Bob not have a same shared secret key.
 
    ML-KEM is what is termed a Key Encapsulation Mechanism.  One common
    misunderstanding of that term is the expectation that Bob freely
@@ -200,8 +202,8 @@ Table of Contents
 
                                  Table 1
 
-   (pk = public key, sk = private key, ct = ciphertext, ss = shared
-   secret, all lengths in bytes)
+   (pk = public key, sk = private key, ct = ciphertext, ss = shared key,
+   all lengths in bytes)
 
 3.  Conventions and Definitions
 
@@ -236,10 +238,6 @@ Table of Contents
 
 5.  ML-KEM Security Considerations
 
-   (From Quynh: I recommend removing the section for KEMs above because
-   we don't need that in this document and different KEMs might have
-   different properties and issues.)
-
    To use a ML-KEM, you need to use a 32-byte random byte-string which
    has a security strength equal to greater than the security strength
    of the KEM during both key generation and encapsulation steps.  If an
@@ -250,10 +248,10 @@ Table of Contents
    zeroizes her private key when she will have no further need of it.
 
    The use of ML-KEM described above in this document does not provide
-   authentication of either communitcating party.  A protocol requires
-   any authentication must use other cryptographic methods to achieve it
-   such as using digital signatures and/or a MAC to verify integiry of
-   the protocol exchange transcript etc...
+   authentication of either communitcating party.  A protocol that
+   requires authentication must use other cryptographic methods to
+   achieve it such as using digital signatures or a MAC to verify
+   integrity of the protocol exchange transcript.
 
    If the ciphertext that Alice receives from Bob is tampered with
    (either by small modification or by replacing it with an entirely
@@ -279,14 +277,14 @@ Table of Contents
    longer has the information needed to recover the shared secret keys).
 
    The shared secret key for all three parameter sets, ML-KEM-512, ML-
-   KEM-768 and ML-KEM-1014 are 32 bytes which are indistinguishable from
-   3 32-byte psedorandom byte-strings of 128, 192 and 256 bits of
+   KEM-768 and ML-KEM-1024 are 32 bytes which are indistinguishable from
+   32-byte psedorandom byte-strings of 128, 192 and 256 bits of
    strengths respectively.  And, it is expected to be random to someone
    observing only the public key and the ciphertext.  As such, it is
-   suitable both to use directly as symmetric key(s) such as MAC and/or
-   AES keys, and for inserting into a Key Derivation Function.  This is
-   in contrast to a Diffie-Hellman (or ECDH) operation, where the output
-   is distinguishable from random.
+   suitable both to use directly as a symmetric key (for use by a
+   symmetric cipher such as AES or a MAC), and for inserting into a Key
+   Derivation Function.  This is in contrast to a Diffie-Hellman (or
+   ECDH) operation, where the output is distinguishable from random.
 
 6.  IANA Considerations
 
