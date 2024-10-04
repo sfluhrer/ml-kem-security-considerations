@@ -83,11 +83,11 @@ ML-KEM comes with three parameter sets; ML-KEM-512, ML-KEM-768 and ML-KEM-1024. 
 
 Here is a summary of how those parameter sets differ:
 
-|             | pk size  | sk size | ct size  | ss key size  | as strong as |
-| :---------- | -------: | ------: | -------: | -----------: | :----------: |
-| ML-KEM-512  |      800 |    1632 |      768 |           32 |      AES-128 |
-| ML-KEM-768  |     1184 |    2400 |     1088 |           32 |      AES-192 |
-| ML-KEM-1024 |     1568 |    3168 |     1568 |           32 |      AES-256 |
+|             | pk size  | sk size | ct size  | ss size  | as strong as |
+| :---------- | -------: | ------: | -------: | :------: | :----------: |
+| ML-KEM-512  |      800 |    1632 |      768 |       32 |      AES-128 |
+| ML-KEM-768  |     1184 |    2400 |     1088 |       32 |      AES-192 |
+| ML-KEM-1024 |     1568 |    3168 |     1568 |       32 |      AES-256 |
 
 (pk = public key, sk = private key, ct = ciphertext, ss = shared key, all lengths in bytes)
 
