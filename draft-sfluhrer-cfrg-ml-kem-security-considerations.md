@@ -17,8 +17,6 @@ author:
     organization: Cisco Systems
     email: sfluhrer@cisco.com
 
-[comment]: # If you contribute to this document, feel free to add yourself to the author list.
-
 informative:
 
 
@@ -122,5 +120,3 @@ This document has no IANA actions.
 
 # Acknowledgments
 {:numbered="false"}
-
-[comment]: # If you lightly edit this text or just review it, please feel free to add yourself to the acknowledgements.
