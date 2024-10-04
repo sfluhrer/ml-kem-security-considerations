@@ -1282,7 +1282,7 @@ appear in all capitals, as shown here.<a href="#section-3-1" class="pilcrow">¶<
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-kem-security-considerations" class="section-name selfRef">KEM Security Considerations</a>
       </h2>
 <p id="section-4-1">This section pertains to KEM (Key Encapsulation Mechanisms) in general, including ML-KEM<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">To use a KEM, you need to use good random bits (better terminology here please) during both the public key generation and ciphertext generation steps.  If an adversary can recover the random bits used in either of these processes, he can recover the shared secret.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-2">To use a KEM, you need to use a high-quality source of entropy during both the key-pair generation and ciphertext generation steps.  If an adversary can recover the random bits used in either of these processes, they can recover the shared secret.  If an adversary can recover the random bits used during key generation, they can recover the secret key.<a href="#section-4-2" class="pilcrow">¶</a></p>
 <p id="section-4-3">Alice needs to keep her private key secret.  It is recommended that she zeroize her private key when she will have no further need of it.<a href="#section-4-3" class="pilcrow">¶</a></p>
 <p id="section-4-4">A KEM provides no authentication; it is important that the protocol that uses a KEM lets Bob be able to verify that the public key he obtains comes from Alice and that the ciphertext that Alice receives came from Bob (that is, an entity that Alice is willing to communicate with).<a href="#section-4-4" class="pilcrow">¶</a></p>
 </section>
