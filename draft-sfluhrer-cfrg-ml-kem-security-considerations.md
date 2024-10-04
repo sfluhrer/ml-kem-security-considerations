@@ -100,7 +100,7 @@ I don't know if we need anything in this section.
 
 This section pertains to KEM (Key Encapsulation Mechanisms) in general, including ML-KEM
 
-To use a KEM, you need to use good random bits (better terminology here please) during both the public key generation and ciphertext generation steps. If an adversary can recover the random bits used in either of these processes, he can recover the shared secret.
+To use a KEM, you need to use a high-quality source of entropy during both the key-pair generation and ciphertext generation steps.  If an adversary can recover the random bits used in either of these processes, they can recover the shared secret.  If an adversary can recover the random bits used during key generation, they can recover the secret key.
 
 Alice needs to keep her private key secret. It is recommended that she zeroize her private key when she will have no further need of it.
 
