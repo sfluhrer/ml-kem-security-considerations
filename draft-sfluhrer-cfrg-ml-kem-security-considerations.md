@@ -35,7 +35,10 @@ Because of this potential threat, NIST has standardized ML-KEM (Module-Lattice-B
 The fundamental security propery is that someone listening to the exchanges (and thus obtains both the public key and the ciphertext) cannot reconstruct the shared secret; and this is true even if the adversary has access to a CRQC.
 
 ML-KEM is what is termed a Key Encapsulation Mechanism.  One common misunderstanding of that term is the expectation that Bob freely chooses the shared key, and encrypts that when sending to Alice.  What happens instead is that randomness from both sides are used to contribute to the shared key.  That is, ML-KEM internally generates the shared key in a way that Bob cannot select the value.
-On the other hand, Bob can generate a number of pairs of ciphertexts and shared keys, and select the secret key that he prefers.  This gives him some level of control (and this is inherent in any one-pass key agreement mechanism), but he cannot freely choose it.  
+On the other hand, Bob does have some control over the shared key.
+He can generate a number of pairs of ciphertexts and shared keys, and select the shared key that he prefers.
+For example, by generating 16 pairs of ciphertexts and shared keys, he might be able to find a ciphertext that gives a shared key with zero as the the first four bits.
+This gives him some level of control (and this is inherent in any one-pass key agreement mechanism), but he cannot freely choose.  
 
 A KEM (such as ML-KEM) sounds like it may be a drop-in replacement for Diffie-Hellman, however there is one scenario where this doesn't work.  If the protocol uses DH in a 'static-static' configuration, that is, if both sides have long-term public keys, then ML-KEM is not suitable.  That is because the ciphertext is necessarily a function of Alice's public key, and thus can only be useful only with that specific public key.
 
