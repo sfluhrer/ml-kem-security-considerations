@@ -19,7 +19,7 @@ author:
 author:
     fullname: Quynh Dang
     organization: National Institute of Standards and Technology
-    email: Quynh.Dang@nist.gov    
+    email: Quynh.Dang@nist.gov
 
 informative:
 
@@ -36,9 +36,9 @@ A large reliable Quantum Computer (often termed a Cryptographically Relevant Qua
 
 Because of this potential threat, NIST has standardized ML-KEM (Module-Lattice-Based Key-Encapsulation Mechanism), which is standardized in FIPS 203.  ML-KEM is used to generate a shared secret key between two parties. One party (Alice) generates a public/private keypair, and sends the public key to the other side (Bob).  Bob uses the public key and some randomness to generate both the shared secret key and a ciphertext.  Bob then sends the ciphertext to Alice, who uses her private key to generate the same shared secret key.
 
-The fundamental security propery is that someone listening to the exchanges (and thus obtains both the public key and the ciphertext) cannot reconstruct the shared secret key; and this is true even if the adversary has access to a CRQC. ML-KEM is IND-CCA2 secure. Submitting invalid ciphertexts to a ML-KEM.Decap does not help the attacker obtain information about the decryption key of the PKE-Decrypt function inside the ML-KEM.Decap. Subtituting the public key Alice sends Bob by another public key chosen by the attacker will not help the attacker get any information about Alice's private key, it would just make Alice and Bob not have a same shared secret key. 
+The fundamental security propery is that someone listening to the exchanges (and thus obtains both the public key and the ciphertext) cannot reconstruct the shared secret key and this is true even if the adversary has access to a CRQC. ML-KEM is IND-CCA2 secure. Submitting invalid ciphertexts to a ML-KEM.Decap does not help the attacker obtain information about the decryption key of the PKE-Decrypt function inside the ML-KEM.Decap. Subtituting the public key Alice sends Bob by another public key chosen by the attacker will not help the attacker get any information about Alice's private key, it would just make Alice and Bob not have a same shared secret key.
 
-ML-KEM is what is termed a Key Encapsulation Mechanism.  One common misunderstanding of that term is the expectation that Bob freely chooses the shared secret, and encrypts that when sending to Alice.  What happens instead is that randomness from both sides are used to contribute to the shared secret.  That is, ML-KEM internally generates the shared secret in a way that Bob cannot select the value.  Now, Bob can generate a number of ciphertext/shared secret pairs, and select the shared secret that he prefers, but he cannot freely choose it.
+ML-KEM is what is termed a Key Encapsulation Mechanism. One common misunderstanding of that term is the expectation that Bob freely chooses the shared secret, and encrypts that when sending to Alice. What happens instead is that randomness from both sides are used to contribute to the shared secret.  That is, ML-KEM internally generates the shared secret in a way that Bob cannot select the value. Now, Bob can generate a number of ciphertext/shared secret pairs, and select the shared secret that he prefers, but he cannot freely choose it.
 
 A KEM (such as ML-KEM) sounds like it may be a drop-in replacement for Diffie-Hellman, however there is one scenario where this doesn't work. If the protocol uses DH in a 'static-static' configuration, that is, if both sides have long-term public keys, then ML-KEM is not suitable. That is because the ciphertext is necessarily a function of Alice's public key, and thus can only be useful only with that specific public key.
 
