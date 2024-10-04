@@ -16,6 +16,7 @@ author:
     fullname: Scott Fluhrer
     organization: Cisco Systems
     email: sfluhrer@cisco.com
+
 author:
     fullname: Quynh Dang
     organization: National Institute of Standards and Technology
@@ -36,7 +37,7 @@ A large reliable Quantum Computer (often termed a Cryptographically Relevant Qua
 
 Because of this potential threat, NIST has standardized ML-KEM (Module-Lattice-Based Key-Encapsulation Mechanism), which is standardized in FIPS 203.  ML-KEM is used to generate a shared secret key between two parties. One party (Alice) generates a public/private keypair, and sends the public key to the other side (Bob).  Bob uses the public key and some randomness to generate both the shared secret key and a ciphertext.  Bob then sends the ciphertext to Alice, who uses her private key to generate the same shared secret key.
 
-The fundamental security propery is that someone listening to the exchanges (and thus obtains both the public key and the ciphertext) cannot reconstruct the shared secret key and this is true even if the adversary has access to a CRQC. ML-KEM is IND-CCA2 secure. Submitting invalid ciphertexts to a ML-KEM.Decap does not help the attacker obtain information about the decryption key of the PKE-Decrypt function inside the ML-KEM.Decap. Subtituting the public key Alice sends Bob by another public key chosen by the attacker will not help the attacker get any information about Alice's private key, it would just make Alice and Bob not have a same shared secret key.
+The fundamental security propery is that someone listening to the exchanges (and thus obtains both the public key and the ciphertext) cannot reconstruct the shared secret key and this is true even if the adversary has access to a CRQC. ML-KEM is IND-CCA2 secure, that is, it remains secure even if an adversary is able to submit arbitrary ciphertexts and observe the resulting shared key. Submitting invalid ciphertexts to a ML-KEM.Decap does not help the attacker obtain information about the decryption key of the PKE-Decrypt function inside the ML-KEM.Decap. Subtituting the public key Alice sends Bob by another public key chosen by the attacker will not help the attacker get any information about Alice's private key, it would just make Alice and Bob not have a same shared secret key.
 
 ML-KEM is what is termed a Key Encapsulation Mechanism. One common misunderstanding of that term is the expectation that Bob freely chooses the shared secret, and encrypts that when sending to Alice. What happens instead is that randomness from both sides are used to contribute to the shared secret.  That is, ML-KEM internally generates the shared secret in a way that Bob cannot select the value. Now, Bob can generate a number of ciphertext/shared secret pairs, and select the shared secret that he prefers, but he cannot freely choose it.
 
@@ -88,7 +89,7 @@ Here is a summary of how those parameter sets differ:
 | ML-KEM-768  |     1184 |    2400 |     1088 |           32 |      AES-192 |
 | ML-KEM-1024 |     1568 |    3168 |     1568 |           32 |      AES-256 |
 
-(pk = public key, sk = private key, ct = ciphertext, ss = shared secret, all lengths in bytes)
+(pk = public key, sk = private key, ct = ciphertext, ss = shared key, all lengths in bytes)
 
 # Conventions and Definitions
 
@@ -108,19 +109,17 @@ A KEM provides no authentication; it is important that the protocol that uses a 
 
 # ML-KEM Security Considerations
 
-(From Quynh: I recommend removing the section for KEMs above because we don't need that in this document and different KEMs might have different properties and issues.)
-
 To use a ML-KEM, you need to use a 32-byte random byte-string which has a security strength equal to greater than the security strength of the KEM during both key generation and encapsulation steps.  If an adversary can recover the 32-byte random byte-string used in either of these processes, he can recover the shared secret key.
 
 Alice must keep her private key secret.  It is recommended that she zeroizes her private key when she will have no further need of it.
 
-The use of ML-KEM described above in this document does not provide authentication of either communitcating party. A protocol requires any authentication must use other cryptographic methods to achieve it such as using digital signatures and/or a MAC to verify integiry of the protocol exchange transcript etc...
+The use of ML-KEM described above in this document does not provide authentication of either communitcating party. A protocol that requires authentication must use other cryptographic methods to achieve it such as using digital signatures or a MAC to verify integrity of the protocol exchange transcript.
 
 If the ciphertext that Alice receives from Bob is tampered with (either by small modification or by replacing it with an entirely different ciphertext), the shared secret key that Alice derives will be uncorrelated with the shared secret key that Bob obtains.  An attacker will not be able to determine any information about the correct shared secret key or Alice's private key, even if the attacker obtains Alice's modified shared secret key which is the output of the ML-KEM.Decap function taking the modified ciphertext as input.
 
 It is secure to reuse a public key multiple times.  That is, instead of Alice generating a fresh public and private keypair for each exchange, Alice may generate a public key once, and then publish that public key, and use it for multiple incoming ciphertexts, generating multiple shared secret keys.  While this is safe, it is recommended that if the protocol allows it (if Alice and Bob exchange messages anyways) that Alice generates a fresh keypair each time (and zeroize the private key immediately after) to obtain Perfect Forward Secrecy. Be noted that generally key generation of ML-KEM is very fast. That is, if Alice's system is subverted (either by a hacker or a legal warrent), the previous communications remain secure (because Alice no longer has the information needed to recover the shared secret keys).
 
-The shared secret key for all three parameter sets, ML-KEM-512, ML-KEM-768 and ML-KEM-1014 are 32 bytes which are indistinguishable from 3 32-byte psedorandom byte-strings of 128, 192 and 256 bits of strengths respectively. And, it is expected to be random to someone observing only the public key and the ciphertext.  As such, it is suitable both to use directly as symmetric key(s) such as MAC and/or AES keys, and for inserting into a Key Derivation Function.  This is in contrast to a Diffie-Hellman (or ECDH) operation, where the output is distinguishable from random.
+The shared secret key for all three parameter sets, ML-KEM-512, ML-KEM-768 and ML-KEM-1024 are 32 bytes which are indistinguishable from 32-byte psedorandom byte-strings of 128, 192 and 256 bits of strengths respectively. And, it is expected to be random to someone observing only the public key and the ciphertext.  As such, it is suitable both to use directly as a symmetric key (for use by a symmetric cipher such as AES or a MAC), and for inserting into a Key Derivation Function.  This is in contrast to a Diffie-Hellman (or ECDH) operation, where the output is distinguishable from random.
 
 # IANA Considerations
 
