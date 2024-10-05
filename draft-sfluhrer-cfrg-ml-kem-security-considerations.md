@@ -109,9 +109,11 @@ A KEM (including ML-KEM) provides no authentication of either communitcating par
 
 # ML-KEM Security Considerations
 
-To use a ML-KEM, you need to use a 32-byte random byte-string which has a security strength equal to greater than the security strength of the KEM during both key generation and encapsulation steps.  If an adversary can recover the 32-byte random byte-string used in either of these processes, he can recover the shared secret key.
+This section pertains specifically to ML-KEM, and may not be true of KEMs in general.
 
-Alice must keep her private key secret.  It is recommended that she zeroizes her private key when she will have no further need of it.
+To use ML-KEM, you need a source of random bits with security strength equal to greater than the security strength of the KEM during both key generation and encapsulation steps.  The cryptographic library that implements ML-KEM may access this source of randomness internally.
+
+Alice must keep her private key secret (both private and secure from modification).  It is recommended that she zeroizes her private key when she will have no further need of it.
 
 If the ciphertext that Alice receives from Bob is tampered with (either by small modification or by replacing it with an entirely different ciphertext), the shared secret key that Alice derives will be uncorrelated with the shared secret key that Bob obtains.  An attacker will not be able to determine any information about the correct shared secret key or Alice's private key, even if the attacker obtains Alice's modified shared secret key which is the output of the ML-KEM.Decap function taking the modified ciphertext as input.
 
