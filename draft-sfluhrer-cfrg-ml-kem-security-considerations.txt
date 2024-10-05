@@ -230,11 +230,16 @@ Table of Contents
    Alice needs to keep her private key secret.  It is recommended that
    she zeroize her private key when she will have no further need of it.
 
-   A KEM provides no authentication; it is important that the protocol
-   that uses a KEM lets Bob be able to verify that the public key he
-   obtains comes from Alice and that the ciphertext that Alice receives
-   came from Bob (that is, an entity that Alice is willing to
-   communicate with).
+   A KEM (including ML-KEM) provides no authentication of either
+   communitcating party.  If an adversary could replace either the
+   public key or the ciphertext with its own, it would generate a shared
+   key with Alice or Bob.  Hence, it is important that the protocol that
+   uses a KEM lets Bob be able to verify that the public key he obtains
+   came from Alice and that the ciphertext that Alice receives came from
+   Bob (that is, an entity that Alice is willing to communicate with).
+   Such verification can be performed by cryptographic methods such as
+   digital signatures or a MAC to verify integrity of the protocol
+   exchange transcript.
 
 5.  ML-KEM Security Considerations
 
@@ -246,12 +251,6 @@ Table of Contents
 
    Alice must keep her private key secret.  It is recommended that she
    zeroizes her private key when she will have no further need of it.
-
-   The use of ML-KEM described above in this document does not provide
-   authentication of either communitcating party.  A protocol that
-   requires authentication must use other cryptographic methods to
-   achieve it such as using digital signatures or a MAC to verify
-   integrity of the protocol exchange transcript.
 
    If the ciphertext that Alice receives from Bob is tampered with
    (either by small modification or by replacing it with an entirely
