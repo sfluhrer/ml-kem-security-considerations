@@ -105,15 +105,13 @@ To use a KEM, you need to use a high-quality source of entropy during both the k
 
 Alice needs to keep her private key secret. It is recommended that she zeroize her private key when she will have no further need of it.
 
-A KEM provides no authentication; it is important that the protocol that uses a KEM lets Bob be able to verify that the public key he obtains comes from Alice and that the ciphertext that Alice receives came from Bob (that is, an entity that Alice is willing to communicate with).
+A KEM (including ML-KEM) provides no authentication of either communitcating party. If an adversary could replace either the public key or the ciphertext with its own, it would generate a shared key with Alice or Bob.  Hence, it is important that the protocol that uses a KEM lets Bob be able to verify that the public key he obtains came from Alice and that the ciphertext that Alice receives came from Bob (that is, an entity that Alice is willing to communicate with).  Such verification can be performed by cryptographic methods such as digital signatures or a MAC to verify integrity of the protocol exchange transcript.
 
 # ML-KEM Security Considerations
 
 To use a ML-KEM, you need to use a 32-byte random byte-string which has a security strength equal to greater than the security strength of the KEM during both key generation and encapsulation steps.  If an adversary can recover the 32-byte random byte-string used in either of these processes, he can recover the shared secret key.
 
 Alice must keep her private key secret.  It is recommended that she zeroizes her private key when she will have no further need of it.
-
-The use of ML-KEM described above in this document does not provide authentication of either communitcating party. A protocol that requires authentication must use other cryptographic methods to achieve it such as using digital signatures or a MAC to verify integrity of the protocol exchange transcript.
 
 If the ciphertext that Alice receives from Bob is tampered with (either by small modification or by replacing it with an entirely different ciphertext), the shared secret key that Alice derives will be uncorrelated with the shared secret key that Bob obtains.  An attacker will not be able to determine any information about the correct shared secret key or Alice's private key, even if the attacker obtains Alice's modified shared secret key which is the output of the ML-KEM.Decap function taking the modified ciphertext as input.
 
