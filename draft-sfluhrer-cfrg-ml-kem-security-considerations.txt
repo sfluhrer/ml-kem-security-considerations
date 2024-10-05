@@ -4,8 +4,8 @@
 
 Crypto Forum                                                     Q. Dang
 Internet-Draft            National Institute of Standards and Technology
-Intended status: Informational                            4 October 2024
-Expires: 7 April 2025
+Intended status: Informational                            5 October 2024
+Expires: 8 April 2025
 
 
                      ml-kem-security-considerations
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 April 2025.
+   This Internet-Draft will expire on 8 April 2025.
 
 Copyright Notice
 
@@ -279,12 +279,11 @@ Table of Contents
    The shared secret key for all three parameter sets, ML-KEM-512, ML-
    KEM-768 and ML-KEM-1024 are 32 bytes which are indistinguishable from
    32-byte psedorandom byte-strings of 128, 192 and 256 bits of
-   strengths respectively.  And, it is expected to be random to someone
-   observing only the public key and the ciphertext.  As such, it is
-   suitable both to use directly as a symmetric key (for use by a
-   symmetric cipher such as AES or a MAC), and for inserting into a Key
-   Derivation Function.  This is in contrast to a Diffie-Hellman (or
-   ECDH) operation, where the output is distinguishable from random.
+   strengths respectively.  As such, it is suitable both to use directly
+   as a symmetric key (for use by a symmetric cipher such as AES or a
+   MAC), and for inserting into a Key Derivation Function.  This is in
+   contrast to a Diffie-Hellman (or ECDH) operation, where the output is
+   distinguishable from random.
 
 6.  IANA Considerations
 
