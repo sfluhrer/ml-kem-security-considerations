@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-03T00:51:40.156529+00:00",
+  "timestamp": "2024-10-06T00:55:43.218490+00:00",
   "repo": "sfluhrer/ml-kem-security-considerations",
   "labels": [
     {
@@ -49,6 +49,216 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
-  "pulls": []
+  "issues": [
+    {
+      "number": 3,
+      "id": "I_kwDOM54HI86Y-q7W",
+      "title": "Include discussion of using ML-KEM in ways other than an ephemeral Key Exchange",
+      "url": "https://github.com/sfluhrer/ml-kem-security-considerations/issues/3",
+      "state": "OPEN",
+      "author": "sfluhrer",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "While using ML-KEM as a DH replacement in (say) TLS or IKE is one important use case, it's not the only one.  We should also discuss how ML-KEM might be used as a component within IES, and as authentication, and possibly other use cases.",
+      "createdAt": "2024-10-04T14:48:33Z",
+      "updatedAt": "2024-10-05T11:15:56Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "QuynhDangNIST",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Sounds good! ",
+          "createdAt": "2024-10-05T11:15:54Z",
+          "updatedAt": "2024-10-05T11:15:54Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOM54HI859iDwh",
+      "title": "Update draft-sfluhrer-cfrg-ml-kem-security-considerations.md",
+      "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/1",
+      "state": "MERGED",
+      "author": "QuynhDangNIST",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "sfluhrer"
+      ],
+      "labels": [],
+      "body": "First quick pass to add new and proposed text changes to Scott's draft.\r\n\r\n",
+      "createdAt": "2024-10-03T17:38:40Z",
+      "updatedAt": "2024-10-04T18:09:21Z",
+      "baseRepository": "sfluhrer/ml-kem-security-considerations",
+      "baseRefName": "main",
+      "baseRefOid": "5b7778eb6a0dc9e97b09ce72474def328d490766",
+      "headRepository": "QuynhDangNIST/ml-kem-security-considerations",
+      "headRefName": "patch-1",
+      "headRefOid": "f4cd5411fb4ed56b856afc16c4f55b63b151e263",
+      "closedAt": "2024-10-04T18:09:21Z",
+      "mergedAt": "2024-10-04T18:09:21Z",
+      "mergedBy": "sfluhrer",
+      "mergeCommit": {
+        "oid": "072d7b8284788bd64ef36e88bd83e0b005cdb01a"
+      },
+      "comments": [
+        {
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "body": "Looks mostly good.  I have a few tweaks - I'll merge and then do the few fixups needed",
+          "createdAt": "2024-10-03T17:52:40Z",
+          "updatedAt": "2024-10-03T17:52:40Z"
+        },
+        {
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "body": "Updates from Quynh",
+          "createdAt": "2024-10-03T17:55:54Z",
+          "updatedAt": "2024-10-03T17:55:54Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOM54HI86L2qdd",
+          "commit": {
+            "abbreviatedOid": "de140de"
+          },
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "Looks mostly good. I have a few tweaks - I'll try to merge and then do the few fixups needed",
+          "createdAt": "2024-10-03T18:03:49Z",
+          "updatedAt": "2024-10-03T18:03:49Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOM54HI86L9sbl",
+          "commit": {
+            "abbreviatedOid": "a17fb50"
+          },
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-10-04T14:21:38Z",
+          "updatedAt": "2024-10-04T14:21:38Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOM54HI859nqlr",
+      "title": "Try to fix build errors",
+      "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/2",
+      "state": "OPEN",
+      "author": "sfluhrer",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "sfluhrer"
+      ],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-10-04T13:04:00Z",
+      "updatedAt": "2024-10-04T13:27:26Z",
+      "baseRepository": "sfluhrer/ml-kem-security-considerations",
+      "baseRefName": "main",
+      "baseRefOid": "c061b81cb548155ab8a925fe5a85fbd5ce351168",
+      "headRepository": "sfluhrer/ml-kem-security-considerations",
+      "headRefName": "sfluhrer-build-fix",
+      "headRefOid": "ea822556f4f1c80c1c3d24cf4d7ded05c61251ce",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOM54HI859o4t3",
+      "title": "Proposed wording for high-entrropy inputs, gender neutrality",
+      "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/4",
+      "state": "MERGED",
+      "author": "soatok",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Wording:\r\n\r\nHigh-quality entropy source is a first swing at an improvement.\r\n\r\nWe could lean into the NIST DRBG definitions if we wanted precise terminology, but I feel there's often a contention between precision and clarity, and security consideration documents scream \"focus on clarity\" to me.  I'm open to dissenting opinions here, of course.\r\n\r\nPronouns:\r\n\r\nThe adversary is not a specific actor and thus neutral pronouns (they'them) are more suitable. If a specific actor was in mind (e.g., Mallory), rather than just a vague \"adversary\", then this would be an incorrect change.",
+      "createdAt": "2024-10-04T15:56:51Z",
+      "updatedAt": "2024-10-04T19:20:43Z",
+      "baseRepository": "sfluhrer/ml-kem-security-considerations",
+      "baseRefName": "main",
+      "baseRefOid": "afc77ef49f1deb83fe6f501b44ba73cc5d5d53a7",
+      "headRepository": "soatok/ml-kem-security-considerations",
+      "headRefName": "patch-1",
+      "headRefOid": "137e8b52076468598a7c26a6027c57ca41cdbff6",
+      "closedAt": "2024-10-04T17:11:35Z",
+      "mergedAt": "2024-10-04T17:11:35Z",
+      "mergedBy": "sfluhrer",
+      "mergeCommit": {
+        "oid": "5b7778eb6a0dc9e97b09ce72474def328d490766"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOM54HI86L--ND",
+          "commit": {
+            "abbreviatedOid": "137e8b5"
+          },
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Now, the sentence you added is actually redundant with the previous sentence.  However, I have no issue with leaving it in there",
+          "createdAt": "2024-10-04T16:57:10Z",
+          "updatedAt": "2024-10-04T16:57:10Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOM54HI859rGjN",
+      "title": "Update draft-sfluhrer-cfrg-ml-kem-security-considerations.md",
+      "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/5",
+      "state": "MERGED",
+      "author": "quynh97",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The sentence is not needed and it does not have a clear meaning with \"random\".  The strength of K, the shared secret key, is the strength of the random m.  The strength of the decryption key given the encryption key is the  difficulty of the LWE problem.",
+      "createdAt": "2024-10-04T22:33:26Z",
+      "updatedAt": "2024-10-05T11:02:33Z",
+      "baseRepository": "sfluhrer/ml-kem-security-considerations",
+      "baseRefName": "main",
+      "baseRefOid": "4e0bff8d1ee2294f0da78a471ffec0ba1aa00457",
+      "headRepository": "quynh97/ml-kem-security-considerations",
+      "headRefName": "patch-1",
+      "headRefOid": "513d14c16bfc7739d3467b9937d42bbc9f0dd142",
+      "closedAt": "2024-10-05T11:02:32Z",
+      "mergedAt": "2024-10-05T11:02:32Z",
+      "mergedBy": "sfluhrer",
+      "mergeCommit": {
+        "oid": "a9f52be20e7ed24fe14a1974c5152cbaf27c7b0f"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOM54HI86MCv64",
+          "commit": {
+            "abbreviatedOid": "513d14c"
+          },
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-10-05T11:02:17Z",
+          "updatedAt": "2024-10-05T11:02:17Z",
+          "comments": []
+        }
+      ]
+    }
+  ]
 }
