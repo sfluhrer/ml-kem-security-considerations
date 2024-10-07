@@ -4,8 +4,8 @@
 
 Crypto Forum                                                     Q. Dang
 Internet-Draft            National Institute of Standards and Technology
-Intended status: Informational                            5 October 2024
-Expires: 8 April 2025
+Intended status: Informational                            7 October 2024
+Expires: 10 April 2025
 
 
                      ml-kem-security-considerations
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 April 2025.
+   This Internet-Draft will expire on 10 April 2025.
 
 Copyright Notice
 
@@ -251,10 +251,6 @@ Table of Contents
    during both key generation and encapsulation steps.  The
    cryptographic library that implements ML-KEM may access this source
    of randomness internally.
-
-   Alice must keep her private key secret (both private and secure from
-   modification).  It is recommended that she zeroizes her private key
-   when she will have no further need of it.
 
    If the ciphertext that Alice receives from Bob is tampered with
    (either by small modification or by replacing it with an entirely
