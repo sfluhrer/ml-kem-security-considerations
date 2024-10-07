@@ -4,8 +4,10 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>ml-kem-security-considerations</title>
+<title>ML-KEM Security Considerations</title>
+<meta content="Scott Fluhrer" name="author">
 <meta content="Quynh Dang" name="author">
+<meta content="John Preuß Mattsson" name="author">
 <meta content="
        NIST standardized ML-KEM as FIPS 203 in August 2024.  This document discusses how to use ML-KEM - that is, what problem it solves, and how to use it securely. 
     " name="description">
@@ -1022,11 +1024,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">ml-kem security</td>
+<td class="center">ML-KEM Security</td>
 <td class="right">October 2024</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Dang</td>
+<td class="left">Fluhrer, et al.</td>
 <td class="center">Expires 10 April 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
@@ -1046,16 +1048,24 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
 <dd class="expires"><time datetime="2025-04-10">10 April 2025</time></dd>
-<dt class="label-authors">Author:</dt>
+<dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
+      <div class="author-name">S. Fluhrer</div>
+<div class="org">Cisco Systems</div>
+</div>
+<div class="author">
       <div class="author-name">Q. Dang</div>
-<div class="org">National Institute of Standards and Technology</div>
+<div class="org">NIST</div>
+</div>
+<div class="author">
+      <div class="author-name">J. Preuß Mattsson</div>
+<div class="org">Ericsson</div>
 </div>
 </dd>
 </dl>
 </div>
-<h1 id="title">ml-kem-security-considerations</h1>
+<h1 id="title">ML-KEM Security Considerations</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">NIST standardized ML-KEM as FIPS 203 in August 2024.  This document discusses how to use ML-KEM - that is, what problem it solves, and how to use it securely.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
@@ -1132,30 +1142,27 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-ml-kem-decapsulation" class="internal xref">ML-KEM Decapsulation</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
-                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-ml-kem-parameter-sets" class="internal xref">ML-KEM Parameter sets</a></p>
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-ml-kem-parameter-sets" class="internal xref">ML-KEM Parameter Sets</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-kem-security-considerations" class="internal xref">KEM Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-kem-security-considerations" class="internal xref">KEM Security Considerations</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-ml-kem-security-considerati" class="internal xref">ML-KEM Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-ml-kem-security-considerati" class="internal xref">ML-KEM Security Considerations</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1166,11 +1173,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">A large reliable Quantum Computer (often termed a Cryptographically Relevant Quantum Computer or CRQC) would be able to break protocols which rely on the tradtional RSA, DH or ECDH methods of securely exchanging keys.  Even though we do not believe, at the time of this writing, there exists a CRQC, there still remains the possibility that a adversary may record the protocol exchange, and then later (when they have access to a CRQC) go ahead and read the traffic.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">Because of this potential threat, NIST has standardized ML-KEM (Module-Lattice-Based Key-Encapsulation Mechanism), which is standardized in FIPS 203.  ML-KEM is used to generate a shared secret key between two parties. One party (Alice) generates a public/private keypair, and sends the public key to the other side (Bob).  Bob uses the public key and some randomness to generate both the shared secret key and a ciphertext.  Bob then sends the ciphertext to Alice, who uses her private key to generate the same shared secret key.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">The fundamental security propery is that someone listening to the exchanges (and thus obtains both the public key and the ciphertext) cannot reconstruct the shared secret key and this is true even if the adversary has access to a CRQC. ML-KEM is IND-CCA2 secure, that is, it remains secure even if an adversary is able to submit arbitrary ciphertexts and observe the resulting shared key. Submitting invalid ciphertexts to a ML-KEM.Decap does not help the attacker obtain information about the decryption key of the PKE-Decrypt function inside the ML-KEM.Decap. Subtituting the public key Alice sends Bob by another public key chosen by the attacker will not help the attacker get any information about Alice's private key, it would just make Alice and Bob not have a same shared secret key.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">ML-KEM is what is termed a Key Encapsulation Mechanism. One common misunderstanding of that term is the expectation that Bob freely chooses the shared secret, and encrypts that when sending to Alice. What happens instead is that randomness from both sides are used to contribute to the shared secret.  That is, ML-KEM internally generates the shared secret in a way that Bob cannot select the value. Now, Bob can generate a number of ciphertext/shared secret pairs, and select the shared secret that he prefers, but he cannot freely choose it.<a href="#section-1-4" class="pilcrow">¶</a></p>
-<p id="section-1-5">A KEM (such as ML-KEM) sounds like it may be a drop-in replacement for Diffie-Hellman, however there is one scenario where this doesn't work. If the protocol uses DH in a 'static-static' configuration, that is, if both sides have long-term public keys, then ML-KEM is not suitable. That is because the ciphertext is necessarily a function of Alice's public key, and thus can only be useful only with that specific public key.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-1">A large reliable quantum computer (often termed a Cryptographically Relevant Quantum Computer or CRQC) would be able to break protocols which rely on the traditional RSA, DH, or ECDH methods of securely exchanging keys.  Even though we do not believe, at the time of this writing, there exists a CRQC, there still remains the possibility that an adversary may record the protocol exchange, and then later (when they have access to a CRQC) go ahead and read the traffic.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Because of this potential threat, NIST has standardized ML-KEM (Module-Lattice-Based Key-Encapsulation Mechanism), which is standardized in FIPS 203 <span>[<a href="#FIPS203" class="cite xref">FIPS203</a>]</span>.  ML-KEM is used to generate a shared secret key between two parties. One party (Alice) generates a public/private keypair, and sends the public key to the other party (Bob).  Bob uses the public key and some randomness to generate both the shared secret key and a ciphertext. Bob then sends the ciphertext to Alice, who uses her private key to generate the same shared secret key. NIST plans to standardize one or more code-based KEMs in the future.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">The fundamental security property is that someone listening to the exchanges (and thus obtains both the public key and the ciphertext) cannot reconstruct the shared secret key and this is true even if the adversary has access to a CRQC. ML-KEM is IND-CCA2 secure, that is, it remains secure even if an adversary is able to submit arbitrary ciphertexts and observe the resulting shared key. Submitting invalid ciphertexts to a ML-KEM.Decaps does not help the attacker obtain information about the decryption key of the PKE-Decrypt function inside the ML-KEM.Decaps. Substituting the public key Alice sends Bob by another public key chosen by the attacker will not help the attacker get any information about Alice's private key, it would just make Alice and Bob not have a same shared secret key. For practical purposes, IND-CCA2 means that ML-KEM is secure to use with static public keys.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">ML-KEM is what is termed a Key Encapsulation Mechanism. One common misunderstanding of that term is the expectation that Bob freely chooses the shared secret, and encrypts that when sending to Alice. What happens in ML-KEM is that randomness from both sides are used to contribute to the shared secret. That is, ML-KEM internally generates the shared secret in a way that Bob cannot select the value. Now, Bob can generate a number of ciphertext/shared secret pairs, and select the shared secret that he prefers, but he cannot freely choose it or make secrets shared with two parties be equal. This is different from RSA-KEM <span>[<a href="#RFC5990" class="cite xref">RFC5990</a>]</span>, where Bob cannot select the value, but can encapsulate the same shared secret to many recipients.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">A KEM (such as ML-KEM) sounds like it may be a drop-in replacement for Diffie-Hellman, however this is not the case as in Diffie-Hellman, the parties exchange two public keys, whereas in a KEM, the ciphertext is necessarily a function of Alice's public key, and thus can only be useful only with that specific public key. As long a the application can handle larger public keys and ciphertexts, a KEM is a drop-in replacement for 'ephemeral-ephemeral' key exchange in protocols like TLS <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span> and SSH <span>[<a href="#RFC4253" class="cite xref">RFC4253</a>]</span> as well as 'static-ephemeral' key exchange in protocols like ECIES/HPKE <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>. A KEM is not a drop-in replacement in applications such as the Diffie-Hellman ratchet in Signal <span>[<a href="#SIGNAL" class="cite xref">SIGNAL</a>]</span>, implicit 'ephemeral-static' DH authentication in Noise <span>[<a href="#NOISE" class="cite xref">NOISE</a>]</span>, Wireguard <span>[<a href="#WIRE" class="cite xref">WIRE</a>]</span>, and EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, and 'static-static' configurations in CMS <span>[<a href="#RFC6278" class="cite xref">RFC6278</a>]</span> and Group OSCORE <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>, where both sides have long-term public keys. Furthermore ML-KEM is not a drop-in replacement for RSA-KEM as RSA-KEM can encapsulate the same shared secret to many recipients whereas ML-KEM cannot.<a href="#section-1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="using-ml-kem">
@@ -1185,7 +1192,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-ml-kem-key-generation" class="section-name selfRef">ML-KEM Key Generation</a>
         </h3>
 <p id="section-2.1-1">The first step for Alice is to generate a public and private keypair.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1-2">In FIPS 203, this function is termed ML-KEM.KeyGen() (see section 7.1).  It internally calls the random number generator for a seed and produces both a public key (termed an encapsulation key in FIPS 203) and a private key (termed a decapsulation key).<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">In FIPS 203, this function is termed ML-KEM.KeyGen() (see section 7.1 of <span>[<a href="#FIPS203" class="cite xref">FIPS203</a>]</span>).  It internally calls the random number generator for a seed and produces both a public key (termed an encapsulation key in FIPS 203) and a private key (termed a decapsulation key).<a href="#section-2.1-2" class="pilcrow">¶</a></p>
 <p id="section-2.1-3">The public key can be freely published (and Bob will need it for his part of the process); this step may be performed simply by transmitting the key to Bob.  However, the private key must be kept secret.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1195,10 +1202,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-ml-kem-encapsulation" class="section-name selfRef">ML-KEM Encapsulation</a>
         </h3>
 <p id="section-2.2-1">The second step is for Bob to generate a ciphertext and a shared secret key.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.2-2">To perform this step, Bob would first run the Encapsulation Key Check on Alice's public key as outlined at the beginning of section 7.2.
-If that test passes, then Bob would perform the what FIPS 203 terms as ML-KEM.Encaps() (see section 7.2).  This step takes the validated public key, internally calls the random number generator for a seed, and produces both a ciphertext and a 32 byte shared secret key.<a href="#section-2.2-2" class="pilcrow">¶</a></p>
-<p id="section-2.2-3">The ciphertext can be transmitted back to Alice; if the exchange is successful, the 32 byte shared secret key will be the key shared with Alice.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
-<p id="section-2.2-4">It may be that some libraries combine the validation and the encapsulation step; you should check whether the library you are using does.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.2-2">To perform this step, Bob would first run the Encapsulation Key Check on Alice's public key as outlined at the beginning of section 7.2 of <span>[<a href="#FIPS203" class="cite xref">FIPS203</a>]</span>.
+If that test passes, then Bob would perform the what FIPS 203 terms as ML-KEM.Encaps() (see section 7.2 of <span>[<a href="#FIPS203" class="cite xref">FIPS203</a>]</span>).  This step takes the validated public key, internally calls the random number generator for a seed, and produces both a ciphertext and a 32-byte shared secret key.<a href="#section-2.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.2-3">The ciphertext can be transmitted back to Alice; if the exchange is successful, the 32-byte shared secret key will be the key shared with Alice.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.2-4">It may be that some libraries combine the validation and the encapsulation step; you should check whether the library you are using does. For static public keys, the Encapsulation Key Check only needs to be performed once.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ml-kem-decapsulation">
@@ -1207,21 +1214,25 @@ If that test passes, then Bob would perform the what FIPS 203 terms as ML-KEM.En
 <a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-ml-kem-decapsulation" class="section-name selfRef">ML-KEM Decapsulation</a>
         </h3>
 <p id="section-2.3-1">The third and final step is for Alice to take the ciphertext and generate the shared secret key.<a href="#section-2.3-1" class="pilcrow">¶</a></p>
-<p id="section-2.3-2">To perform this step, Alice would first run the Decapsulation Key Check on Bob's ciphertext as outlined at the beginning of section 7.3.
-If that test passes, then Bob would perform the what FIPS 203 terms as ML-KEM.Decaps() (see section 7.3).  This step takes the ciphertext from Bob and the private key that was previously generated by Alice, and produces a 32 byte shared secret key.<a href="#section-2.3-2" class="pilcrow">¶</a></p>
-<p id="section-2.3-3">If the exchange is successful, the 32 byte key generated on both sides will be the same.<a href="#section-2.3-3" class="pilcrow">¶</a></p>
+<p id="section-2.3-2">To perform this step, Alice would first run the Decapsulation Key Check on Bob's ciphertext as outlined at the beginning of section 7.3 of <span>[<a href="#FIPS203" class="cite xref">FIPS203</a>]</span>.
+If that test passes, then Bob would perform the what FIPS 203 terms as ML-KEM.Decaps() (see section 7.3 of <span>[<a href="#FIPS203" class="cite xref">FIPS203</a>]</span>).  This step takes the ciphertext from Bob and the private key that was previously generated by Alice, and produces a 32-byte shared secret key.<a href="#section-2.3-2" class="pilcrow">¶</a></p>
+<p id="section-2.3-3">If the exchange is successful, the 32-byte key generated on both sides will be the same.<a href="#section-2.3-3" class="pilcrow">¶</a></p>
 <p id="section-2.3-4">It may be that some libraries combine the validation and the decapsulation step; you should check whether the library you are using does.<a href="#section-2.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ml-kem-parameter-sets">
 <section id="section-2.4">
         <h3 id="name-ml-kem-parameter-sets">
-<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-ml-kem-parameter-sets" class="section-name selfRef">ML-KEM Parameter sets</a>
+<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-ml-kem-parameter-sets" class="section-name selfRef">ML-KEM Parameter Sets</a>
         </h3>
 <p id="section-2.4-1">ML-KEM comes with three parameter sets; ML-KEM-512, ML-KEM-768 and ML-KEM-1024.  It is assumed that Alice and Bob both know which parameter sets they use (either by negotiation or by having one selection fixed in the protocol).<a href="#section-2.4-1" class="pilcrow">¶</a></p>
-<p id="section-2.4-2">Here is a summary of how those parameter sets differ:<a href="#section-2.4-2" class="pilcrow">¶</a></p>
+<p id="section-2.4-2"><a href="#par-sets" class="auto internal xref">Table 1</a> shows a summary of how those parameter sets differ:<a href="#section-2.4-2" class="pilcrow">¶</a></p>
+<span id="name-pk-public-key-sk-private-ke"></span><div id="par-sets">
 <table class="center" id="table-1">
-          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+          <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-pk-public-key-sk-private-ke" class="selfRef">pk = public key, sk = private key, ct = ciphertext, ss = shared key, all lengths in bytes</a>
+          </caption>
 <thead>
             <tr>
               <th class="text-left" rowspan="1" colspan="1"> </th>
@@ -1259,68 +1270,135 @@ If that test passes, then Bob would perform the what FIPS 203 terms as ML-KEM.De
             </tr>
           </tbody>
         </table>
-<p id="section-2.4-4">(pk = public key, sk = private key, ct = ciphertext, ss = shared key, all lengths in bytes)<a href="#section-2.4-4" class="pilcrow">¶</a></p>
+</div>
+<p id="section-2.4-4"><a href="#par-perf" class="auto internal xref">Table 2</a> shows an example of ML-KEM performance <span>[<a href="#EBACS" class="cite xref">EBACS</a>]</span>:<a href="#section-2.4-4" class="pilcrow">¶</a></p>
+<span id="name-single-core-performance-in-"></span><div id="par-perf">
+<table class="center" id="table-2">
+          <caption>
+<a href="#table-2" class="selfRef">Table 2</a>:
+<a href="#name-single-core-performance-in-" class="selfRef">Single-core performance in operation per second on AMD Ryzen 7 7700</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1"> </th>
+              <th class="text-right" rowspan="1" colspan="1">key generation</th>
+              <th class="text-right" rowspan="1" colspan="1">encapsulation</th>
+              <th class="text-right" rowspan="1" colspan="1">decapsulation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ML-KEM-512</td>
+              <td class="text-right" rowspan="1" colspan="1">244000</td>
+              <td class="text-right" rowspan="1" colspan="1">153000</td>
+              <td class="text-right" rowspan="1" colspan="1">202000</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ML-KEM-768</td>
+              <td class="text-right" rowspan="1" colspan="1">142000</td>
+              <td class="text-right" rowspan="1" colspan="1">103000</td>
+              <td class="text-right" rowspan="1" colspan="1">134000</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ML-KEM-1024</td>
+              <td class="text-right" rowspan="1" colspan="1">109000</td>
+              <td class="text-right" rowspan="1" colspan="1">77000</td>
+              <td class="text-right" rowspan="1" colspan="1">99000</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<p id="section-2.4-6">As can be seen from <a href="#par-sets" class="auto internal xref">Table 1</a> and <a href="#par-sets" class="auto internal xref">Table 1</a>, ML-KEM has significantly larger public keys and ciphertexts than ECDH but very good performance.<a href="#section-2.4-6" class="pilcrow">¶</a></p>
 </section>
 </div>
-</section>
-</div>
-<div id="conventions-and-definitions">
-<section id="section-3">
-      <h2 id="name-conventions-and-definitions">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
-      </h2>
-<p id="section-3-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
-"<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
-described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
-appear in all capitals, as shown here.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">I don't know if we need anything in this section.<a href="#section-3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="kem-security-considerations">
-<section id="section-4">
+<section id="section-3">
       <h2 id="name-kem-security-considerations">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-kem-security-considerations" class="section-name selfRef">KEM Security Considerations</a>
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-kem-security-considerations" class="section-name selfRef">KEM Security Considerations</a>
       </h2>
-<p id="section-4-1">This section pertains to KEM (Key Encapsulation Mechanisms) in general, including ML-KEM<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">To use a KEM, you need to use a high-quality source of entropy during both the key-pair generation and ciphertext generation steps.  If an adversary can recover the random bits used in either of these processes, they can recover the shared secret.  If an adversary can recover the random bits used during key generation, they can recover the secret key.<a href="#section-4-2" class="pilcrow">¶</a></p>
-<p id="section-4-3">Alice needs to keep her private key secure (both private and protected from modification). It is recommended that she zeroize her private key when she will have no further need of it.<a href="#section-4-3" class="pilcrow">¶</a></p>
-<p id="section-4-4">A KEM (including ML-KEM) provides no authentication of either communitcating party. If an adversary could replace either the public key or the ciphertext with its own, it would generate a shared key with Alice or Bob.  Hence, it is important that the protocol that uses a KEM lets Bob be able to verify that the public key he obtains came from Alice and that the ciphertext that Alice receives came from Bob (that is, an entity that Alice is willing to communicate with).  Such verification can be performed by cryptographic methods such as digital signatures or a MAC to verify integrity of the protocol exchange transcript.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-3-1">This section pertains to KEM (Key Encapsulation Mechanisms) in general, including ML-KEM<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">To use a KEM, you need to use a high-quality source of entropy during both the key-pair generation and ciphertext generation steps.  If an adversary can recover the random bits used in either of these processes, they can recover the shared secret.  If an adversary can recover the random bits used during key generation, they can recover the secret key.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">Alice needs to keep her private key secret. It is recommended that she zeroize her private key when she will have no further need of it.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">A KEM (including ML-KEM) provides no authentication of either communicating party. If an adversary could replace either the public key or the ciphertext with its own, it would generate a shared key with Alice or Bob.  Hence, it is important that the protocol that uses a KEM lets Bob be able to verify that the public key he obtains came from Alice and that the ciphertext that Alice receives came from Bob (that is, an entity that Alice is willing to communicate with).  Such verification can be performed by cryptographic methods such as digital signatures or a MAC to verify integrity of the protocol exchange transcript.<a href="#section-3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ml-kem-security-considerations">
-<section id="section-5">
+<section id="section-4">
       <h2 id="name-ml-kem-security-considerati">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-ml-kem-security-considerati" class="section-name selfRef">ML-KEM Security Considerations</a>
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-ml-kem-security-considerati" class="section-name selfRef">ML-KEM Security Considerations</a>
       </h2>
-<p id="section-5-1">This section pertains specifically to ML-KEM, and may not be true of KEMs in general.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">To use ML-KEM, you need a source of random bits with security strength equal to greater than the security strength of the KEM during both key generation and encapsulation steps.  The cryptographic library that implements ML-KEM may access this source of randomness internally.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">If the ciphertext that Alice receives from Bob is tampered with (either by small modification or by replacing it with an entirely different ciphertext), the shared secret key that Alice derives will be uncorrelated with the shared secret key that Bob obtains.  An attacker will not be able to determine any information about the correct shared secret key or Alice's private key, even if the attacker obtains Alice's modified shared secret key which is the output of the ML-KEM.Decap function taking the modified ciphertext as input.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4">It is secure to reuse a public key multiple times.  That is, instead of Alice generating a fresh public and private keypair for each exchange, Alice may generate a public key once, and then publish that public key, and use it for multiple incoming ciphertexts, generating multiple shared secret keys.  While this is safe, it is recommended that if the protocol allows it (if Alice and Bob exchange messages anyways) that Alice generates a fresh keypair each time (and zeroize the private key immediately after) to obtain Perfect Forward Secrecy. Be noted that generally key generation of ML-KEM is very fast. That is, if Alice's system is subverted (either by a hacker or a legal warrent), the previous communications remain secure (because Alice no longer has the information needed to recover the shared secret keys).<a href="#section-5-4" class="pilcrow">¶</a></p>
-<p id="section-5-5">Alice and Bob must perform the Key Check steps (the Encapsulation Key Check on the public key for Bob, the Decapsulation Key Check on the ciphertext for Alice).  The cryptographical libraries that Alice and Bob use may automatically perform such checks; if so, that should be verified.<a href="#section-5-5" class="pilcrow">¶</a></p>
-<p id="section-5-6">The shared secret key for all three parameter sets, ML-KEM-512, ML-KEM-768 and ML-KEM-1024 are 32 bytes which are indistinguishable from 32-byte psedorandom byte-strings of 128, 192 and 256 bits of strengths respectively. As such, it is suitable both to use directly as a symmetric key (for use by a symmetric cipher such as AES or a MAC), and for inserting into a Key Derivation Function.  This is in contrast to a Diffie-Hellman (or ECDH) operation, where the output is distinguishable from random.<a href="#section-5-6" class="pilcrow">¶</a></p>
+<p id="section-4-1">This section pertains specifically to ML-KEM, and may not be true of KEMs in general.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">To use ML-KEM, you need a source of random bits with security strength equal to greater than the security strength of the KEM during both key generation and encapsulation steps.  The cryptographic library that implements ML-KEM may access this source of randomness internally.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">Alice must keep her private key secret (both private and secure from modification).  It is recommended that she zeroizes her private key when she will have no further need of it.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">If the ciphertext that Alice receives from Bob is tampered with (either by small modification or by replacing it with an entirely different ciphertext), the shared secret key that Alice derives will be uncorrelated with the shared secret key that Bob obtains.  An attacker will not be able to determine any information about the correct shared secret key or Alice's private key, even if the attacker obtains Alice's modified shared secret key which is the output of the ML-KEM.Decaps function taking the modified ciphertext as input.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5">It is secure to reuse a public key multiple times.  That is, instead of Alice generating a fresh public and private keypair for each exchange, Alice may generate a public key once, and then publish that public key, and use it for multiple incoming ciphertexts, generating multiple shared secret keys.  While this is safe, it is recommended that if the protocol allows it (if Alice and Bob exchange messages anyways) that Alice generates a fresh keypair each time (and zeroize the private key immediately after) to obtain Perfect Forward Secrecy. Be noted that generally key generation of ML-KEM is very fast, see <a href="#par-perf" class="auto internal xref">Table 2</a>. That is, if Alice's system is subverted (either by a hacker or a legal warrant), the previous communications remain secure (because Alice no longer has the information needed to recover the shared secret keys).<a href="#section-4-5" class="pilcrow">¶</a></p>
+<p id="section-4-6">Alice and Bob must perform the Key Check steps (the Encapsulation Key Check on the public key for Bob, the Decapsulation Key Check on the ciphertext for Alice).  The cryptographical libraries that Alice and Bob use may automatically perform such checks; if so, that should be verified.<a href="#section-4-6" class="pilcrow">¶</a></p>
+<p id="section-4-7">The shared secret key for all three parameter sets, ML-KEM-512, ML-KEM-768 and ML-KEM-1024 are 32 bytes which are indistinguishable from 32-byte pseudorandom byte-strings of 128, 192 and 256 bits of strengths respectively. As such, it is suitable both to use directly as a symmetric key (for use by a symmetric cipher such as AES or a MAC), and for inserting into a Key Derivation Function.  This is in contrast to a Diffie-Hellman (or ECDH) operation, where the output is distinguishable from random.<a href="#section-4-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-6">
+<section id="section-5">
       <h2 id="name-iana-considerations">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-6-1">This document has no IANA actions.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">This document has no IANA actions.<a href="#section-5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sec-normative-references">
-<section id="section-7">
-      <h2 id="name-normative-references">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<div id="sec-informative-references">
+<section id="section-6">
+      <h2 id="name-informative-references">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
       </h2>
 <dl class="references">
-<dt id="RFC2119">[RFC2119]</dt>
+<dt id="EBACS">[EBACS]</dt>
       <dd>
-<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<span class="refTitle">"eBACS: ECRYPT Benchmarking of Cryptographic Systems"</span>, <span>n.d.</span>, <span>&lt;<a href="https://bench.cr.yp.to/results-kem/amd64-hertz.html">https://bench.cr.yp.to/results-kem/amd64-hertz.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC8174">[RFC8174]</dt>
+<dt id="FIPS203">[FIPS203]</dt>
+      <dd>
+<span class="refTitle">"Module-Lattice-Based Key-Encapsulation Mechanism Standard"</span>, <span class="seriesInfo">NIST FIPS 203</span>, <time datetime="2024-08" class="refDate">August 2024</time>, <span>&lt;<a href="https://doi.org/10.6028/NIST.FIPS.203">https://doi.org/10.6028/NIST.FIPS.203</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-core-oscore-groupcomm">[I-D.ietf-core-oscore-groupcomm]</dt>
+      <dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Mattsson, J. P.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Group Object Security for Constrained RESTful Environments (Group OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-groupcomm-23</span>, <time datetime="2024-09-26" class="refDate">26 September 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-23">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-23</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="NOISE">[NOISE]</dt>
+      <dd>
+<span class="refTitle">"Noise Protocol Framework"</span>, <span>n.d.</span>, <span>&lt;<a href="http://www.noiseprotocol.org/">http://www.noiseprotocol.org/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4253">[RFC4253]</dt>
+      <dd>
+<span class="refAuthor">Ylonen, T.</span> and <span class="refAuthor">C. Lonvick, Ed.</span>, <span class="refTitle">"The Secure Shell (SSH) Transport Layer Protocol"</span>, <span class="seriesInfo">RFC 4253</span>, <span class="seriesInfo">DOI 10.17487/RFC4253</span>, <time datetime="2006-01" class="refDate">January 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4253">https://www.rfc-editor.org/rfc/rfc4253</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5990">[RFC5990]</dt>
+      <dd>
+<span class="refAuthor">Randall, J.</span>, <span class="refAuthor">Kaliski, B.</span>, <span class="refAuthor">Brainard, J.</span>, and <span class="refAuthor">S. Turner</span>, <span class="refTitle">"Use of the RSA-KEM Key Transport Algorithm in the Cryptographic Message Syntax (CMS)"</span>, <span class="seriesInfo">RFC 5990</span>, <span class="seriesInfo">DOI 10.17487/RFC5990</span>, <time datetime="2010-09" class="refDate">September 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5990">https://www.rfc-editor.org/rfc/rfc5990</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6278">[RFC6278]</dt>
+      <dd>
+<span class="refAuthor">Herzog, J.</span> and <span class="refAuthor">R. Khazan</span>, <span class="refTitle">"Use of Static-Static Elliptic Curve Diffie-Hellman Key Agreement in Cryptographic Message Syntax"</span>, <span class="seriesInfo">RFC 6278</span>, <span class="seriesInfo">DOI 10.17487/RFC6278</span>, <time datetime="2011-06" class="refDate">June 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6278">https://www.rfc-editor.org/rfc/rfc6278</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8446">[RFC8446]</dt>
+      <dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9180">[RFC9180]</dt>
+      <dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Lipp, B.</span>, and <span class="refAuthor">C. Wood</span>, <span class="refTitle">"Hybrid Public Key Encryption"</span>, <span class="seriesInfo">RFC 9180</span>, <span class="seriesInfo">DOI 10.17487/RFC9180</span>, <time datetime="2022-02" class="refDate">February 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9180">https://www.rfc-editor.org/rfc/rfc9180</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9528">[RFC9528]</dt>
+      <dd>
+<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Preuß Mattsson, J.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="seriesInfo">RFC 9528</span>, <span class="seriesInfo">DOI 10.17487/RFC9528</span>, <time datetime="2024-03" class="refDate">March 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9528">https://www.rfc-editor.org/rfc/rfc9528</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="SIGNAL">[SIGNAL]</dt>
+      <dd>
+<span class="refTitle">"The Double Ratchet Algorithm"</span>, <time datetime="2011-11" class="refDate">November 2011</time>, <span>&lt;<a href="https://signal.org/docs/specifications/doubleratchet/">https://signal.org/docs/specifications/doubleratchet/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="WIRE">[WIRE]</dt>
     <dd>
-<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<span class="refTitle">"WireGuard"</span>, <span>n.d.</span>, <span>&lt;<a href="https://www.wireguard.com/">https://www.wireguard.com/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1334,15 +1412,31 @@ appear in all capitals, as shown here.<a href="#section-3-1" class="pilcrow">¶<
 </div>
 <div id="authors-addresses">
 <section id="appendix-B">
-      <h2 id="name-authors-address">
-<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Scott Fluhrer</span></div>
+<div dir="auto" class="left"><span class="org">Cisco Systems</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:sfluhrer@cisco.com" class="email">sfluhrer@cisco.com</a>
+</div>
+</address>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Quynh Dang</span></div>
 <div dir="auto" class="left"><span class="org">National Institute of Standards and Technology</span></div>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:Quynh.Dang@nist.gov" class="email">Quynh.Dang@nist.gov</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">John Preuß Mattsson</span></div>
+<div dir="auto" class="left"><span class="org">Ericsson</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:john.mattsson@ericsson.com" class="email">john.mattsson@ericsson.com</a>
 </div>
 </address>
 </section>
