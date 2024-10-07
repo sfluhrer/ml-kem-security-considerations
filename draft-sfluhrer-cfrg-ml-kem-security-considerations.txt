@@ -123,8 +123,8 @@ Table of Contents
    value, but can encapsulate the same shared secret to many recipients.
 
    A KEM (such as ML-KEM) sounds like it may be a drop-in replacement
-   for Diffie-Hellman, however this is not the case as in Diffie-
-   Hellman, the parties exchange two public keys, whereas in a KEM, the
+   for Diffie-Hellman, however this is not the case.  In Diffie-Hellman,
+   the parties exchange two public keys, whereas in a KEM, the
    ciphertext is necessarily a function of Alice's public key, and thus
    can only be useful only with that specific public key.  As long a the
    application can handle larger public keys and ciphertexts, a KEM is a
