@@ -6,7 +6,7 @@ category: info
 docname: draft-sfluhrer-cfrg-ml-kem-security-considerations-00
 submissiontype: IRTF
 consensus: true
-date: 10/7/2024
+date: 7-10-2024
 v: 0
 area: "IRTF"
 workgroup: "Crypto Forum"
