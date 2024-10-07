@@ -110,7 +110,7 @@ If that test passes, then Bob would perform the what FIPS 203 terms as ML-KEM.De
 
 If the exchange is successful, the 32-byte key generated on both sides will be the same.
 
-It may be that some libraries combine the validation and the decapsulation step; you should check whether the library you are using does. 
+It may be that some libraries combine the validation and the decapsulation step; you should check whether the library you are using does.
 
 ## ML-KEM Parameter Sets
 
@@ -157,6 +157,8 @@ Alice must keep her private key secret (both private and secure from modificatio
 If the ciphertext that Alice receives from Bob is tampered with (either by small modification or by replacing it with an entirely different ciphertext), the shared secret key that Alice derives will be uncorrelated with the shared secret key that Bob obtains.  An attacker will not be able to determine any information about the correct shared secret key or Alice's private key, even if the attacker obtains Alice's modified shared secret key which is the output of the ML-KEM.Decaps function taking the modified ciphertext as input.
 
 It is secure to reuse a public key multiple times.  That is, instead of Alice generating a fresh public and private keypair for each exchange, Alice may generate a public key once, and then publish that public key, and use it for multiple incoming ciphertexts, generating multiple shared secret keys.  While this is safe, it is recommended that if the protocol allows it (if Alice and Bob exchange messages anyways) that Alice generates a fresh keypair each time (and zeroize the private key immediately after) to obtain Perfect Forward Secrecy. Be noted that generally key generation of ML-KEM is very fast, see {{par-perf}}. That is, if Alice's system is subverted (either by a hacker or a legal warrant), the previous communications remain secure (because Alice no longer has the information needed to recover the shared secret keys).
+
+Alice and Bob must perform the Key Check steps (the Encapsulation Key Check on the public key for Bob, the Decapsulation Key Check on the ciphertext for Alice).  The cryptographical libraries that Alice and Bob use may automatically perform such checks; if so, that should be verified.
 
 The shared secret key for all three parameter sets, ML-KEM-512, ML-KEM-768 and ML-KEM-1024 are 32 bytes which are indistinguishable from 32-byte pseudorandom byte-strings of 128, 192 and 256 bits of strengths respectively. As such, it is suitable both to use directly as a symmetric key (for use by a symmetric cipher such as AES or a MAC), and for inserting into a Key Derivation Function.  This is in contrast to a Diffie-Hellman (or ECDH) operation, where the output is distinguishable from random.
 
