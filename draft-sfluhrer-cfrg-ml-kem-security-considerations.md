@@ -26,6 +26,16 @@ author:
   org: Ericsson
   email: john.mattsson@ericsson.com
 
+normative: 
+
+  FIPS203:
+    target: https://doi.org/10.6028/NIST.FIPS.203
+    title: Module-Lattice-Based Key-Encapsulation Mechanism Standard
+    seriesinfo:
+      "NIST": "FIPS 203"
+    date: August 2024
+
+
 informative:
 
   RFC4253:
@@ -35,13 +45,6 @@ informative:
   RFC9180:
   RFC9528:
   I-D.ietf-core-oscore-groupcomm:
-
-  FIPS203:
-    target: https://doi.org/10.6028/NIST.FIPS.203
-    title: Module-Lattice-Based Key-Encapsulation Mechanism Standard
-    seriesinfo:
-      "NIST": "FIPS 203"
-    date: August 2024
 
   SIGNAL:
     target: https://signal.org/docs/specifications/doubleratchet/
