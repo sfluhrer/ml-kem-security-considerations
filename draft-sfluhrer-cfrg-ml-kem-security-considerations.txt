@@ -227,8 +227,9 @@ Table of Contents
    recover the random bits used during key generation, they can recover
    the secret key.
 
-   Alice needs to keep her private key secret.  It is recommended that
-   she zeroize her private key when she will have no further need of it.
+   Alice needs to keep her private key secure (both private and
+   protected from modification).  It is recommended that she zeroize her
+   private key when she will have no further need of it.
 
    A KEM (including ML-KEM) provides no authentication of either
    communitcating party.  If an adversary could replace either the
@@ -274,6 +275,12 @@ Table of Contents
    is, if Alice's system is subverted (either by a hacker or a legal
    warrent), the previous communications remain secure (because Alice no
    longer has the information needed to recover the shared secret keys).
+
+   Alice and Bob must perform the Key Check steps (the Encapsulation Key
+   Check on the public key for Bob, the Decapsulation Key Check on the
+   ciphertext for Alice).  The cryptographical libraries that Alice and
+   Bob may automatically perform such checks; if so, that should be
+   verified.
 
    The shared secret key for all three parameter sets, ML-KEM-512, ML-
    KEM-768 and ML-KEM-1024 are 32 bytes which are indistinguishable from
