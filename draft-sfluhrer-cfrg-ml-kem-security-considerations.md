@@ -6,7 +6,6 @@ category: info
 docname: draft-sfluhrer-cfrg-ml-kem-security-considerations-00
 submissiontype: IRTF
 number:
-date: October 7, 2024
 consensus: true
 v: 0
 area: "IRTF"
