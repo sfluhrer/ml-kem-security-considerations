@@ -279,7 +279,7 @@ Table of Contents
    Alice and Bob must perform the Key Check steps (the Encapsulation Key
    Check on the public key for Bob, the Decapsulation Key Check on the
    ciphertext for Alice).  The cryptographical libraries that Alice and
-   Bob may automatically perform such checks; if so, that should be
+   Bob use may automatically perform such checks; if so, that should be
    verified.
 
    The shared secret key for all three parameter sets, ML-KEM-512, ML-
