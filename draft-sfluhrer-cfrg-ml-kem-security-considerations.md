@@ -155,7 +155,7 @@ A KEM (including ML-KEM) provides no authentication of either communicating part
 
 This section pertains specifically to ML-KEM, and may not be true of KEMs in general.
 
-To use ML-KEM, you need a source of random bits with security strength equal to greater than the security strength of the KEM during both key generation and encapsulation steps.  The cryptographic library that implements ML-KEM may access this source of randomness internally. A fresh string of bytes must be used for every sampling of random bytes in key generation and encapsulation. The random bytes should come form an approved RBG.
+To use ML-KEM, you need a source of random bits with security strength equal to greater than the security strength of the KEM during both key generation and encapsulation steps.  The cryptographic library that implements ML-KEM may access this source of randomness internally. A fresh string of bytes must be used for every sampling of random bytes in key generation and encapsulation. The random bytes should come from an approved RBG.
 
 Alice must keep her private key secret (both private and secure from modification).  It is recommended that she zeroizes her private key when she will have no further need of it. A copy of the public key and its hash are included in the private key and must be protected from modification. 
 
