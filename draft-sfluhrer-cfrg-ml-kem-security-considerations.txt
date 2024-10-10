@@ -5,10 +5,12 @@
 Crypto Forum                                                  S. Fluhrer
 Internet-Draft                                             Cisco Systems
 Intended status: Informational                                   Q. Dang
-Expires: 10 April 2025                                              NIST
+Expires: 13 April 2025                                              NIST
                                                        J. Preuß Mattsson
                                                                 Ericsson
-                                                          7 October 2024
+                                                                 D. Shiu
+                                                       Arqit Quantum Inc
+                                                            October 2024
 
 
                      ML-KEM Security Considerations
@@ -46,7 +48,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 April 2025.
+   This Internet-Draft will expire on 4 April 2025.
 
 Copyright Notice
 
@@ -70,7 +72,9 @@ Table of Contents
    3.  KEM Security Considerations
    4.  ML-KEM Security Considerations
    5.  IANA Considerations
-   6.  Informative References
+   6.  References
+     6.1.  Normative References
+     6.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -106,9 +110,15 @@ Table of Contents
    inside the ML-KEM.Decaps.  Substituting the public key Alice sends
    Bob by another public key chosen by the attacker will not help the
    attacker get any information about Alice's private key, it would just
-   make Alice and Bob not have a same shared secret key.  For practical
-   purposes, IND-CCA2 means that ML-KEM is secure to use with static
-   public keys.
+   make Alice and Bob not have a same shared secret key.  However, if it
+   is possible to substitute the copy of the public key for both Alice
+   and Bob, an attacker can introduce a malicious public key where the
+   same private key can be used for decapsulation, but the probability
+   of decryption failure is marginally higher.  As decryption failures
+   can leak information about the secret decapulation key, it is
+   important that Alice keeps a secure copy of the public key as part of
+   her secret key.  For practical purposes, IND-CCA2 means that ML-KEM
+   is secure to use with static public keys.
 
    ML-KEM is what is termed a Key Encapsulation Mechanism.  One common
    misunderstanding of that term is the expectation that Bob freely
@@ -126,13 +136,19 @@ Table of Contents
    for Diffie-Hellman, however this is not the case.  In Diffie-Hellman,
    the parties exchange two public keys, whereas in a KEM, the
    ciphertext is necessarily a function of Alice's public key, and thus
-   can only be useful only with that specific public key.  As long a the
-   application can handle larger public keys and ciphertexts, a KEM is a
-   drop-in replacement for 'ephemeral-ephemeral' key exchange in
-   protocols like TLS [RFC8446] and SSH [RFC4253] as well as 'static-
-   ephemeral' key exchange in protocols like ECIES/HPKE [RFC9180].  A
-   KEM is not a drop-in replacement in applications such as the Diffie-
-   Hellman ratchet in Signal [SIGNAL], implicit 'ephemeral-static' DH
+   can only be useful only with that specific public key.  Additionally,
+   a KEM differs from Diffie-Hellman which is asynchronous and non-
+   interactive.  In particular, for an 'ephemeral-ephemeral' key
+   establishment, an encapsulator cannot pre-emptively initiate a key
+   establishment, but requires an encapulation key.  Nor can
+   participants compute parts of the key establishment in parallel as is
+   the case with Diffie-Hellman.  As long a the application can handle
+   larger public keys and ciphertexts, a KEM is a drop-in replacement
+   for 'ephemeral-ephemeral' key exchange in protocols like TLS
+   [RFC8446] and SSH [RFC4253] as well as 'static-ephemeral' key
+   exchange in protocols like ECIES/HPKE [RFC9180].  A KEM is not a
+   drop-in replacement in applications such as the Diffie-Hellman
+   ratchet in Signal [SIGNAL], implicit 'ephemeral-static' DH
    authentication in Noise [NOISE], Wireguard [WIRE], and EDHOC
    [RFC9528], and 'static-static' configurations in CMS [RFC6278] and
    Group OSCORE [I-D.ietf-core-oscore-groupcomm], where both sides have
@@ -151,7 +167,10 @@ Table of Contents
    In FIPS 203, this function is termed ML-KEM.KeyGen() (see section 7.1
    of [FIPS203]).  It internally calls the random number generator for a
    seed and produces both a public key (termed an encapsulation key in
-   FIPS 203) and a private key (termed a decapsulation key).
+   FIPS 203) and a private key (termed a decapsulation key).  The seed
+   can be securely retained, but must be treated with the same
+   safeguards as the private key.  Other intermediate data ust be
+   securely deleted.
 
    The public key can be freely published (and Bob will need it for his
    part of the process); this step may be performed simply by
@@ -169,7 +188,11 @@ Table of Contents
    203 terms as ML-KEM.Encaps() (see section 7.2 of [FIPS203]).  This
    step takes the validated public key, internally calls the random
    number generator for a seed, and produces both a ciphertext and a
-   32-byte shared secret key.
+   32-byte shared secret key.  Intermediate data other than the
+   ciphertext and shared secret key must be securely deleted (with the
+   possible exception of "matrix data" which does not depend on Bob's
+   seed and can be reused over multiple encapsulations with the same
+   public key).
 
    The ciphertext can be transmitted back to Alice; if the exchange is
    successful, the 32-byte shared secret key will be the key shared with
@@ -191,7 +214,15 @@ Table of Contents
    FIPS 203 terms as ML-KEM.Decaps() (see section 7.3 of [FIPS203]).
    This step takes the ciphertext from Bob and the private key that was
    previously generated by Alice, and produces a 32-byte shared secret
-   key.
+   key.  It also repeats the encapsulation process to ensure that the
+   ciphertext was created strictly according to the specification,
+   implicitly rejecting ciphertexts that were not.  Although not
+   necessary for the correctness of the key establishment, this step
+   should not be skipped as maliciously generated ciphertexts could
+   induce decapsulation failures with insecure probability.
+   Intermediate data other than the shared secret key must be securely
+   deleted (with the possible exception of "matrix data" whichcan be
+   reused over multiple decapsulations with the same public key ).
 
    If the exchange is successful, the 32-byte key generated on both
    sides will be the same.
@@ -277,11 +308,15 @@ Table of Contents
    strength equal to greater than the security strength of the KEM
    during both key generation and encapsulation steps.  The
    cryptographic library that implements ML-KEM may access this source
-   of randomness internally.
+   of randomness internally.  A fresh string of bytes must be used for
+   every sampling of random bytes in key generation and encapsulation.
+   The random bytes should come from an approved RBG.
 
    Alice must keep her private key secret (both private and secure from
    modification).  It is recommended that she zeroizes her private key
-   when she will have no further need of it.
+   when she will have no further need of it.  A copy of the public key
+   and its hash are included in the private key and must be protected
+   from modification.
 
    If the ciphertext that Alice receives from Bob is tampered with
    (either by small modification or by replacing it with an entirely
@@ -326,15 +361,19 @@ Table of Contents
 
    This document has no IANA actions.
 
-6.  Informative References
+6.  References
 
-   [EBACS]    "eBACS: ECRYPT Benchmarking of Cryptographic Systems",
-              n.d.,
-              <https://bench.cr.yp.to/results-kem/amd64-hertz.html>.
+6.1.  Normative References
 
    [FIPS203]  "Module-Lattice-Based Key-Encapsulation Mechanism
               Standard", NIST FIPS 203, August 2024,
               <https://doi.org/10.6028/NIST.FIPS.203>.
+
+6.2.  Informative References
+
+   [EBACS]    "eBACS: ECRYPT Benchmarking of Cryptographic Systems",
+              n.d.,
+              <https://bench.cr.yp.to/results-kem/amd64-hertz.html>.
 
    [I-D.ietf-core-oscore-groupcomm]
               Tiloca, M., Selander, G., Palombini, F., Mattsson, J. P.,
@@ -397,3 +436,8 @@ Authors' Addresses
    John Preuß Mattsson
    Ericsson
    Email: john.mattsson@ericsson.com
+
+
+   Daniel Shiu
+   Arqit Quantum Inc
+   Email: daniel.shiu@arqit.uk
