@@ -28,7 +28,7 @@ author:
   organization: Arqit Quantum Inc
   email: daniel.shiu@arqit.uk
 
-normative: 
+normative:
 
   FIPS203:
     target: https://doi.org/10.6028/NIST.FIPS.203
@@ -89,7 +89,7 @@ To use ML-KEM, there are three steps involved
 
 ## ML-KEM Key Generation
 
-The first step for Alice is to generate a public and private keypair. 
+The first step for Alice is to generate a public and private keypair.
 
 In FIPS 203, this function is termed ML-KEM.KeyGen() (see section 7.1 of {{FIPS203}}).  It internally calls the random number generator for a seed and produces both a public key (termed an encapsulation key in FIPS 203) and a private key (termed a decapsulation key). The seed can be securely retained, but must be treated with the same safeguards as the private key. Other intermediate data ust be securely deleted.
 
@@ -157,7 +157,7 @@ This section pertains specifically to ML-KEM, and may not be true of KEMs in gen
 
 To use ML-KEM, you need a source of random bits with security strength equal to greater than the security strength of the KEM during both key generation and encapsulation steps.  The cryptographic library that implements ML-KEM may access this source of randomness internally. A fresh string of bytes must be used for every sampling of random bytes in key generation and encapsulation. The random bytes should come from an approved RBG.
 
-Alice must keep her private key secret (both private and secure from modification).  It is recommended that she zeroizes her private key when she will have no further need of it. A copy of the public key and its hash are included in the private key and must be protected from modification. 
+Alice must keep her private key secret (both private and secure from modification).  It is recommended that she zeroizes her private key when she will have no further need of it. A copy of the public key and its hash are included in the private key and must be protected from modification.
 
 If the ciphertext that Alice receives from Bob is tampered with (either by small modification or by replacing it with an entirely different ciphertext), the shared secret key that Alice derives will be uncorrelated with the shared secret key that Bob obtains.  An attacker will not be able to determine any information about the correct shared secret key or Alice's private key, even if the attacker obtains Alice's modified shared secret key which is the output of the ML-KEM.Decaps function taking the modified ciphertext as input.
 
