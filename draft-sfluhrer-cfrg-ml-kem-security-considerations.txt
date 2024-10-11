@@ -5,9 +5,11 @@
 Crypto Forum                                                  S. Fluhrer
 Internet-Draft                                             Cisco Systems
 Intended status: Informational                                   Q. Dang
-Expires: 13 April 2025                                              NIST
+Expires: 14 April 2025                                              NIST
                                                        J. Preuß Mattsson
                                                                 Ericsson
+                                                               K. Milner
+                                                              Quantinuum
                                                                  D. Shiu
                                                        Arqit Quantum Inc
                                                             October 2024
@@ -357,6 +359,15 @@ Table of Contents
    contrast to a Diffie-Hellman (or ECDH) operation, where the output is
    distinguishable from random.
 
+   It is essential that the public key is generated correctly when the
+   initial key generation is performed.  Lattice public keys are a
+   lattice and a secret hidden by an error term; if additional error can
+   be introduced into the public key generation stage, then the success
+   of decapsulation can reveal enough of the secret that successive
+   queries determine the private key.  Notably, this means a public key
+   can be 'poisoned' such that a future adversary can recover the
+   private key even though it will appear correct in normal usage.
+
 5.  IANA Considerations
 
    This document has no IANA actions.
@@ -436,6 +447,11 @@ Authors' Addresses
    John Preuß Mattsson
    Ericsson
    Email: john.mattsson@ericsson.com
+
+
+   Kevin Milner
+   Quantinuum
+   Email: kamilner@kamilner.ca
 
 
    Daniel Shiu
