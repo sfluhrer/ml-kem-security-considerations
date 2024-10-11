@@ -24,6 +24,9 @@ author:
   name: John Preuß Mattsson
   org: Ericsson
   email: john.mattsson@ericsson.com
+- fullname: Kevin Milner
+  organization: Quantinuum
+  email: kamilner@kamilner.ca
 - fullname: Daniel Shiu
   organization: Arqit Quantum Inc
   email: daniel.shiu@arqit.uk
@@ -166,6 +169,8 @@ It is secure to reuse a public key multiple times.  That is, instead of Alice ge
 Alice and Bob must perform the Key Check steps (the Encapsulation Key Check on the public key for Bob, the Decapsulation Key Check on the ciphertext for Alice).  The cryptographical libraries that Alice and Bob use may automatically perform such checks; if so, that should be verified.
 
 The shared secret key for all three parameter sets, ML-KEM-512, ML-KEM-768 and ML-KEM-1024 are 32 bytes which are indistinguishable from 32-byte pseudorandom byte-strings of 128, 192 and 256 bits of strengths respectively. As such, it is suitable both to use directly as a symmetric key (for use by a symmetric cipher such as AES or a MAC), and for inserting into a Key Derivation Function.  This is in contrast to a Diffie-Hellman (or ECDH) operation, where the output is distinguishable from random.
+
+It is essential that the public key is generated correctly when the initial key generation is performed. Lattice public keys are a lattice and a secret hidden by an error term; if additional error can be introduced into the public key generation stage, then the success of decapsulation can reveal enough of the secret that successive queries determine the private key. Notably, this means a public key can be 'poisoned' such that a future adversary can recover the private key even though it will appear correct in normal usage.
 
 # IANA Considerations
 
