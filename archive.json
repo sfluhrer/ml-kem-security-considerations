@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-10T00:51:22.099115+00:00",
+  "timestamp": "2024-10-13T00:55:19.355908+00:00",
   "repo": "sfluhrer/ml-kem-security-considerations",
   "labels": [
     {
@@ -336,28 +336,30 @@
       "id": "PR_kwDOM54HI85932Iz",
       "title": "Update draft-sfluhrer-cfrg-ml-kem-security-considerations.md",
       "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/7",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "kmilner",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "This is a very quick description that I think might be worth fleshing out more, but I think it's worth mentioning. \r\n\r\nAssociate references: \r\n- https://www.iacr.org/archive/pkc2019/114420193/114420193.pdf is I believe the original proposal of the attack.\r\n- https://eprint.iacr.org/2022/952.pdf uses rowhammer to actually perform the attack in practice on frodokem, but it also applies to ML-KEM as discussed in appendix A.1\r\n\r\nI'm not sure this warrants adding a name to the author list but Scott said to do so--happy to contribute more explanation or other editing to the document.",
       "createdAt": "2024-10-07T22:02:57Z",
-      "updatedAt": "2024-10-09T21:04:21Z",
+      "updatedAt": "2024-10-11T19:38:32Z",
       "baseRepository": "sfluhrer/ml-kem-security-considerations",
       "baseRefName": "main",
-      "baseRefOid": "e3a60b14813e22639f014005b2ea5b6aafe9eb7c",
+      "baseRefOid": "13994f9c42d2d64cfd4b21e8790cb9a08e63c02b",
       "headRepository": "kmilner/ml-kem-security-considerations",
       "headRefName": "patch-1",
-      "headRefOid": "1cef2401250bdece4f4fb14bd5918e8612e7edf9",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "04d774b59a7125923bf73ce77457330ef58008d6",
+      "closedAt": "2024-10-11T19:38:31Z",
+      "mergedAt": "2024-10-11T19:38:31Z",
+      "mergedBy": "sfluhrer",
+      "mergeCommit": {
+        "oid": "12810127a3e20f2d378201641b1778623d88b262"
+      },
       "comments": [
         {
           "author": "kmilner",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "I think the advice would be to be protective about how your keys are generated in a way that may be unintuitive if you're used to traditional cryptosystems. Examples\r\n- An airgapped machine (or library) can generate 'valid' keypairs which allow an adversary to discover the private key later.\r\n- A user process on the machine can potentially interfere with key generation in such a way that the keys still work but are later breakable (the rowhammer paper above)\r\n- (assumption on my part, I don't know if there's literature on this) in an embedded environment power faults might be sufficient. \r\n\r\nYou could generally just mess with the entropy used in key generation to achieve a similar sort of 'booby-trapped' keys, though, so maybe it isn't worth calling out specifically. ",
           "createdAt": "2024-10-08T17:29:41Z",
           "updatedAt": "2024-10-08T17:29:41Z"
@@ -368,6 +370,13 @@
           "body": "The text you have is better; I would add two notes (and if you disagree with either of them, say so)\r\n- This is much less of a concern if you're using ML-KEM ephemerally (that is, using a public/private key pair only once)\r\n- If this is a concern, you should use an ML-KEM which has been hardened against such attacks.",
           "createdAt": "2024-10-09T21:04:19Z",
           "updatedAt": "2024-10-09T21:04:19Z"
+        },
+        {
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "body": "Thinking about it, I believe you have a good point.  I would propose this alternative text, which should more explicitly convey your concerns (and also when it is applicable, and also an actionable mitigation).  If you agree with this modified text, we can make that as your change (either you or I).  If you prefer your text, I'll go ahead and merge it.\r\n\r\nProposed alternative text:\r\n\r\nML-KEM has a potential weakness that did not apply to the classical DH or ECDH cryptosystems.  Lattice public keys are a lattice and a secret hidden by an error term. If the error term added public key generation stage is made larger due to a fault attack, then the success of decapsulation can reveal enough of the secret that successive queries determine the private key. That is, a public key can be 'poisoned' such that a future adversary can recover the private key even though it will appear correct in normal usage.  This applies only if an ML-KEM public key is used repeatedly.; it does not apply if ML-KEM is used ephemerally.  If that is the case, you may want to use an ML-KEM implementation that is hardened against such fault attacks.",
+          "createdAt": "2024-10-10T16:27:03Z",
+          "updatedAt": "2024-10-10T16:27:03Z"
         }
       ],
       "reviews": [
@@ -391,28 +400,30 @@
       "id": "PR_kwDOM54HI8596728",
       "title": "Update draft-sfluhrer-cfrg-ml-kem-security-considerations.md",
       "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/8",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "dklshiu",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Added pieces on the importance of public key integrity, intermediate value deletion, checking for legitimate ciphertext generation. Also noted that DH is asynchronous and non-interactive whereas KEMs are not.",
       "createdAt": "2024-10-08T09:13:30Z",
-      "updatedAt": "2024-10-09T18:57:11Z",
+      "updatedAt": "2024-10-10T16:40:52Z",
       "baseRepository": "sfluhrer/ml-kem-security-considerations",
       "baseRefName": "main",
       "baseRefOid": "e3a60b14813e22639f014005b2ea5b6aafe9eb7c",
       "headRepository": "dklshiu/ml-kem-security-considerations",
       "headRefName": "patch-1",
-      "headRefOid": "ecc43d7d78d3ffa220a7ac8fa52de62a6e8516bd",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "8b22c7199eaf003067a72b695f835e96418a2dc8",
+      "closedAt": "2024-10-10T16:40:52Z",
+      "mergedAt": "2024-10-10T16:40:52Z",
+      "mergedBy": "sfluhrer",
+      "mergeCommit": {
+        "oid": "13994f9c42d2d64cfd4b21e8790cb9a08e63c02b"
+      },
       "comments": [
         {
           "author": "dklshiu",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "I'm trying to be as explicit as possible about the risks of public key modification in order to avoid future issues analagous to Curveball.  I've already had to try and warn people of the dangers of not explicitly protecting the decapsulator's copy of the public key https://crypto.stackexchange.com/questions/112925/why-is-the-public-key-included-in-the-private-key-in-kyber-kem/112927 and I fear that at some point in the future someone will ask if there's any issue with a \"compressed private key\" that omits the public key. In a similar vein, I worry that someone might notice that the re-encapsulation check never fails under ordinary circumstances and ask if there's an issue in skipping it. All this may be overcautious, but I've been burnt by people not fully understanding dangers in the past.",
           "createdAt": "2024-10-09T18:57:09Z",
           "updatedAt": "2024-10-09T18:57:09Z"
@@ -430,6 +441,19 @@
           "body": "I'm not sure I agree with the part you added about making sure that Alice gets a correct copy of the public key.  As you note later on, the private key includes a copy of the private key, and so (as long as the private key is secure) Alice has a correct copy of the public key.\r\n\r\nShould this part of the change be included (I have no issue with the rest)?",
           "createdAt": "2024-10-09T13:54:59Z",
           "updatedAt": "2024-10-09T13:54:59Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOM54HI86MuCqv",
+          "commit": {
+            "abbreviatedOid": "ecc43d7"
+          },
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "You make good points.  I should remember the dangers of underestimating fools.",
+          "createdAt": "2024-10-10T16:30:49Z",
+          "updatedAt": "2024-10-10T16:30:49Z",
           "comments": []
         }
       ]
