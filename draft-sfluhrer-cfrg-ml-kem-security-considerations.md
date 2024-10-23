@@ -398,7 +398,7 @@ key. Notably, this means a public key can be 'poisoned' such that a future
 adversary can recover the private key even though it will appear correct in
 normal usage.
 
-Per the analysis of the final {{FIPS 203}} in Sophie Schmieg’s [KEMMY24], a
+Per the analysis of the final {{FIPS203}} in Sophie Schmieg’s [KEMMY24], a
 strictly compliant instantiation of ML-KEM is LEAK-BIND-K-PK-secure and
 LEAK-BIND-K-CT-secure when using the expanded key format, but not
 MAL-BIND-K-PK-secure nor MAL-BIND-K-CT-secure. This means that the computed
