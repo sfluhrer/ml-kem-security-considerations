@@ -51,6 +51,33 @@ informative:
   RFC9528:
   I-D.ietf-core-oscore-groupcomm:
 
+  CDM23:
+    title: "Keeping Up with the KEMs: Stronger Security Notions for KEMs and automated analysis of KEM-based protocols"
+    target: https://eprint.iacr.org/2023/1933.pdf
+    date: 2023
+    author:
+      -
+        ins: C. Cremers
+        name: Cas Cremers
+        org: CISPA Helmholtz Center for Information Security
+      -
+        ins: A. Dax
+        name: Alexander Dax
+        org: CISPA Helmholtz Center for Information Security
+      -
+        ins: N. Medinger
+        name: Niklas Medinger
+        org: CISPA Helmholtz Center for Information Security
+
+  KEMMY24:
+    title: "Unbindable Kemmy Schmidt: ML-KEM is neither MAL-BIND-K-CT nor MAL-BIND-K-PK"
+    target: https://eprint.iacr.org/2024/523.pdf
+    date: 2024
+    author:
+      -
+        ins: S. Schmieg
+        name: Sophie Schmieg
+
   SIGNAL:
     target: https://signal.org/docs/specifications/doubleratchet/
     title: The Double Ratchet Algorithm
@@ -101,30 +128,30 @@ The fundamental security property is that someone listening to the exchanges
 the shared secret key and this is true even if the adversary has access to a
 CRQC. ML-KEM is IND-CCA2 secure, that is, it remains secure even if an
 adversary is able to submit arbitrary ciphertexts and observe the resulting
-shared key. Submitting invalid ciphertexts to a ML-KEM.Decaps does not help
-the attacker obtain information about the decryption key of the PKE-Decrypt
-function inside the ML-KEM.Decaps. Substituting the public key Alice sends
-Bob by another public key chosen by the attacker will not help the attacker
-get any information about Alice's private key, it would just make Alice and
-Bob not have a same shared secret key. However, if it is possible to
-substitute the copy of the public key for both Alice and Bob, an attacker can
-introduce a malicious public key where the same private key can be used for
-decapsulation, but the probability of decryption failure is marginally
-higher. As decryption failures can leak information about the secret
-decapulation key, it is important that Alice keeps a secure copy of the
-public key as part of her secret key. For practical purposes, IND-CCA2 means
-that ML-KEM is secure to use with static public keys.
+shared key. Submitting invalid ciphertexts to `ML-KEM.Decaps()` does not help
+the attacker obtain information about the decryption key of
+`K-PKE.Decrypt()`, inside `ML-KEM.Decaps()`. Substituting the public key
+Alice sends Bob by another public key chosen by the attacker will not help
+the attacker get any information about Alice's private key, it would just
+make Alice and Bob not have a same shared secret key. However, if it is
+possible to substitute the copy of the public key for both Alice and Bob, an
+attacker can introduce a malicious public key where the same private key can
+be used for decapsulation, but the probability of decryption failure is
+marginally higher. As decryption failures can leak information about the
+secret decapulation key, it is important that Alice keeps a secure copy of
+the public key as part of her secret key. For practical purposes, IND-CCA2
+means that ML-KEM is secure to use with static public keys.
 
-ML-KEM is what is termed a Key Encapsulation Mechanism. One common
-misunderstanding of that term is the expectation that Bob freely chooses the
-shared secret, and encrypts that when sending to Alice. What happens in
-ML-KEM is that randomness from both sides are used to contribute to the
-shared secret. That is, ML-KEM internally generates the shared secret in a
-way that Bob cannot select the value. Now, Bob can generate a number of
-ciphertext/shared secret pairs, and select the shared secret that he prefers,
-but he cannot freely choose it or make secrets shared with two parties be
-equal. This is different from RSA-KEM {{RFC5990}}, where Bob cannot select
-the value, but can encapsulate the same shared secret to many recipients.
+ML-KEM is a Key Encapsulation Mechanism (KEM). One common misunderstanding of
+that term is the expectation that Bob freely chooses the shared secret, and
+encrypts that when sending to Alice. What happens in ML-KEM is that
+randomness from both sides are used to contribute to the shared secret. That
+is, ML-KEM internally generates the shared secret in a way that Bob cannot
+select the value. Now, Bob can generate a number of ciphertext/shared secret
+pairs, and select the shared secret that he prefers, but he cannot freely
+choose it or make secrets shared with two parties be equal. This is different
+from RSA-KEM {{RFC5990}}, where Bob cannot select the value, but can
+encapsulate the same shared secret to many recipients.
 
 A KEM (such as ML-KEM) sounds like it may be a drop-in replacement for
 Diffie-Hellman, however this is not the case. In Diffie-Hellman, the parties
@@ -156,16 +183,19 @@ To use ML-KEM, there are three steps involved:
 
 The first step for Alice is to generate a public and private keypair.
 
-In FIPS 203, this function is termed ML-KEM.KeyGen() (see section 7.1 of
+In FIPS 203, this function is `ML-KEM.KeyGen()` (see section 7.1 of
 {{FIPS203}}).  It internally calls the random number generator for a seed and
-produces both a public key (termed an encapsulation key in FIPS 203) and a
-private key (termed a decapsulation key). The seed can be securely retained,
-but must be treated with the same safeguards as the private key. Other
-intermediate data ust be securely deleted.
+produces both a public key (termed an encapsulation key for KEMs) and a
+private key (termed a decapsulation key). The seed can be securely retained
+as the 64-byte seed format of the decapsulation key, but must be treated with
+the same safeguards as the private key. The seed format allows fast
+reconstruction of the expanded key pair format, and elides the need for
+format checks of the expanded key formats. Other intermediate data must be
+securely deleted.
 
 The public key can be freely published (and Bob will need it for his part of
 the process); this step may be performed simply by transmitting the key to
-Bob.  However, the private key must be kept secret.
+Bob.  However, the private key in either format must be kept secret.
 
 ## ML-KEM Encapsulation
 
@@ -197,7 +227,7 @@ shared secret key.
 To perform this step, Alice would first run the Decapsulation Key Check on
 Bob's ciphertext as outlined at the beginning of section 7.3 of {{FIPS203}}.
 If that test passes, then Bob would perform the what FIPS 203 terms as
-ML-KEM.Decaps() (see section 7.3 of {{FIPS203}}).  This step takes the
+`ML-KEM.Decaps()` (see section 7.3 of {{FIPS203}}).  This step takes the
 ciphertext from Bob and the private key that was previously generated by
 Alice, and produces a 32-byte shared secret key. It also repeats the
 encapsulation process to ensure that the ciphertext was created strictly
@@ -206,14 +236,15 @@ not. Although not necessary for the correctness of the key establishment,
 this step should not be skipped as maliciously generated ciphertexts could
 induce decapsulation failures with insecure probability.  Intermediate data
 other than the shared secret key must be securely deleted (with the possible
-exception of "matrix data" whichcan be reused over multiple decapsulations
-with the same public key ).
+exception of "matrix data" which can be reused over multiple decapsulations
+with the same public key.)
 
 If the exchange is successful, the 32-byte key generated on both sides will
-be the same.
+be the same. The shared secret key is always 32 bytes, no matter the
+parameter set.
 
 It may be that some libraries combine the validation and the decapsulation
-step; you should check whether the library you are using does.
+step; you should check whether the library you are using does this.
 
 ## ML-KEM Parameter Sets
 
@@ -267,6 +298,43 @@ communicate with). Such verification can be performed by cryptographic
 methods such as digital signatures or a MAC to verify integrity of the
 protocol exchange transcript.
 
+The computational binding properties for KEMs were formalized in [CDM23].
+[CDM23]. The binding properties of KEMs have implications for their use in
+protocols and whether those protocols are resilient against re-encapsulation
+attacks or how KEMs should be integrated into protocols to achieve strong
+session independence properties, say.
+
+Re-encapsulation attacks exploit the fact that some KEMs allow the
+decapsulation of a ciphertext to an output key `k` and then can produce a
+second ciphertext for a different public key that decapsulates to the same
+`k`. Re-encapsulation attacks in protocols, often known as unknown-key-share
+attacks, result in two parties computing the same key despite disagreeing on
+their respective partners. This is completely allowed under the IND-CCA
+security definition. To avoid these sorts of attacks, we need to know more
+about a KEM than just that it’s an IND-CCA-secure KEM: we need to know how it
+binds its shared secrets to encapsulation keys and ciphertexts. This is a
+thing we didn’t need to think about with Diffie-Hellman, as it was only in
+weird cases (small-order points, 'non-contributory behavior', etc) that
+Diffie-Hellman public keys were not tightly bound to the shared secret
+resulting from the computation, and there was no ciphertext to consider.
+
+[CDM23] formalized these notions of 'binding properties for KEMs and explored
+their relations to similar notions like 'robustness' and 'contributivity' in
+the literature, including describing a spectrum of adversaries with different
+capabilities, how these notions relate (or imply) each other. For a value to
+'bind' another value, such as a shared secret K binding an encapsulation key
+PK, is to uniquely determine it; more formally, "P binds Q" if, for fixed
+instances of P, there are no collisions in the instances of Q.
+
+There are different security models of adversaries for these properties:
+honest (HON), leak (LEAK), and malicious (MAL). Honest variants involve key
+pairs that are correctly output by `KEM.KeyGen()` and not accessible by the
+adversary, but the adversary has access to a `KEM.Decaps()` oracle. Leakage
+variants have honestly-generated key pairs leaked to the adversary. In
+malicious variants, the adversary can create the key pairs any way they like
+in addition to the key generation, which is quite strong attacker
+model.
+
 # ML-KEM Security Considerations
 
 This section pertains specifically to ML-KEM, and may not be true of KEMs in
@@ -282,7 +350,10 @@ encapsulation. The random bytes should come from an approved RBG.
 Alice must keep her private key secret (both private and secure from
 modification).  It is recommended that she zeroizes her private key when she
 will have no further need of it. A copy of the public key and its hash are
-included in the private key and must be protected from modification.
+included in the private key and must be protected from modification. Using
+the 64-byte seed format of the private key is supported, efficient, requires
+less key pair checking, and provides the maximum binding property security
+for {{FIPS203}}.
 
 If the ciphertext that Alice receives from Bob is tampered with (either by
 small modification or by replacing it with an entirely different ciphertext),
@@ -290,7 +361,8 @@ the shared secret key that Alice derives will be uncorrelated with the shared
 secret key that Bob obtains.  An attacker will not be able to determine any
 information about the correct shared secret key or Alice's private key, even
 if the attacker obtains Alice's modified shared secret key which is the
-output of the ML-KEM.Decaps function taking the modified ciphertext as input.
+output of the `ML-KEM.Decaps()` function taking the modified ciphertext as
+input.
 
 It is secure to reuse a public key multiple times.  That is, instead of Alice
 generating a fresh public and private keypair for each exchange, Alice may
@@ -310,7 +382,7 @@ Alice).  The cryptographical libraries that Alice and Bob use may
 automatically perform such checks; if so, that should be verified.
 
 The shared secret key for all three parameter sets, ML-KEM-512, ML-KEM-768
-and ML-KEM-1024 are 32 bytes which are indistinguishable from 32-byte
+and ML-KEM-1024 is 32 bytes which are indistinguishable from 32-byte
 pseudorandom byte-strings of 128, 192 and 256 bits of strengths
 respectively. As such, it is suitable both to use directly as a symmetric key
 (for use by a symmetric cipher such as AES or a MAC), and for inserting into
@@ -318,13 +390,37 @@ a Key Derivation Function.  This is in contrast to a Diffie-Hellman (or ECDH)
 operation, where the output is distinguishable from random.
 
 It is essential that the public key is generated correctly when the initial
-key generation is performed. Lattice public keys are a lattice and a secret
-hidden by an error term; if additional error can be introduced into the
-public key generation stage, then the success of decapsulation can reveal
-enough of the secret that successive queries determine the private
+key generation is performed and expanded. Lattice public keys are a lattice
+and a secret hidden by an error term; if additional error can be introduced
+into the public key generation stage, then the success of decapsulation can
+reveal enough of the secret that successive queries determine the private
 key. Notably, this means a public key can be 'poisoned' such that a future
 adversary can recover the private key even though it will appear correct in
 normal usage.
+
+Per the analysis of the final {{FIPS 203}} in Sophie Schmieg’s [KEMMY24], a
+strictly compliant instantiation of ML-KEM is LEAK-BIND-K-PK-secure and
+LEAK-BIND-K-CT-secure when using the expanded key format, but not
+MAL-BIND-K-PK-secure nor MAL-BIND-K-CT-secure. This means that the computed
+shared secret binds to the encapsulation key used to compute it against a
+malicious adversary that has access to leaked, honestly-generated key
+material but is not capable of manufacturing maliciously generated
+keypairs. This binding to the encapsulation key broadly protects against
+re-encapsulation attacks but not completely.
+
+Using the 64-byte seed format provides a step up in binding security by
+mitigating an attack enabled by the hash of the public key stored in the
+expanded private key format, providing MAL-BIND-K-CT security and
+LEAK-BIND-K-PK security.
+
+If you using the 64-byte seed format for key pairs in a higher protocol,
+including the shared secret in the protocol KDF with the expanded public key
+to also bind to the public ciphertext, as the shared secret is doing that for
+you. If you can't enforce use of the 64-byte seed format everywhere, also
+including the ciphertext in your protocol KDF can help enforce that the
+protocol key material that is the image of the protocol KDF is independent
+from every shared secret, public key, and ciphertext used, each time.
+
 
 # IANA Considerations
 
