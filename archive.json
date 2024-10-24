@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-22T00:52:44.933591+00:00",
+  "timestamp": "2024-10-24T00:51:53.289717+00:00",
   "repo": "sfluhrer/ml-kem-security-considerations",
   "labels": [
     {
@@ -455,6 +455,152 @@
           "createdAt": "2024-10-10T16:30:49Z",
           "updatedAt": "2024-10-10T16:30:49Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOM54HI85_oi3V",
+      "title": "Line wrap",
+      "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/9",
+      "state": "MERGED",
+      "author": "dconnolly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "To 77 chars for better editability and alignment with final render",
+      "createdAt": "2024-10-23T15:06:38Z",
+      "updatedAt": "2024-10-23T18:13:42Z",
+      "baseRepository": "sfluhrer/ml-kem-security-considerations",
+      "baseRefName": "main",
+      "baseRefOid": "7b4720c065d752fa501cc73bcf581d5f26d92797",
+      "headRepository": "dconnolly/ml-kem-security-considerations",
+      "headRefName": "wrap",
+      "headRefOid": "a95457c47c2f47b26f56609c767fab60ecc848cb",
+      "closedAt": "2024-10-23T17:57:56Z",
+      "mergedAt": "2024-10-23T17:57:56Z",
+      "mergedBy": "sfluhrer",
+      "mergeCommit": {
+        "oid": "8c6cc706f78a98043e53acbb574a5715711123a9"
+      },
+      "comments": [
+        {
+          "author": "dconnolly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Planning on it too!",
+          "createdAt": "2024-10-23T17:33:01Z",
+          "updatedAt": "2024-10-23T17:33:01Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOM54HI86ObaAk",
+          "commit": {
+            "abbreviatedOid": "a95457c"
+          },
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Actually, I was hoping for more technical feedback, but I'll take reformatting as well.",
+          "createdAt": "2024-10-23T17:31:46Z",
+          "updatedAt": "2024-10-23T17:31:46Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "PR_kwDOM54HI85_qly1",
+      "title": "Binding properties",
+      "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/10",
+      "state": "OPEN",
+      "author": "dconnolly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Included an overview of binding properties for KEMs and for ML-KEM specifically.\r\n\r\n@bwesterb @sophieschmieg might have opinions to improve the text",
+      "createdAt": "2024-10-23T18:52:16Z",
+      "updatedAt": "2024-10-23T20:51:19Z",
+      "baseRepository": "sfluhrer/ml-kem-security-considerations",
+      "baseRefName": "main",
+      "baseRefOid": "8c6cc706f78a98043e53acbb574a5715711123a9",
+      "headRepository": "dconnolly/ml-kem-security-considerations",
+      "headRefName": "binding",
+      "headRefOid": "71436475508e9dbc7849535a554082f7877dfad3",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "body": "I do not believe that ML-KEM suffers from reencapsulation attacks.  As such, I do not see the point in including an extended paragraph on them.  Remember, this is not about KEM's in general, but ML-KEM specifically. A more targeted paragraph (which mentions only those concerns specific to ML-KEM would be more reasonable.",
+          "createdAt": "2024-10-23T19:10:08Z",
+          "updatedAt": "2024-10-23T19:10:08Z"
+        },
+        {
+          "author": "dconnolly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> I do not believe that ML-KEM suffers from reencapsulation attacks. As such, I do not see the point in including an extended paragraph on them. Remember, this is not about KEM's in general, but ML-KEM specifically. A more targeted paragraph (which mentions only those concerns specific to ML-KEM would be more reasonable.\r\n\r\nThe mention is a motivation for binding properties in general, and an earlier version of Signal PQXDH using a regular IND-CCA KEM was vulnerable to such an attack - they were saved by using an earlier version of Kyber, in part, but had to commit to more information in their AAD to mitigate it completely. They are relevant in how the recommended use of ML-KEM as now standardized in FIPS 203 is safe, but using another KEM in a similar way may not be (because IND-CCA is insufficient). We can pare it down though.",
+          "createdAt": "2024-10-23T19:16:40Z",
+          "updatedAt": "2024-10-23T19:16:40Z"
+        },
+        {
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "body": "The other issue is that this is mainly advice for protocol designers (and to a lesser extend, implementors).  If there is something they may need to be aware of (e.g. MAL-BIND-K-KT), we should explain what it is (in addition to pointing them to some academic paper they will have trouble understanding), when that threat is relevant, and how to mitigate that threat.",
+          "createdAt": "2024-10-23T19:20:24Z",
+          "updatedAt": "2024-10-23T19:20:24Z"
+        },
+        {
+          "author": "dconnolly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> The other issue is that this is mainly advice for protocol designers (and to a lesser extend, implementors). If there is something they may need to be aware of (e.g. MAL-BIND-K-KT), we should explain what it is (in addition to pointing them to some academic paper they will have trouble understanding), when that threat is relevant, and how to mitigate that threat.\r\n\r\nYes, that is basically done in the ML-KEM-specific section at the end",
+          "createdAt": "2024-10-23T19:40:29Z",
+          "updatedAt": "2024-10-23T19:40:29Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOM54HI86OesIp",
+          "commit": {
+            "abbreviatedOid": "865d73c"
+          },
+          "author": "danvangeest",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-23T20:24:43Z",
+          "updatedAt": "2024-10-23T20:24:43Z",
+          "comments": [
+            {
+              "originalPosition": 235,
+              "body": "```suggestion\r\nPer the analysis of the final {{FIPS203}} in Sophie Schmieg\u2019s [KEMMY24], a\r\n```",
+              "createdAt": "2024-10-23T20:24:43Z",
+              "updatedAt": "2024-10-23T20:24:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOM54HI86OevwC",
+          "commit": {
+            "abbreviatedOid": "865d73c"
+          },
+          "author": "dconnolly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-23T20:26:25Z",
+          "updatedAt": "2024-10-23T20:26:25Z",
+          "comments": [
+            {
+              "originalPosition": 235,
+              "body": "Ah thank you, whoops ",
+              "createdAt": "2024-10-23T20:26:25Z",
+              "updatedAt": "2024-10-23T20:26:25Z"
+            }
+          ]
         }
       ]
     }
