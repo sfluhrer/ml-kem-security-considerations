@@ -277,7 +277,7 @@ larger public keys and ciphertexts than ECDH but very good performance.
 # KEM Security Considerations
 
 This section pertains to KEM (Key Encapsulation Mechanisms) in general,
-including ML-KEM
+including ML-KEM.
 
 To use a KEM, you need to use a high-quality source of entropy during both
 the key-pair generation and ciphertext generation steps.  If an adversary can
@@ -298,8 +298,8 @@ communicate with). Such verification can be performed by cryptographic
 methods such as digital signatures or a MAC to verify integrity of the
 protocol exchange transcript.
 
-The computational binding properties for KEMs were formalized in [CDM23].
-[CDM23]. The binding properties of KEMs have implications for their use in
+The computational binding properties for KEMs were formalized in
+{{CDM23}}. The binding properties of KEMs have implications for their use in
 protocols and whether those protocols are resilient against re-encapsulation
 attacks or how KEMs should be integrated into protocols to achieve strong
 session independence properties, say.
@@ -318,13 +318,14 @@ weird cases (small-order points, 'non-contributory behavior', etc) that
 Diffie-Hellman public keys were not tightly bound to the shared secret
 resulting from the computation, and there was no ciphertext to consider.
 
-[CDM23] formalized these notions of 'binding properties for KEMs and explored
-their relations to similar notions like 'robustness' and 'contributivity' in
-the literature, including describing a spectrum of adversaries with different
-capabilities, how these notions relate (or imply) each other. For a value to
-'bind' another value, such as a shared secret K binding an encapsulation key
-PK, is to uniquely determine it; more formally, "P binds Q" if, for fixed
-instances of P, there are no collisions in the instances of Q.
+{{CDM23}} formalized these notions of 'binding properties for KEMs and
+explored their relations to similar notions like 'robustness' and
+'contributivity' in the literature, including describing a spectrum of
+adversaries with different capabilities, how these notions relate (or imply)
+each other. For a value to 'bind' another value, such as a shared secret K
+binding an encapsulation key PK, is to uniquely determine it; more formally,
+"P binds Q" if, for fixed instances of P, there are no collisions in the
+instances of Q.
 
 There are different security models of adversaries for these properties:
 honest (HON), leak (LEAK), and malicious (MAL). Honest variants involve key
@@ -332,8 +333,7 @@ pairs that are correctly output by `KEM.KeyGen()` and not accessible by the
 adversary, but the adversary has access to a `KEM.Decaps()` oracle. Leakage
 variants have honestly-generated key pairs leaked to the adversary. In
 malicious variants, the adversary can create the key pairs any way they like
-in addition to the key generation, which is quite strong attacker
-model.
+in addition to the key generation, which is quite strong attacker model.
 
 # ML-KEM Security Considerations
 
