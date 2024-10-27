@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-24T00:51:53.289717+00:00",
+  "timestamp": "2024-10-27T00:56:08.241576+00:00",
   "repo": "sfluhrer/ml-kem-security-considerations",
   "labels": [
     {
@@ -520,13 +520,13 @@
       "labels": [],
       "body": "Included an overview of binding properties for KEMs and for ML-KEM specifically.\r\n\r\n@bwesterb @sophieschmieg might have opinions to improve the text",
       "createdAt": "2024-10-23T18:52:16Z",
-      "updatedAt": "2024-10-23T20:51:19Z",
+      "updatedAt": "2024-10-25T21:46:05Z",
       "baseRepository": "sfluhrer/ml-kem-security-considerations",
       "baseRefName": "main",
       "baseRefOid": "8c6cc706f78a98043e53acbb574a5715711123a9",
       "headRepository": "dconnolly/ml-kem-security-considerations",
       "headRefName": "binding",
-      "headRefOid": "71436475508e9dbc7849535a554082f7877dfad3",
+      "headRefOid": "eae8003fc722fcf7e4d03d99707848a3122c243b",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -559,6 +559,20 @@
           "body": "> The other issue is that this is mainly advice for protocol designers (and to a lesser extend, implementors). If there is something they may need to be aware of (e.g. MAL-BIND-K-KT), we should explain what it is (in addition to pointing them to some academic paper they will have trouble understanding), when that threat is relevant, and how to mitigate that threat.\r\n\r\nYes, that is basically done in the ML-KEM-specific section at the end",
           "createdAt": "2024-10-23T19:40:29Z",
           "updatedAt": "2024-10-23T19:40:29Z"
+        },
+        {
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "body": "As written, I don't think its targeted towards the right audience; it should be towards protocol designers and protocol implementors. They don't care about learning about cryptography, they want explicit instructions about what they should do.  As such, we need to be much more explicit about exactly what these threats are, when they are relevant and how to mitigate them (and the advice 'use the 64 byte seed as the private' might not be doable, as the readers might not be able to control how their ML-KEM implementation functions - we should mention it, but realize that they might need an alternative).\r\n\r\nThinking it over, we might need to be more explicit about the various use cases for ML-KEM (I can think of four: key exchange/ephemeral, key exchange/static public key, public key encryption, and authentication) - whether the threats apply varies between the use cases.  [And, of course, if you can think of other use cases, please chime in].\r\n\r\nThis is a fairly large change; I'll go ahead and propose a rewrite - it'll take me a few days, though.  And, since we're in the IETF quiet period (no new submissions allowed until after Dublin), we have time...",
+          "createdAt": "2024-10-24T13:19:42Z",
+          "updatedAt": "2024-10-24T13:19:42Z"
+        },
+        {
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "body": "I've been going through it, and it's hard to come up with a plausible scenario where either MAL-BIND-K-CT nor MAL-BIND-K-PK is a threat (even in the case where ML-KEM is used for authentication). Both attack models assume that the adversary is either the private key holder, or can inject bogus private keying material).  However if they can pick the private key, well, they can already do pretty much what they want anyways (and so you don't have security in any case).\r\n\r\nIf we can't think of cases where these security properties might be needed, I don't know if they need to be mentioned.  Remember, this is not an academic paper - this tries to instruct protocol designers and implementors about things they need to keep in mind, and there's little point in having them worry about things that aren't actually a concern.\r\n\r\nAm I missing something?",
+          "createdAt": "2024-10-25T21:46:03Z",
+          "updatedAt": "2024-10-25T21:46:03Z"
         }
       ],
       "reviews": [
