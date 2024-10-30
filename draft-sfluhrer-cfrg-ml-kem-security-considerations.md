@@ -114,46 +114,28 @@ the traffic.
 
 Because of this potential threat, NIST has standardized ML-KEM
 (Module-Lattice-Based Key-Encapsulation Mechanism), which is standardized in
-FIPS 203 {{FIPS203}}.  ML-KEM is used to generate a shared secret key between
-two parties. One party (Alice) generates a public/private keypair, and sends
-the public key to the other party (Bob).  Bob uses the public key and some
-randomness to generate both the shared secret key and a ciphertext. Bob then
-sends the ciphertext to Alice, who uses her private key to generate the same
-shared secret key. NIST plans to standardize one or more code-based KEMs in
-the future.
+FIPS 203 {{FIPS203}}.
+NIST intends to standardize similar KEMs (specifically, code-based ones) in the future.
 
-The fundamental security property is that someone listening to the exchanges
-(and thus obtains both the public key and the ciphertext) cannot reconstruct
-the shared secret key and this is true even if the adversary has access to a
-CRQC. ML-KEM is IND-CCA2 secure, that is, it remains secure even if an
-adversary is able to submit arbitrary ciphertexts and observe the resulting
-shared key. Submitting invalid ciphertexts to `ML-KEM.Decaps()` does not help
-the attacker obtain information about the decryption key of the PKE-Decrypt
-function inside the ML-KEM.Decaps. Substituting the public key Alice sends
-Bob by another public key chosen by the attacker will not help the attacker
-get any information about Alice's private key, it would just make Alice and
-Bob not have a same shared secret key. However, if it is possible to
-substitute the copy of the public key for both Alice and Bob, an attacker can
-introduce a malicious public key where the same private key can be used for
-decapsulation, but the probability of decryption failure is marginally
-higher. As decryption failures can leak information about the secret
-decapulation key, it is important that Alice keeps a secure copy of the
-public key as part of her secret key. For practical purposes, IND-CCA2 means
-that ML-KEM is secure to use with static public keys.
+ML-KEM is a Key Encapsulation Mechanism (KEM), which can be used to generate a shared secret key between two parties.
+A KEM is a public key mechanism where one side (Alice) can generate a public/private key pair, and send the public key to the other side (Bob).
+Bob then can use it to generate both a ciphertext and a shared secret key.
+Bob then sends the ciphertext to Alice, who uses her private key to generate the shared secret key.
+The idea is that someone in the middle, listening into the exchanged public keys and ciphertexts will not be able to recovered the shared secret key that Alice and Bob learns.
+Hence, Alice and Bob can use their shared secret key to establish secure symmetric communication.
 
-ML-KEM is a Key Encapsulation Mechanism (KEM). One common
-misunderstanding of that term is the expectation that Bob freely chooses the
-shared secret, and encrypts that when sending to Alice. What happens in
+One common misunderstanding of the term KEM is the expectation that Bob freely chooses the
+shared secret, and encrypts that when sending to Alice. What actually happens in
 ML-KEM is that randomness from both sides are used to contribute to the
 shared secret. That is, ML-KEM internally generates the shared secret in a
 way that Bob cannot select the value. Now, Bob can generate a number of
 ciphertext/shared secret pairs, and select the shared secret that he prefers,
 but he cannot freely choose it or make secrets shared with two parties be
-equal. This is different from RSA-KEM {{RFC5990}}, where Bob cannot select
-the value, but can encapsulate the same shared secret to many recipients.
+equal.
 
 A KEM (such as ML-KEM) sounds like it may be a drop-in replacement for
-Diffie-Hellman, however this is not the case. In Diffie-Hellman, the parties
+Diffie-Hellman (and in some scenarios, it can be).
+However this is not always the case. In Diffie-Hellman, the parties
 exchange two public keys, whereas in a KEM, the ciphertext is necessarily a
 function of Alice's public key, and thus can only be useful only with that
 specific public key. Additionally, a KEM differs from Diffie-Hellman which is
@@ -164,8 +146,9 @@ parts of the key establishment in parallel as is the case with
 Diffie-Hellman. As long a the application can handle larger public keys and
 ciphertexts, a KEM is a drop-in replacement for 'ephemeral-ephemeral' key
 exchange in protocols like TLS {{RFC8446}} and SSH {{RFC4253}} as well as
-'static-ephemeral' key exchange in protocols like ECIES/HPKE {{RFC9180}}. A
-KEM is not a drop-in replacement in applications such as the Diffie-Hellman
+'static-ephemeral' key exchange in protocols like ECIES/HPKE {{RFC9180}},
+that is, in cases where Alice has a long term public key, and Bob can use that long term public key to establish communication. 
+A KEM is not a drop-in replacement in applications such as the Diffie-Hellman
 ratchet in Signal {{SIGNAL}}, implicit 'ephemeral-static' DH authentication
 in Noise {{NOISE}}, Wireguard {{WIRE}}, and EDHOC {{RFC9528}}, and
 'static-static' configurations in CMS {{RFC6278}} and Group OSCORE
@@ -206,10 +189,8 @@ Alice's public key as outlined at the beginning of section 7.2 of
 terms as ML-KEM.Encaps() (see section 7.2 of {{FIPS203}}).  This step takes
 the validated public key, internally calls the random number generator for a
 seed, and produces both a ciphertext and a 32-byte shared secret
-key. Intermediate data other than the ciphertext and shared secret key must
-be securely deleted (with the possible exception of "matrix data" which does
-not depend on Bob's seed and can be reused over multiple encapsulations with
-the same public key).
+key.
+Intermediate data other than the ciphertext and shared secret key (and the "matrix data" internal to ML-KEM, which can be deduced from the public key) must be securely deleted.
 
 The ciphertext can be transmitted back to Alice; if the exchange is
 successful, the 32-byte shared secret key will be the key shared with Alice.
@@ -230,13 +211,12 @@ If that test passes, then Bob would perform the what FIPS 203 terms as
 ciphertext from Bob and the private key that was previously generated by
 Alice, and produces a 32-byte shared secret key. It also repeats the
 encapsulation process to ensure that the ciphertext was created strictly
-according to the specification, implicitly rejecting ciphertexts that were
-not. Although not necessary for the correctness of the key establishment,
+according to the specification, with invalid ciphertexts generating an unrelated 32 byte value that gives no information.
+Although not necessary for the correctness of the key establishment,
 this step should not be skipped as maliciously generated ciphertexts could
-induce decapsulation failures with insecure probability.  Intermediate data
-other than the shared secret key must be securely deleted (with the possible
-exception of "matrix data" which can be reused over multiple decapsulations
-with the same public key.)
+induce decapsulation failures that can allow an attacker to deduce the private key with a sufficient number of exchanges.
+Intermediate data
+other than the shared secret key (and the "matrix data" internal to ML-KEM, which can be deduced from the public key) must be securely deleted.
 
 If the exchange is successful, the 32-byte key generated on both sides will
 be the same. The shared secret key is always 32 bytes for all parameter sets.
@@ -284,7 +264,8 @@ the shared secret.  If an adversary can recover the random bits used during
 key generation, they can recover the secret key.
 
 Alice needs to keep her private key secret. It is recommended that she
-zeroize her private key when she will have no further need of it.
+zeroize her private key when she will have no further need of it,
+that is, when she knows she never needs to decapsulate any further ciphertexts with it.
 
 A KEM (including ML-KEM) provides no authentication of either communicating
 party. If an adversary could replace either the public key or the ciphertext
@@ -294,12 +275,31 @@ the public key he obtains came from Alice and that the ciphertext that Alice
 receives came from Bob (that is, an entity that Alice is willing to
 communicate with). Such verification can be performed by cryptographic
 methods such as digital signatures or a MAC to verify integrity of the
-protocol exchange transcript.
+protocol exchange.
 
 # ML-KEM Security Considerations
 
 This section pertains specifically to ML-KEM, and may not be true of KEMs in
 general.
+
+The fundamental security property is that someone listening to the exchanges
+(and thus obtains both the public key and the ciphertext) cannot reconstruct
+the shared secret key and this is true even if the adversary has access to a
+CRQC. ML-KEM is IND-CCA2 secure, that is, it remains secure even if an
+adversary is able to submit arbitrary ciphertexts and observe the resulting
+shared key. Submitting invalid ciphertexts to `ML-KEM.Decaps()` does not help
+the attacker obtain information about the decryption key of the PKE-Decrypt
+function inside the ML-KEM.Decaps. Substituting the public key Alice sends
+Bob by another public key chosen by the attacker will not help the attacker
+get any information about Alice's private key, it would just make Alice and
+Bob not have a same shared secret key. However, if it is possible to
+substitute the copy of the public key for both Alice and Bob, an attacker can
+introduce a malicious public key where the same private key can be used for
+decapsulation, but the probability of decryption failure is marginally
+higher. As decryption failures can leak information about the secret
+decapulation key, it is important that Alice keeps a secure copy of the
+public key as part of her secret key. For practical purposes, IND-CCA2 means
+that ML-KEM is secure to use with static public keys.
 
 To use ML-KEM, you need a source of random bits with security strength equal
 to greater than the security strength of the KEM during both key generation
@@ -309,8 +309,7 @@ be used for every sampling of random bytes in key generation and
 encapsulation. The random bytes should come from an approved RBG.
 
 Alice must keep her private key secret (both private and secure from
-modification).  It is recommended that she zeroizes her private key when she
-will have no further need of it. A copy of the public key and its hash are
+modification).  A copy of the public key and its hash are
 included in the private key and must be protected from modification.
 
 If the ciphertext that Alice receives from Bob is tampered with (either by
