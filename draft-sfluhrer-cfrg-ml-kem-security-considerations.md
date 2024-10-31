@@ -104,18 +104,15 @@ securely.
 
 # Introduction
 
-A large reliable quantum computer (often termed a Cryptographically Relevant
-Quantum Computer or CRQC) would be able to break protocols which rely on the
+A Cryptographically Relevent Quantum Computer (CRQC) is a large and reliable Quantum Computer that can break protocols which rely on the
 traditional RSA, DH, or ECDH methods of securely exchanging keys.  Even
-though we do not believe, at the time of this writing, there exists a CRQC,
+though it is not believed that, at the time of this writing, there exists a CRQC,
 there still remains the possibility that an adversary may record the protocol
 exchange, and then later (when they have access to a CRQC) go ahead and read
 the traffic.
 
-Because of this potential threat, NIST has standardized ML-KEM
-(Module-Lattice-Based Key-Encapsulation Mechanism), which is standardized in
-FIPS 203 {{FIPS203}}.
-NIST intends to standardize similar KEMs (specifically, code-based ones) in the future.
+Because of this threat, NIST has published FIPS 203 {{FIPS203}}, which standardizes a method for allowing two systems to securely exchange keying material and which is not vulnerable to a CRQC.
+This method is based on module lattices, and is called ML-KEM.
 
 ML-KEM is a Key Encapsulation Mechanism (KEM), which can be used to generate a shared secret key between two parties.
 A KEM is a public key mechanism where one side (Alice) can generate a public/private key pair, and send the public key to the other side (Bob).
@@ -143,7 +140,7 @@ asynchronous and non-interactive. In particular, for an 'ephemeral-ephemeral'
 key establishment, an encapsulator cannot pre-emptively initiate a key
 establishment, but requires an encapulation key. Nor can participants compute
 parts of the key establishment in parallel as is the case with
-Diffie-Hellman. As long a the application can handle larger public keys and
+Diffie-Hellman. As long as the application can handle larger public keys and
 ciphertexts, a KEM is a drop-in replacement for 'ephemeral-ephemeral' key
 exchange in protocols like TLS {{RFC8446}} and SSH {{RFC4253}} as well as
 'static-ephemeral' key exchange in protocols like ECIES/HPKE {{RFC9180}},
@@ -153,9 +150,7 @@ ratchet in Signal {{SIGNAL}}, implicit 'ephemeral-static' DH authentication
 in Noise {{NOISE}}, Wireguard {{WIRE}}, and EDHOC {{RFC9528}}, and
 'static-static' configurations in CMS {{RFC6278}} and Group OSCORE
 {{I-D.ietf-core-oscore-groupcomm}}, where both sides have long-term public
-keys. Furthermore ML-KEM is not a drop-in replacement for RSA-KEM as RSA-KEM
-can encapsulate the same shared secret to many recipients whereas ML-KEM
-cannot.
+keys.
 
 # Using ML-KEM
 
@@ -165,10 +160,10 @@ To use ML-KEM, there are three steps involved:
 
 The first step for Alice is to generate a public and private keypair.
 
-In FIPS 203, this function is `ML-KEM.KeyGen()` (see section 7.1 of
+In FIPS 203, the key generation function is `ML-KEM.KeyGen()` (see section 7.1 of
 {{FIPS203}}).  It internally calls the random number generator for a seed and
-produces both a public key (termed an encapsulation key in FIPS 203) and a
-private key (termed a decapsulation key). The seed can be securely retained,
+produces both a public key (known as an encapsulation key in FIPS 203) and a
+private key (known as a decapsulation key). The seed can be securely stored,
 but must be treated with the same safeguards as the private key.
 The seed format allows fast
 reconstruction of the expanded key pair format, and elides the need for
@@ -179,13 +174,22 @@ The public key can be freely published (and Bob will need it for his part of
 the process); this step may be performed simply by transmitting the key to
 Bob.  However, the private key (in either format) must be kept secret.
 
+It is essential that the public key is generated correctly when the initial
+key generation is performed. Lattice public keys consist of a lattice and a secret
+hidden by an error term; if additional error can be introduced into the
+public key generation stage, then the success of decapsulation can reveal
+enough of the secret that successive queries determine the private
+key. Notably, this means a public key can be 'poisoned' such that a future
+adversary can recover the private key even though it will appear correct in
+normal usage.
+
 ## ML-KEM Encapsulation
 
 The second step is for Bob to generate a ciphertext and a shared secret key.
 
 To perform this step, Bob would first run the Encapsulation Key Check on
 Alice's public key as outlined at the beginning of section 7.2 of
-{{FIPS203}}.  If that test passes, then Bob would perform the what FIPS 203
+{{FIPS203}}.  If that test passes, then Bob would perform what FIPS 203
 terms as ML-KEM.Encaps() (see section 7.2 of {{FIPS203}}).  This step takes
 the validated public key, internally calls the random number generator for a
 seed, and produces both a ciphertext and a 32-byte shared secret
@@ -196,7 +200,7 @@ The ciphertext can be transmitted back to Alice; if the exchange is
 successful, the 32-byte shared secret key will be the key shared with Alice.
 
 It may be that some libraries combine the validation and the encapsulation
-step; you should check whether the library you are using does. For static
+step; implementations should determine whether the library they are using does. For static
 public keys, the Encapsulation Key Check only needs to be performed once.
 
 ## ML-KEM Decapsulation
@@ -206,14 +210,14 @@ shared secret key.
 
 To perform this step, Alice would first run the Decapsulation Key Check on
 Bob's ciphertext as outlined at the beginning of section 7.3 of {{FIPS203}}.
-If that test passes, then Bob would perform the what FIPS 203 terms as
+If that test passes, then Alice would perform what FIPS 203 terms as
 `ML-KEM.Decaps()` (see section 7.3 of {{FIPS203}}).  This step takes the
 ciphertext from Bob and the private key that was previously generated by
 Alice, and produces a 32-byte shared secret key. It also repeats the
 encapsulation process to ensure that the ciphertext was created strictly
 according to the specification, with invalid ciphertexts generating an unrelated 32 byte value that gives no information.
 Although not necessary for the correctness of the key establishment,
-this step should not be skipped as maliciously generated ciphertexts could
+this step should not be skipped as a maliciously generated ciphertext could
 induce decapsulation failures that can allow an attacker to deduce the private key with a sufficient number of exchanges.
 Intermediate data
 other than the shared secret key (and the "matrix data" internal to ML-KEM, which can be deduced from the public key) must be securely deleted.
@@ -221,35 +225,36 @@ other than the shared secret key (and the "matrix data" internal to ML-KEM, whic
 If the exchange is successful, the 32-byte key generated on both sides will
 be the same. The shared secret key is always 32 bytes for all parameter sets.
 
-It may be that some libraries combine the validation and the decapsulation
-step; you should check whether the library you are using does this.
+It may be that some libraries combine the validation and the encapsulation
+step; implementations should determine whether the library they are using does. For static
+public keys, the Encapsulation Key Check only needs to be performed once.
 
 ## ML-KEM Parameter Sets
 
-ML-KEM comes with three parameter sets; ML-KEM-512, ML-KEM-768 and
-ML-KEM-1024.  It is assumed that Alice and Bob both know which parameter sets
+FIPS 203 specifies three parameter sets; ML-KEM-512, ML-KEM-768 and
+ML-KEM-1024.  It is assumed that Alice and Bob both know which parameter set
 they use (either by negotiation or by having one selection fixed in the
 protocol).
 
-{{par-sets}} shows a summary of how those parameter sets differ:
+{{par-sets}} shows the sizes of the cryptographic material of ML-KEM for each parameter set, as well as their relative cryptographic strength:
 
 |             | pk size  | sk size | ct size  | ss size  | as strong as |
 | :---------- | -------: | ------: | -------: | :------: | :----------: |
 | ML-KEM-512  |      800 |    1632 |      768 |       32 |      AES-128 |
 | ML-KEM-768  |     1184 |    2400 |     1088 |       32 |      AES-192 |
 | ML-KEM-1024 |     1568 |    3168 |     1568 |       32 |      AES-256 |
-{: #par-sets title="pk = public key, sk = private key, ct = ciphertext, ss&nbsp;=&nbsp;shared key, all lengths in bytes"}
+{: #par-sets title="pk = public key, sk = private key, expanded form, ct = ciphertext, ss&nbsp;=&nbsp;shared key, all lengths in bytes"}
 
-{{par-perf}} shows an example of ML-KEM performance {{EBACS}}:
+{{par-perf}} shows an example of ML-KEM performance of each parameter set on one specific platform:
 
 |             | key generation | encapsulation | decapsulation |
 | :---------- | -------: | ------: | -------: |
 | ML-KEM-512  |   244000 |  153000 |   202000 |
 | ML-KEM-768  |   142000 |  103000 |   134000 |
 | ML-KEM-1024 |   109000 |   77000 |    99000 |
-{: #par-perf title="Single-core performance in operation per second on AMD Ryzen 7 7700"}
+{: #par-perf title="Single-core performance in operation per second on AMD Ryzen 7 7700 from {{EBACS}}"}
 
-As can be seen from {{par-sets}} and {{par-sets}}, ML-KEM has significantly
+As can be seen from {{par-sets}} and {{par-perf}}, ML-KEM has significantly
 larger public keys and ciphertexts than ECDH but very good performance.
 
 # KEM Security Considerations
@@ -257,11 +262,11 @@ larger public keys and ciphertexts than ECDH but very good performance.
 This section pertains to KEM (Key Encapsulation Mechanisms) in general,
 including ML-KEM.
 
-To use a KEM, you need to use a high-quality source of entropy during both
-the key-pair generation and ciphertext generation steps.  If an adversary can
+A KEM requires high-quality source of entropy during both
+the keypair generation and ciphertext generation steps.  If an adversary can
 recover the random bits used in either of these processes, they can recover
 the shared secret.  If an adversary can recover the random bits used during
-key generation, they can recover the secret key.
+key generation, they can also recover the secret key.
 
 Alice needs to keep her private key secret. It is recommended that she
 zeroize her private key when she will have no further need of it,
@@ -271,8 +276,8 @@ A KEM (including ML-KEM) provides no authentication of either communicating
 party. If an adversary could replace either the public key or the ciphertext
 with its own, it would generate a shared key with Alice or Bob.  Hence, it is
 important that the protocol that uses a KEM lets Bob be able to verify that
-the public key he obtains came from Alice and that the ciphertext that Alice
-receives came from Bob (that is, an entity that Alice is willing to
+the public key he obtains came from Alice and lets Alice verify that the ciphertext
+came from Bob (that is, an entity that Alice is willing to
 communicate with). Such verification can be performed by cryptographic
 methods such as digital signatures or a MAC to verify integrity of the
 protocol exchange.
@@ -282,14 +287,14 @@ protocol exchange.
 This section pertains specifically to ML-KEM, and may not be true of KEMs in
 general.
 
-The fundamental security property is that someone listening to the exchanges
+The fundamental security property of ML-KEM is that someone listening to the exchanges
 (and thus obtains both the public key and the ciphertext) cannot reconstruct
-the shared secret key and this is true even if the adversary has access to a
-CRQC. ML-KEM is IND-CCA2 secure, that is, it remains secure even if an
-adversary is able to submit arbitrary ciphertexts and observe the resulting
+the shared secret key, and this is true even if the adversary has access to a
+CRQC. ML-KEM is IND-CCA2 secure; that is, it remains secure even if an
+adversary is able to submit arbitrary ciphertexts used a fixed public key and observe the resulting
 shared key. Submitting invalid ciphertexts to `ML-KEM.Decaps()` does not help
 the attacker obtain information about the decryption key of the PKE-Decrypt
-function inside the ML-KEM.Decaps. Substituting the public key Alice sends
+function inside the ML-KEM.Decaps(). Substituting the public key Alice sends
 Bob by another public key chosen by the attacker will not help the attacker
 get any information about Alice's private key, it would just make Alice and
 Bob not have a same shared secret key. However, if it is possible to
@@ -301,9 +306,8 @@ decapulation key, it is important that Alice keeps a secure copy of the
 public key as part of her secret key. For practical purposes, IND-CCA2 means
 that ML-KEM is secure to use with static public keys.
 
-To use ML-KEM, you need a source of random bits with security strength equal
-to greater than the security strength of the KEM during both key generation
-and encapsulation steps.  The cryptographic library that implements ML-KEM
+ML-KEM requires that a source of random bits with security strength greater than or equal to the security strength of the ML-KEM parameter set be used when generating the keypair and ciphertext during ML-KEM.KeyGen() and ML-KEM.Encaps() respectively.
+The cryptographic library that implements ML-KEM
 may access this source of randomness internally. A fresh string of bytes must
 be used for every sampling of random bytes in key generation and
 encapsulation. The random bytes should come from an approved RBG.
@@ -324,37 +328,25 @@ It is secure to reuse a public key multiple times.  That is, instead of Alice
 generating a fresh public and private keypair for each exchange, Alice may
 generate a public key once, and then publish that public key, and use it for
 multiple incoming ciphertexts, generating multiple shared secret keys.  While
-this is safe, it is recommended that if the protocol allows it (if Alice and
-Bob exchange messages anyways) that Alice generates a fresh keypair each time
-(and zeroize the private key immediately after) to obtain Perfect Forward
-Secrecy. Be noted that generally key generation of ML-KEM is very fast, see
-{{par-perf}}. That is, if Alice's system is subverted (either by a hacker or
+this is safe, it is recommended that if the protocol already has Alice send Bob her unauthenticated public key, she should generate a fresh keypair each time
+(and zeroize the private key immediately after ML-KEM.Decaps()) to obtain Perfect Forward
+Secrecy. Generally key generation of ML-KEM is very fast (see
+{{par-perf}}). Hence, if Alice generates a fresh ML-KEM key each time, then even if Alice's system is subverted (either by a hacker or
 a legal warrant), the previous communications remain secure (because Alice no
 longer has the information needed to recover the shared secret keys).
 
 Alice and Bob must perform the Key Check steps (the Encapsulation Key Check
 on the public key for Bob, the Decapsulation Key Check on the ciphertext for
-Alice).  The cryptographical libraries that Alice and Bob use may
-automatically perform such checks; if so, that should be verified.
+Alice).  The cryptographic libraries that Alice and Bob use may
+automatically perform such checks; they should each verify that is the case.
 
 The shared secret key for all three parameter sets, ML-KEM-512, ML-KEM-768
 and ML-KEM-1024 is 32 bytes which are indistinguishable from 32-byte
 pseudorandom byte-strings of 128, 192 and 256 bits of strengths
-respectively. As such, it is suitable both to use directly as a symmetric key
-(for use by a symmetric cipher such as AES or a MAC), and for inserting into
+respectively. As such, the 32-byte string is suitable for both directly as a symmetric key
+(for use by a symmetric cipher such as AES or a MAC), and also as input into
 a Key Derivation Function.  This is in contrast to a Diffie-Hellman (or ECDH)
 operation, where the output is distinguishable from random.
-
-It is essential that the public key is generated correctly when the initial
-key generation is performed. Lattice public keys are a lattice and a secret
-hidden by an error term; if additional error can be introduced into the
-public key generation stage, then the success of decapsulation can reveal
-enough of the secret that successive queries determine the private
-key. Notably, this means a public key can be 'poisoned' such that a future
-adversary can recover the private key even though it will appear correct in
-normal usage.
-Using the 64-byte seed format of the private key prevents such poisoning, but
-it might not be supported by the ML-KEM implementation.
 
 # IANA Considerations
 
