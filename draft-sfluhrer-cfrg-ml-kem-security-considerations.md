@@ -148,7 +148,7 @@ means that ML-KEM is secure to use with static public keys.
 
 There are security properties beyond IND-CCA such as those studied in [CAS].
 There are many variants. MAL-X is hardest to achieve, but failure to achieve
-it hasn't lead to practical attacks at present. LEAK-B is in the middle, and
+it hasn't lead to practical attacks at present. LEAK-X is in the middle, and
 failure to be LEAK-X has lead to reencapsulation attacks [PQXDH]. ML-KEM achieves
 LEAK-X, but not all MAL-X. The latter is discussed in the 'Security Properties' 
 section below.
