@@ -150,7 +150,7 @@ There are security properties beyond IND-CCA such as those studied in [CAS].
 There are many variants. MAL-X is hardest to achieve, but failure to achieve
 it hasn't lead to practical attacks at present. LEAK-B is in the middle, and
 failure to be LEAK-X has lead to reencapsulation attacks [PQXDH]. ML-KEM achieves
-LEAK-X, but not all MAL-X. The latter is discussed in the ML-KEM-specific 
+LEAK-X, but not all MAL-X. The latter is discussed in the 'Security Properties' 
 section below.
 
 ML-KEM is a Key Encapsulation Mechanism (KEM). One common misunderstanding of
@@ -313,38 +313,8 @@ The computational binding properties for KEMs were formalized in
 {{CDM23}}. The binding properties of KEMs have implications for their use in
 protocols and whether those protocols are resilient against re-encapsulation
 attacks or how KEMs should be integrated into protocols to achieve strong
-session independence properties, say.
-
-Re-encapsulation attacks exploit the fact that some KEMs allow the
-decapsulation of a ciphertext to an output key `k` and then can produce a
-second ciphertext for a different public key that decapsulates to the same
-`k`. Re-encapsulation attacks in protocols, often known as unknown-key-share
-attacks, result in two parties computing the same key despite disagreeing on
-their respective partners. This is completely allowed under the IND-CCA
-security definition. To avoid these sorts of attacks, we need to know more
-about a KEM than just that it’s an IND-CCA-secure KEM: we need to know how it
-binds its shared secrets to encapsulation keys and ciphertexts. This is a
-thing we didn’t need to think about with Diffie-Hellman, as it was only in
-weird cases (small-order points, 'non-contributory behavior', etc) that
-Diffie-Hellman public keys were not tightly bound to the shared secret
-resulting from the computation, and there was no ciphertext to consider.
-
-{{CDM23}} formalized these notions of 'binding properties for KEMs and
-explored their relations to similar notions like 'robustness' and
-'contributivity' in the literature, including describing a spectrum of
-adversaries with different capabilities, how these notions relate (or imply)
-each other. For a value to 'bind' another value, such as a shared secret K
-binding an encapsulation key PK, is to uniquely determine it; more formally,
-"P binds Q" if, for fixed instances of P, there are no collisions in the
-instances of Q.
-
-There are different security models of adversaries for these properties:
-honest (HON), leak (LEAK), and malicious (MAL). Honest variants involve key
-pairs that are correctly output by `KEM.KeyGen()` and not accessible by the
-adversary, but the adversary has access to a `KEM.Decaps()` oracle. Leakage
-variants have honestly-generated key pairs leaked to the adversary. In
-malicious variants, the adversary can create the key pairs any way they like
-in addition to the key generation, which is quite strong attacker model.
+session independence properties, say. The details of ML-KEM's binding properties
+are discussed below.
 
 # ML-KEM Security Considerations
 
@@ -432,6 +402,78 @@ including the ciphertext in your protocol KDF can help enforce that the
 protocol key material that is the image of the protocol KDF is independent
 from every shared secret, public key, and ciphertext used, each time.
 
+# Security Properties (#security-properties}
+
+## IND-CCA2
+
+The fundamental security property is that someone listening to the exchanges
+(and thus obtains both the public key and the ciphertext) cannot reconstruct
+the shared secret key and this is true even if the adversary has access to a
+CRQC. ML-KEM is IND-CCA2 secure, that is, it remains secure even if an
+adversary is able to submit arbitrary ciphertexts and observe the resulting
+shared key. Submitting invalid ciphertexts to a ML-KEM.Decaps does not help
+the attacker obtain information about the decryption key of the PKE-Decrypt
+function inside the ML-KEM.Decaps. Substituting the public key Alice sends
+Bob by another public key chosen by the attacker will not help the attacker
+get any information about Alice's private key, it would just make Alice and
+Bob not have a same shared secret key. However, if it is possible to
+substitute the copy of the public key for both Alice and Bob, an attacker can
+introduce a malicious public key where the same private key can be used for
+decapsulation, but the probability of decryption failure is marginally
+higher. As decryption failures can leak information about the secret
+decapulation key, it is important that Alice keeps a secure copy of the
+public key as part of her secret key. For practical purposes, IND-CCA2 means
+that ML-KEM is secure to use with static public keys.
+
+## Binding properties
+
+ML-KEM is a Key Encapsulation Mechanism (KEM). One common misunderstanding of
+that term is the expectation that Bob freely chooses the shared secret, and
+encrypts that when sending to Alice. What happens in ML-KEM is that
+randomness from both sides are used to contribute to the shared secret. That
+is, ML-KEM internally generates the shared secret in a way that Bob cannot
+select the value. Now, Bob can generate a number of ciphertext/shared secret
+pairs, and select the shared secret that he prefers, but he cannot freely
+choose it or make secrets shared with two parties be equal. This is different
+from RSA-KEM {{RFC5990}}, where Bob cannot select the value, but can
+encapsulate the same shared secret to many recipients.
+
+The computational binding properties for KEMs were formalized in
+{{CDM23}}. The binding properties of KEMs have implications for their use in
+protocols and whether those protocols are resilient against re-encapsulation
+attacks or how KEMs should be integrated into protocols to achieve strong
+session independence properties, say.
+
+Re-encapsulation attacks exploit the fact that some KEMs allow the
+decapsulation of a ciphertext to an output key `k` and then can produce a
+second ciphertext for a different public key that decapsulates to the same
+`k`. Re-encapsulation attacks in protocols, often known as unknown-key-share
+attacks, result in two parties computing the same key despite disagreeing on
+their respective partners. This is completely allowed under the IND-CCA
+security definition. To avoid these sorts of attacks, we need to know more
+about a KEM than just that it’s an IND-CCA-secure KEM: we need to know how it
+binds its shared secrets to encapsulation keys and ciphertexts. This is a
+thing we didn’t need to think about with Diffie-Hellman, as it was only in
+weird cases (small-order points, 'non-contributory behavior', etc) that
+Diffie-Hellman public keys were not tightly bound to the shared secret
+resulting from the computation, and there was no ciphertext to consider.
+
+{{CDM23}} formalized these notions of 'binding properties for KEMs and
+explored their relations to similar notions like 'robustness' and
+'contributivity' in the literature, including describing a spectrum of
+adversaries with different capabilities, how these notions relate (or imply)
+each other. For a value to 'bind' another value, such as a shared secret K
+binding an encapsulation key PK, is to uniquely determine it; more formally,
+"P binds Q" if, for fixed instances of P, there are no collisions in the
+instances of Q.
+
+There are different security models of adversaries for these properties:
+honest (HON), leak (LEAK), and malicious (MAL). Honest variants involve key
+pairs that are correctly output by `KEM.KeyGen()` and not accessible by the
+adversary, but the adversary has access to a `KEM.Decaps()` oracle. Leakage
+variants have honestly-generated key pairs leaked to the adversary. In
+malicious variants, the adversary can create the key pairs any way they like
+in addition to the key generation, which is quite strong attacker model.
 
 # IANA Considerations
 
