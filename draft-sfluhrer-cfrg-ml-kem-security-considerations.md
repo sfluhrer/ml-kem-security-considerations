@@ -123,36 +123,6 @@ sends the ciphertext to Alice, who uses her private key to generate the same
 shared secret key. NIST plans to standardize one or more code-based KEMs in
 the future.
 
-# IND-CCA
-
-The fundamental security property is that someone listening to the exchanges
-(and thus obtains both the public key and the ciphertext) cannot reconstruct
-the shared secret key and this is true even if the adversary has access to a
-CRQC. ML-KEM is IND-CCA2 secure, that is, it remains secure even if an
-adversary is able to submit arbitrary ciphertexts and observe the resulting
-shared key. Submitting invalid ciphertexts to `ML-KEM.Decaps()` does not help
-the attacker obtain information about the decryption key of
-`K-PKE.Decrypt()`, inside `ML-KEM.Decaps()`. Substituting the public key
-Alice sends Bob by another public key chosen by the attacker will not help
-the attacker get any information about Alice's private key, it would just
-make Alice and Bob not have a same shared secret key. However, if it is
-possible to substitute the copy of the public key for both Alice and Bob, an
-attacker can introduce a malicious public key where the same private key can
-be used for decapsulation, but the probability of decryption failure is
-marginally higher. As decryption failures can leak information about the
-secret decapulation key, it is important that Alice keeps a secure copy of
-the public key as part of her secret key. For practical purposes, IND-CCA2
-means that ML-KEM is secure to use with static public keys.
-
-# Properties beyond IND-CCA
-
-There are security properties beyond IND-CCA such as those studied in [CAS].
-There are many variants. MAL-X is hardest to achieve, but failure to achieve
-it hasn't lead to practical attacks at present. LEAK-X is in the middle, and
-failure to be LEAK-X has lead to reencapsulation attacks [PQXDH]. ML-KEM achieves
-LEAK-X, but not all MAL-X. The latter is discussed in the 'Security Properties' 
-section below.
-
 ML-KEM is a Key Encapsulation Mechanism (KEM). One common misunderstanding of
 that term is the expectation that Bob freely chooses the shared secret, and
 encrypts that when sending to Alice. What happens in ML-KEM is that
@@ -185,6 +155,36 @@ in Noise {{NOISE}}, Wireguard {{WIRE}}, and EDHOC {{RFC9528}}, and
 keys. Furthermore ML-KEM is not a drop-in replacement for RSA-KEM as RSA-KEM
 can encapsulate the same shared secret to many recipients whereas ML-KEM
 cannot.
+
+# IND-CCA
+
+The fundamental security property is that someone listening to the exchanges
+(and thus obtains both the public key and the ciphertext) cannot reconstruct
+the shared secret key and this is true even if the adversary has access to a
+CRQC. ML-KEM is IND-CCA2 secure, that is, it remains secure even if an
+adversary is able to submit arbitrary ciphertexts and observe the resulting
+shared key. Submitting invalid ciphertexts to `ML-KEM.Decaps()` does not help
+the attacker obtain information about the decryption key of
+`K-PKE.Decrypt()`, inside `ML-KEM.Decaps()`. Substituting the public key
+Alice sends Bob by another public key chosen by the attacker will not help
+the attacker get any information about Alice's private key, it would just
+make Alice and Bob not have a same shared secret key. However, if it is
+possible to substitute the copy of the public key for both Alice and Bob, an
+attacker can introduce a malicious public key where the same private key can
+be used for decapsulation, but the probability of decryption failure is
+marginally higher. As decryption failures can leak information about the
+secret decapulation key, it is important that Alice keeps a secure copy of
+the public key as part of her secret key. For practical purposes, IND-CCA2
+means that ML-KEM is secure to use with static public keys.
+
+# Properties beyond IND-CCA
+
+There are security properties beyond IND-CCA such as those studied in [CAS].
+There are many variants. MAL-X is hardest to achieve, but failure to achieve
+it hasn't lead to practical attacks at present. LEAK-X is in the middle, and
+failure to be LEAK-X has lead to reencapsulation attacks [PQXDH]. ML-KEM achieves
+LEAK-X, but not all MAL-X. The latter is discussed in the 'Security Properties' 
+section below.
 
 # Using ML-KEM
 
