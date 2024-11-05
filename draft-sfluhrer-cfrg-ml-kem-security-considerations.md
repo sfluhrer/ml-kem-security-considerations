@@ -123,6 +123,8 @@ sends the ciphertext to Alice, who uses her private key to generate the same
 shared secret key. NIST plans to standardize one or more code-based KEMs in
 the future.
 
+# IND-CCA
+
 The fundamental security property is that someone listening to the exchanges
 (and thus obtains both the public key and the ciphertext) cannot reconstruct
 the shared secret key and this is true even if the adversary has access to a
@@ -141,6 +143,15 @@ marginally higher. As decryption failures can leak information about the
 secret decapulation key, it is important that Alice keeps a secure copy of
 the public key as part of her secret key. For practical purposes, IND-CCA2
 means that ML-KEM is secure to use with static public keys.
+
+# Properties beyond IND-CCA
+
+There are security properties beyond IND-CCA such as those studied in [CAS].
+There are many variants. MAL-X is hardest to achieve, but failure to achieve
+it hasn't lead to practical attacks at present. LEAK-B is in the middle, and
+failure to be LEAK-X has lead to reencapsulation attacks [PQXDH]. ML-KEM achieves
+LEAK-X, but not all MAL-X. The latter is discussed in the ML-KEM-specific 
+section below.
 
 ML-KEM is a Key Encapsulation Mechanism (KEM). One common misunderstanding of
 that term is the expectation that Bob freely chooses the shared secret, and
