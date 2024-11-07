@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-05T00:51:09.400468+00:00",
+  "timestamp": "2024-11-07T00:51:22.990151+00:00",
   "repo": "sfluhrer/ml-kem-security-considerations",
   "labels": [
     {
@@ -520,13 +520,13 @@
       "labels": [],
       "body": "Included an overview of binding properties for KEMs and for ML-KEM specifically.\r\n\r\n@bwesterb @sophieschmieg might have opinions to improve the text",
       "createdAt": "2024-10-23T18:52:16Z",
-      "updatedAt": "2024-10-25T21:46:05Z",
+      "updatedAt": "2024-11-05T21:18:54Z",
       "baseRepository": "sfluhrer/ml-kem-security-considerations",
       "baseRefName": "main",
       "baseRefOid": "8c6cc706f78a98043e53acbb574a5715711123a9",
       "headRepository": "dconnolly/ml-kem-security-considerations",
       "headRefName": "binding",
-      "headRefOid": "eae8003fc722fcf7e4d03d99707848a3122c243b",
+      "headRefOid": "a43a576c14f13b278fab0fffe9e0ff3eb1290f57",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -613,6 +613,26 @@
               "body": "Ah thank you, whoops ",
               "createdAt": "2024-10-23T20:26:25Z",
               "updatedAt": "2024-10-23T20:26:25Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOM54HI86QDBya",
+          "commit": {
+            "abbreviatedOid": "9bdea6a"
+          },
+          "author": "dconnolly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-05T21:17:23Z",
+          "updatedAt": "2024-11-05T21:17:24Z",
+          "comments": [
+            {
+              "originalPosition": 90,
+              "body": "```suggestion\r\nThere are security properties beyond IND-CCA such as those studied in [CAS].\r\nThere are many variants. MAL-X is hardest to achieve, but failure to achieve\r\nit hasn't lead to practical attacks at present. LEAK-X is in the middle, and\r\nfailure to be LEAK-X has lead to reencapsulation attacks [PQXDH]. ML-KEM achieves\r\nLEAK-X, but not all MAL-X. The latter is discussed in the 'Security Properties' \r\nsection below.\r\n```",
+              "createdAt": "2024-11-05T21:17:24Z",
+              "updatedAt": "2024-11-05T21:17:24Z"
             }
           ]
         }
