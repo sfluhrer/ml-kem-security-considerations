@@ -350,7 +350,7 @@ operation, where the output is distinguishable from random.
 
 With ML-KEM, there is a tiny probability of decapsulation failure.
 That is, even if Alice and Bob perform their roles honestly and the public key and ciphertext are transmitted correctly, there is a tiny probability that Alice and Bob will not derive the same shared key.
-However, even though that is a theoretical possibility, practically speaking this can be ignored.
+However, even though that is a theoretical possibility, practically speaking this will never happen.
 For all three parameter sets, the probability is so low that most likely an actual decapsulation failure will never be seen for any ML-KEM exchange anywhere (not only for your protocol, but over all protocols that uses ML-KEM).
 
 # IANA Considerations
