@@ -152,6 +152,10 @@ in Noise {{NOISE}}, Wireguard {{WIRE}}, and EDHOC {{RFC9528}}, and
 {{I-D.ietf-core-oscore-groupcomm}}, where both sides have long-term public
 keys.
 
+ML-KEM can also be used to perform public key encryption, that is, where a sender encrypts a message with a public key, and only the holder of the private key can decrypt the message.
+To use ML-KEM for this task, it is recommended that you it within the Hybrid Public Key Encryption framework {{RFC9180}} to perform the operations.
+You can use draft-connolly-cfrg-hpke-mlkem, which is three ML-KEM perameter sets that has been proposed for HPKE.
+
 # Using ML-KEM
 
 To use ML-KEM, there are three steps involved:
