@@ -76,7 +76,7 @@ CDM23:
       -
         ins: S. Schmieg
         name: Sophie Schmieg
-        
+
   SIGNAL:
     target: https://signal.org/docs/specifications/doubleratchet/
     title: The Double Ratchet Algorithm
@@ -144,7 +144,7 @@ Diffie-Hellman. As long as the application can handle larger public keys and
 ciphertexts, a KEM is a drop-in replacement for 'ephemeral-ephemeral' key
 exchange in protocols like TLS {{RFC8446}} and SSH {{RFC4253}} as well as
 'static-ephemeral' key exchange in protocols like ECIES/HPKE {{RFC9180}},
-that is, in cases where Alice has a long term public key, and Bob can use that long term public key to establish communication. 
+that is, in cases where Alice has a long term public key, and Bob can use that long term public key to establish communication.
 A KEM is not a drop-in replacement in applications such as the Diffie-Hellman
 ratchet in Signal {{SIGNAL}}, implicit 'ephemeral-static' DH authentication
 in Noise {{NOISE}}, Wireguard {{WIRE}}, and EDHOC {{RFC9528}}, and
