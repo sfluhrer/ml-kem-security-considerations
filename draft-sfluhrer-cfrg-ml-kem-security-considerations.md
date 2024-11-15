@@ -3,10 +3,10 @@ title: ML-KEM Security Considerations
 abbrev: "ML-KEM Security"
 category: info
 
-docname: draft-sfluhrer-cfrg-ml-kem-security-considerations-1
+docname: draft-sfluhrer-cfrg-ml-kem-security-considerations-2
 submissiontype: IRTF
 consensus: true
-date: October 11, 2024
+date: November 15, 2024
 v: 1
 area: "IRTF"
 workgroup: "Crypto Forum"
