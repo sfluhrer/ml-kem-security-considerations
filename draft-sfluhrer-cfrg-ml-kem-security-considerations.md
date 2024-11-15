@@ -353,6 +353,11 @@ That is, even if Alice and Bob perform their roles honestly and the public key a
 However, even though that is a theoretical possibility, practically speaking this will never happen.
 For all three parameter sets, the probability is so low that most likely an actual decapsulation failure will never be seen for any ML-KEM exchange anywhere (not only for your protocol, but over all protocols that uses ML-KEM).
 
+If the adversary has control over the ML-KEM private key, it has been shown that adversary can cause a ‘misbinding’ between the shared key and either the ciphertext or the public key.
+That is, by generating an impossible private key (a key that cannot occur with the standard ML-KEM key generation process), the adversary could be able to create public keys for which different ciphertexts or public keys may result in the same shared secret (these security notions are called MAL-BIND-K-CT and MAL-BIND-K-PK in the cryptographical literature {{CDM23}} {{KEMMY24}}).
+This is not a threat to normal uses of ML-KEM as a key exchange or a public key encryption method.
+If ML-KEM is used as an authentication method where the shared key is used for authentication (and adversary control of the private key is possible), it may be advisable if the protocol also authenticate the public key and ciphertext as well.
+
 # IANA Considerations
 
 This document has no IANA actions.
