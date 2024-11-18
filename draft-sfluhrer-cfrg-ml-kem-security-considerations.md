@@ -6,8 +6,8 @@ category: info
 docname: draft-sfluhrer-cfrg-ml-kem-security-considerations-latest
 submissiontype: IRTF
 consensus: true
-date: November 15, 2024
-v: 2
+date: November 18, 2024
+v: 1
 area: "IRTF"
 workgroup: "Crypto Forum"
 
