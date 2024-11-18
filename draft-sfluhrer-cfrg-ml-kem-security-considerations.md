@@ -10,6 +10,10 @@ date: November 18, 2024
 v: 1
 area: "IRTF"
 workgroup: "Crypto Forum"
+stand_alone: true
+ipr: trust200902
+kw: Internet-Draft
+coding: UTF-8
 
 author:
 - fullname: Scott Fluhrer
