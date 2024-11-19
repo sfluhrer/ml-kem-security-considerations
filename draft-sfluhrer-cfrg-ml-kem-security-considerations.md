@@ -1,20 +1,19 @@
 ---
-title: ML-KEM Security Considerations
+title: "ML-KEM Security Considerations"
 abbrev: "ML-KEM Security"
 category: info
-cat: info
 
 docname: draft-sfluhrer-cfrg-ml-kem-security-considerations-latest
 submissiontype: IRTF
 consensus: true
-date: November 18, 2024
-v: 1
+date:
+v: 3
 area: "IRTF"
 workgroup: "Crypto Forum"
-wg: "Crypto Forum"
 stand_alone: true
 ipr: trust200902
-kw: Internet-Draft
+keyword:
+ - ML-KEM
 coding: UTF-8
 
 author:
@@ -50,13 +49,13 @@ normative:
 informative:
 
   RFC4253:
-  RFC5990:
+# RFC5990: Your text doesn't currently reference this
   RFC6278:
   RFC8446:
   RFC9180:
   RFC9528:
   I-D.ietf-core-oscore-groupcomm:
-CDM23:
+  CDM23:
     title: "Keeping Up with the KEMs: Stronger Security Notions for KEMs and automated analysis of KEM-based protocols"
     target: https://eprint.iacr.org/2023/1933.pdf
     date: 2023
@@ -262,7 +261,8 @@ protocol).
 | ML-KEM-512  |   244000 |  153000 |   202000 |
 | ML-KEM-768  |   142000 |  103000 |   134000 |
 | ML-KEM-1024 |   109000 |   77000 |    99000 |
-{: #par-perf title="Single-core performance in operation per second on AMD Ryzen 7 7700 from {{EBACS}}"}
+{: #par-perf title="Single-core performance in operation per second on AMD Ryzen 7 7700"}
+Data sourced from {{EBACS}}
 
 As can be seen from {{par-sets}} and {{par-perf}}, ML-KEM has significantly
 larger public keys and ciphertexts than ECDH but very good performance.
