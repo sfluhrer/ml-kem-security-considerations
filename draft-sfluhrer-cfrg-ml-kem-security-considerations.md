@@ -56,7 +56,7 @@ normative:
 informative:
 
   RFC4253:
-# RFC5990: Your text doesn't currently reference this
+  RFC4086:
   RFC6278:
   RFC8446:
   RFC9180:
@@ -109,8 +109,8 @@ informative:
 --- abstract
 
 NIST standardized ML-KEM as FIPS 203 in August 2024.  This document discusses
-how to use ML-KEM - that is, what problem it solves, and how to use it
-securely.
+how to use ML-KEM and how to use it within protocols - that is, what problem it solves,
+and what you need to do to use it securely.
 
 --- middle
 
@@ -327,7 +327,8 @@ ML-KEM requires that a source of random bits with security strength greater than
 The cryptographic library that implements ML-KEM
 may access this source of randomness internally. A fresh string of bytes must
 be used for every sampling of random bytes in key generation and
-encapsulation. The random bytes should come from an approved RBG.
+encapsulation.
+The random bytes should be generated securely [RFC 4086].
 
 Alice must keep her private key secret (both private and secure from
 modification).  A copy of the public key and its hash are
