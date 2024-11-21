@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-19T00:54:49.491293+00:00",
+  "timestamp": "2024-11-21T00:54:19.667121+00:00",
   "repo": "sfluhrer/ml-kem-security-considerations",
   "labels": [
     {
@@ -108,6 +108,22 @@
       "body": "I'm not how to cite an internet draft - someone help me here",
       "createdAt": "2024-11-15T20:28:44Z",
       "updatedAt": "2024-11-15T20:28:45Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 13,
+      "id": "I_kwDOM54HI86fdcI1",
+      "title": "Comments fom Thom Wiggers",
+      "url": "https://github.com/sfluhrer/ml-kem-security-considerations/issues/13",
+      "state": "OPEN",
+      "author": "emanjon",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://mailarchive.ietf.org/arch/msg/cfrg/s8awRO4tkRbHItJzinIw9OjiJfY/\r\n\r\n did have the following two nits:\r\n\r\n- This document concerns security considerations on how ML-KEM should be integrated into protocols; not security considerations for implementing ML-KEM (which I think are indeed better covered by a draft that documents the algorithm itself).   Perhaps the title can be slightly changed to reflect this, though? Adding \u201cUsage of\u201d or \u201cApplications\u201d in some way might be sufficient, and could help make finding this draft easier.\r\n\r\n- Another small nit is the discussion on decapsulation failures:\r\n\r\n > [..] For all three parameter sets, the probability is so low that most likely an actual decapsulation failure will never be seen for any ML-KEM exchange anywhere (not only for your protocol, but over all protocols that uses ML-KEM).\r\n\r\nI suggest writing \u201chonest decapsulation failure\u201d or \u201crandomly occurring decapsulation failure\u201d to further emphasise this is separate from the malicious case.\r\n\r\nBoth of these are pretty pedantic, however, so if you disagree then no hard feelings :-) ",
+      "createdAt": "2024-11-20T10:09:59Z",
+      "updatedAt": "2024-11-20T10:09:59Z",
       "closedAt": null,
       "comments": []
     }
@@ -667,6 +683,108 @@
           ]
         }
       ]
+    },
+    {
+      "number": 12,
+      "id": "PR_kwDOM54HI86CX9bC",
+      "title": "Tweaks to get it compiling",
+      "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/12",
+      "state": "MERGED",
+      "author": "rgwilton",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-11-19T11:16:02Z",
+      "updatedAt": "2024-11-19T12:59:19Z",
+      "baseRepository": "sfluhrer/ml-kem-security-considerations",
+      "baseRefName": "main",
+      "baseRefOid": "cd2da26f3330b97f74b6b942dfc046ba57dcc78a",
+      "headRepository": "rgwilton/ml-kem-security-considerations",
+      "headRefName": "markdown_compile_fixes",
+      "headRefOid": "82dd456e48521f0862872121e3a8752c2486719e",
+      "closedAt": "2024-11-19T12:59:00Z",
+      "mergedAt": "2024-11-19T12:59:00Z",
+      "mergedBy": "sfluhrer",
+      "mergeCommit": {
+        "oid": "1e15298e983afc133521ac0d75d4fbef7ddccf54"
+      },
+      "comments": [
+        {
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "body": "Build fixes",
+          "createdAt": "2024-11-19T12:59:18Z",
+          "updatedAt": "2024-11-19T12:59:18Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOM54HI86Rwdpe",
+          "commit": {
+            "abbreviatedOid": "82dd456"
+          },
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Many thanks.  I do have one question: what does the 'v: 3' field, and what is it supposed to signify?  The draft number?",
+          "createdAt": "2024-11-19T12:58:06Z",
+          "updatedAt": "2024-11-19T12:58:06Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "id": "PR_kwDOM54HI86Cggwu",
+      "title": "Acknowledgements",
+      "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/14",
+      "state": "OPEN",
+      "author": "emanjon",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-11-20T10:11:21Z",
+      "updatedAt": "2024-11-20T10:11:21Z",
+      "baseRepository": "sfluhrer/ml-kem-security-considerations",
+      "baseRefName": "main",
+      "baseRefOid": "1e15298e983afc133521ac0d75d4fbef7ddccf54",
+      "headRepository": "emanjon/ml-kem-security-considerations",
+      "headRefName": "patch-2",
+      "headRefOid": "7a7d24b5870274a6ab2cb407065ed5ee36185723",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 15,
+      "id": "PR_kwDOM54HI86CghFI",
+      "title": "venue:",
+      "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/15",
+      "state": "OPEN",
+      "author": "emanjon",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-11-20T10:12:00Z",
+      "updatedAt": "2024-11-20T10:12:00Z",
+      "baseRepository": "sfluhrer/ml-kem-security-considerations",
+      "baseRefName": "main",
+      "baseRefOid": "1e15298e983afc133521ac0d75d4fbef7ddccf54",
+      "headRepository": "emanjon/ml-kem-security-considerations",
+      "headRefName": "patch-3",
+      "headRefOid": "b622ecb604a17b4ef533ef4158eaba61bd4f41ce",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
