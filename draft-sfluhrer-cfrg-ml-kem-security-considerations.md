@@ -15,6 +15,13 @@ ipr: trust200902
 keyword:
  - ML-KEM
 coding: UTF-8
+venue:
+  group: "Crypto Forum"
+  type: "Research Group"
+  mail: "cfrg@irtf.org"
+  arch: "https://mailarchive.ietf.org/arch/browse/cfrg/"
+  github: "sfluhrer/ml-kem-security-considerations"
+  latest: "https://sfluhrer.github.io/ml-kem-security-considerations/draft-sfluhrer-cfrg-ml-kem-security-considerations.html"
 
 author:
 - fullname: Scott Fluhrer
