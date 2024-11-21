@@ -406,8 +406,9 @@ Table of Contents
    However, even though that is a theoretical possibility, practically
    speaking this will never happen.  For all three parameter sets, the
    probability is so low that most likely an actual decapsulation
-   failure will never be seen for any ML-KEM exchange anywhere (not only
-   for your protocol, but over all protocols that uses ML-KEM).
+   failure because of this will never be seen for any ML-KEM exchange
+   anywhere (not only for your protocol, but over all protocols that
+   uses ML-KEM).
 
    If the adversary has control over the ML-KEM private key, it has been
    shown that adversary can cause a ‘misbinding’ between the shared key
