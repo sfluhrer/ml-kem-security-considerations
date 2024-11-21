@@ -5,14 +5,14 @@
 Crypto Forum                                                  S. Fluhrer
 Internet-Draft                                             Cisco Systems
 Intended status: Informational                                   Q. Dang
-Expires: 23 May 2025                                                NIST
+Expires: 25 May 2025                                                NIST
                                                        J. Preuß Mattsson
                                                                 Ericsson
                                                                K. Milner
                                                               Quantinuum
                                                                  D. Shiu
                                                        Arqit Quantum Inc
-                                                        19 November 2024
+                                                        21 November 2024
 
 
                      ML-KEM Security Considerations
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 May 2025.
+   This Internet-Draft will expire on 25 May 2025.
 
 Copyright Notice
 
@@ -481,6 +481,9 @@ Table of Contents
    [WIRE]     "WireGuard", n.d., <https://www.wireguard.com/>.
 
 Acknowledgments
+
+   The authors would like to thank Rebecca Guthrie and Thom Wiggers for
+   their valuable comments and feedback.
 
 Authors' Addresses
 
