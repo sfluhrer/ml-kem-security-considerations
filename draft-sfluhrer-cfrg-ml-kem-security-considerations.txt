@@ -21,8 +21,9 @@ Expires: 25 May 2025                                                NIST
 Abstract
 
    NIST standardized ML-KEM as FIPS 203 in August 2024.  This document
-   discusses how to use ML-KEM - that is, what problem it solves, and
-   how to use it securely.
+   discusses how to use ML-KEM and how to use it within protocols - that
+   is, what problem it solves, and what you need to do to use it
+   securely.
 
 About This Document
 
@@ -352,7 +353,7 @@ Table of Contents
    cryptographic library that implements ML-KEM may access this source
    of randomness internally.  A fresh string of bytes must be used for
    every sampling of random bytes in key generation and encapsulation.
-   The random bytes should come from an approved RBG.
+   The random bytes should be generated securely [RFC 4086].
 
    Alice must keep her private key secret (both private and secure from
    modification).  A copy of the public key and its hash are included in
@@ -460,6 +461,11 @@ Table of Contents
 
    [NOISE]    "Noise Protocol Framework", n.d.,
               <http://www.noiseprotocol.org/>.
+
+   [RFC4086]  Eastlake 3rd, D., Schiller, J., and S. Crocker,
+              "Randomness Requirements for Security", BCP 106, RFC 4086,
+              DOI 10.17487/RFC4086, June 2005,
+              <https://www.rfc-editor.org/rfc/rfc4086>.
 
    [RFC4253]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
               Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
