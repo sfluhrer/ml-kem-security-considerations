@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-21T00:54:19.667121+00:00",
+  "timestamp": "2024-11-24T00:58:22.840045+00:00",
   "repo": "sfluhrer/ml-kem-security-considerations",
   "labels": [
     {
@@ -123,9 +123,17 @@
       "labels": [],
       "body": "https://mailarchive.ietf.org/arch/msg/cfrg/s8awRO4tkRbHItJzinIw9OjiJfY/\r\n\r\n did have the following two nits:\r\n\r\n- This document concerns security considerations on how ML-KEM should be integrated into protocols; not security considerations for implementing ML-KEM (which I think are indeed better covered by a draft that documents the algorithm itself).   Perhaps the title can be slightly changed to reflect this, though? Adding \u201cUsage of\u201d or \u201cApplications\u201d in some way might be sufficient, and could help make finding this draft easier.\r\n\r\n- Another small nit is the discussion on decapsulation failures:\r\n\r\n > [..] For all three parameter sets, the probability is so low that most likely an actual decapsulation failure will never be seen for any ML-KEM exchange anywhere (not only for your protocol, but over all protocols that uses ML-KEM).\r\n\r\nI suggest writing \u201chonest decapsulation failure\u201d or \u201crandomly occurring decapsulation failure\u201d to further emphasise this is separate from the malicious case.\r\n\r\nBoth of these are pretty pedantic, however, so if you disagree then no hard feelings :-) ",
       "createdAt": "2024-11-20T10:09:59Z",
-      "updatedAt": "2024-11-20T10:09:59Z",
+      "updatedAt": "2024-11-22T13:49:56Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "body": "I'm wondering if you had a concrete suggestion for a title.  \"Usage of ML-KEM in security protocols\", maybe?\r\n\r\n(I've already integrated your comment about decapsulation failure...",
+          "createdAt": "2024-11-22T13:49:55Z",
+          "updatedAt": "2024-11-22T13:49:55Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -206,7 +214,7 @@
       "id": "PR_kwDOM54HI859nqlr",
       "title": "Try to fix build errors",
       "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/2",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "sfluhrer",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -215,14 +223,14 @@
       "labels": [],
       "body": "",
       "createdAt": "2024-10-04T13:04:00Z",
-      "updatedAt": "2024-10-04T13:27:26Z",
+      "updatedAt": "2024-11-22T13:47:55Z",
       "baseRepository": "sfluhrer/ml-kem-security-considerations",
       "baseRefName": "main",
       "baseRefOid": "c061b81cb548155ab8a925fe5a85fbd5ce351168",
       "headRepository": "sfluhrer/ml-kem-security-considerations",
       "headRefName": "sfluhrer-build-fix",
       "headRefOid": "ea822556f4f1c80c1c3d24cf4d7ded05c61251ce",
-      "closedAt": null,
+      "closedAt": "2024-11-22T13:47:55Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -739,52 +747,84 @@
       "id": "PR_kwDOM54HI86Cggwu",
       "title": "Acknowledgements",
       "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/14",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "emanjon",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-11-20T10:11:21Z",
-      "updatedAt": "2024-11-20T10:11:21Z",
+      "updatedAt": "2024-11-21T20:18:52Z",
       "baseRepository": "sfluhrer/ml-kem-security-considerations",
       "baseRefName": "main",
       "baseRefOid": "1e15298e983afc133521ac0d75d4fbef7ddccf54",
       "headRepository": "emanjon/ml-kem-security-considerations",
       "headRefName": "patch-2",
       "headRefOid": "7a7d24b5870274a6ab2cb407065ed5ee36185723",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-11-21T20:18:51Z",
+      "mergedAt": "2024-11-21T20:18:51Z",
+      "mergedBy": "sfluhrer",
+      "mergeCommit": {
+        "oid": "c27abe6369ff30072f9a0897685ebcf270bf86a2"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOM54HI86SL2di",
+          "commit": {
+            "abbreviatedOid": "7a7d24b"
+          },
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-11-21T20:18:37Z",
+          "updatedAt": "2024-11-21T20:18:37Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 15,
       "id": "PR_kwDOM54HI86CghFI",
       "title": "venue:",
       "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/15",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "emanjon",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-11-20T10:12:00Z",
-      "updatedAt": "2024-11-20T10:12:00Z",
+      "updatedAt": "2024-11-21T20:19:38Z",
       "baseRepository": "sfluhrer/ml-kem-security-considerations",
       "baseRefName": "main",
       "baseRefOid": "1e15298e983afc133521ac0d75d4fbef7ddccf54",
       "headRepository": "emanjon/ml-kem-security-considerations",
       "headRefName": "patch-3",
       "headRefOid": "b622ecb604a17b4ef533ef4158eaba61bd4f41ce",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-11-21T20:19:38Z",
+      "mergedAt": "2024-11-21T20:19:38Z",
+      "mergedBy": "sfluhrer",
+      "mergeCommit": {
+        "oid": "d5a5c83f0fc1adc6eebd01cb4d346c88908c481d"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOM54HI86SL2_t",
+          "commit": {
+            "abbreviatedOid": "b622ecb"
+          },
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-11-21T20:19:30Z",
+          "updatedAt": "2024-11-21T20:19:30Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
