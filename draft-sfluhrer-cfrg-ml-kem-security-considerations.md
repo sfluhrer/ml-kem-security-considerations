@@ -184,7 +184,7 @@ but must be treated with the same safeguards as the private key.
 The seed format allows fast
 reconstruction of the expanded key pair format, and elides the need for
 format checks of the expanded key formats.
-Other intermediate data must be securely deleted.
+Other intermediate data beside the matrix A_hat must be securely deleted. {{FIPS203}} allows A_hat to be saved for the Decapsulation operation(s) with the Decaps key.
 
 The public key can be freely published (and Bob will need it for his part of
 the process); this step may be performed simply by transmitting the key to
@@ -210,7 +210,7 @@ terms as ML-KEM.Encaps() (see section 7.2 of {{FIPS203}}).  This step takes
 the validated public key, internally calls the random number generator for a
 seed, and produces both a ciphertext and a 32-byte shared secret
 key.
-Intermediate data other than the ciphertext and shared secret key (and the "matrix data" internal to ML-KEM, which can be deduced from the public key) must be securely deleted.
+Intermediate data other than the ciphertext, shared secret key and the matrix A_hat (and the "matrix data" internal to ML-KEM, which can be deduced from the public key) must be securely deleted. {{FIPS203}} allows the matrix A_hat to be saved and reused for later encapsulation operations with the same encapsulation key. 
 
 The ciphertext can be transmitted back to Alice; if the exchange is
 successful, the 32-byte shared secret key will be the key shared with Alice.
@@ -236,7 +236,7 @@ Although not necessary for the correctness of the key establishment,
 this step should not be skipped as a maliciously generated ciphertext could
 induce decapsulation failures that can allow an attacker to deduce the private key with a sufficient number of exchanges.
 Intermediate data
-other than the shared secret key (and the "matrix data" internal to ML-KEM, which can be deduced from the public key) must be securely deleted.
+other than the shared secret key and the matrix A_hat must be securely deleted. {{FIPS203}} allows the matrix A_hat to be saved for later Decapsulation operations with the same Decaps key. 
 
 If the exchange is successful, the 32-byte key generated on both sides will
 be the same. The shared secret key is always 32 bytes for all parameter sets.
@@ -271,6 +271,7 @@ protocol).
 {: #par-perf title="Single-core performance in operation per second on AMD Ryzen 7 7700"}
 Data sourced from {{EBACS}}
 
+
 As can be seen from {{par-sets}} and {{par-perf}}, ML-KEM has significantly
 larger public keys and ciphertexts than ECDH but very good performance.
 
@@ -285,9 +286,9 @@ recover the random bits used in either of these processes, they can recover
 the shared secret.  If an adversary can recover the random bits used during
 key generation, they can also recover the secret key.
 
-Alice needs to keep her private key secret. It is recommended that she
-zeroize her private key when she will have no further need of it,
-that is, when she knows she never needs to decapsulate any further ciphertexts with it.
+Alice needs to keep her private key secret. It is recommended that they
+zeroize the private key when they will have no further need of it,
+that is, when they know they never need to decapsulate any further ciphertexts with it.
 
 A KEM (including ML-KEM) provides no authentication of either communicating
 party. If an adversary could replace either the public key or the ciphertext
@@ -346,7 +347,7 @@ It is secure to reuse a public key multiple times.  That is, instead of Alice
 generating a fresh public and private keypair for each exchange, Alice may
 generate a public key once, and then publish that public key, and use it for
 multiple incoming ciphertexts, generating multiple shared secret keys.  While
-this is safe, it is recommended that if the protocol already has Alice send Bob her unauthenticated public key, she should generate a fresh keypair each time
+this is safe, it is recommended that if the protocol already has Alice send Bob her unauthenticated public key, they should generate a fresh keypair each time
 (and zeroize the private key immediately after ML-KEM.Decaps()) to obtain Perfect Forward
 Secrecy. Generally key generation of ML-KEM is very fast (see
 {{par-perf}}). Hence, if Alice generates a fresh ML-KEM key each time, then even if Alice&apos;s system is subverted (either by a hacker or
@@ -374,7 +375,7 @@ For all three parameter sets, the probability is so low that most likely an actu
 If the adversary has control over the ML-KEM private key, it has been shown that adversary can cause a ‘misbinding’ between the shared key and either the ciphertext or the public key.
 That is, by generating an impossible private key (a key that cannot occur with the standard ML-KEM key generation process), the adversary could be able to create public keys for which different ciphertexts or public keys may result in the same shared secret (these security notions are called MAL-BIND-K-CT and MAL-BIND-K-PK in the cryptographical literature {{CDM23}} {{KEMMY24}}).
 This is not a threat to normal uses of ML-KEM as a key exchange or a public key encryption method.
-If ML-KEM is used as an authentication method where the shared key is used for authentication (and adversary control of the private key is possible), it may be advisable if the protocol also authenticate the public key and ciphertext as well.
+If ML-KEM is used as an authentication method where the shared key is used for authentication (and adversary control of the private key is possible), it may be advisable if the protocol also authenticates the public key and ciphertext as well.
 
 # IANA Considerations
 
