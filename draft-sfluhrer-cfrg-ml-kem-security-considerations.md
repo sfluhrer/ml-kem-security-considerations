@@ -212,7 +212,7 @@ the validated public key, internally calls the random number generator for a
 seed, and produces both a ciphertext and a 32-byte shared secret
 key.
 Intermediate data other than the ciphertext, shared secret key and the matrix A_hat (and the "matrix data" internal to ML-KEM, which can be deduced from the public key) must be securely deleted.
-The matrix A_hat may be saved and reused for later encapsulation operations with the same encapsulation key. 
+The matrix A_hat may be saved and reused for later encapsulation operations with the same encapsulation key.
 
 The ciphertext can be transmitted back to Alice; if the exchange is
 successful, the 32-byte shared secret key will be the key shared with Alice.
