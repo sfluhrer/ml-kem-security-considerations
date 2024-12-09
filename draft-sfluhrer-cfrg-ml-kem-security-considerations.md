@@ -184,7 +184,8 @@ but must be treated with the same safeguards as the private key.
 The seed format allows fast
 reconstruction of the expanded key pair format, and elides the need for
 format checks of the expanded key formats.
-Other intermediate data beside the matrix A_hat must be securely deleted. {{FIPS203}} allows A_hat to be saved for the Decapsulation operation(s) with the Decaps key.
+Other intermediate data beside the matrix A_hat must be securely deleted.
+A_hat may be saved for repeated Decapsulation operation(s) with the same decapsulation key.
 
 The public key can be freely published (and Bob will need it for his part of
 the process); this step may be performed simply by transmitting the key to
@@ -210,7 +211,8 @@ terms as ML-KEM.Encaps() (see section 7.2 of {{FIPS203}}).  This step takes
 the validated public key, internally calls the random number generator for a
 seed, and produces both a ciphertext and a 32-byte shared secret
 key.
-Intermediate data other than the ciphertext, shared secret key and the matrix A_hat (and the "matrix data" internal to ML-KEM, which can be deduced from the public key) must be securely deleted. {{FIPS203}} allows the matrix A_hat to be saved and reused for later encapsulation operations with the same encapsulation key. 
+Intermediate data other than the ciphertext, shared secret key and the matrix A_hat (and the "matrix data" internal to ML-KEM, which can be deduced from the public key) must be securely deleted.
+The matrix A_hat may be saved and reused for later encapsulation operations with the same encapsulation key. 
 
 The ciphertext can be transmitted back to Alice; if the exchange is
 successful, the 32-byte shared secret key will be the key shared with Alice.
@@ -236,7 +238,8 @@ Although not necessary for the correctness of the key establishment,
 this step should not be skipped as a maliciously generated ciphertext could
 induce decapsulation failures that can allow an attacker to deduce the private key with a sufficient number of exchanges.
 Intermediate data
-other than the shared secret key and the matrix A_hat must be securely deleted. {{FIPS203}} allows the matrix A_hat to be saved for later Decapsulation operations with the same Decaps key. 
+other than the shared secret key and the matrix A_hat must be securely deleted.
+The matrix A_hat may be saved for later Decapsulation operations with the same decapsulation key. 
 
 If the exchange is successful, the 32-byte key generated on both sides will
 be the same. The shared secret key is always 32 bytes for all parameter sets.
