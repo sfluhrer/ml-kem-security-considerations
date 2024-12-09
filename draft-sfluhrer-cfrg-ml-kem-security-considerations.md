@@ -237,9 +237,8 @@ according to the specification, with invalid ciphertexts generating an unrelated
 Although not necessary for the correctness of the key establishment,
 this step should not be skipped as a maliciously generated ciphertext could
 induce decapsulation failures that can allow an attacker to deduce the private key with a sufficient number of exchanges.
-Intermediate data
-other than the shared secret key and the matrix A_hat must be securely deleted.
-The matrix A_hat may be saved for later Decapsulation operations with the same decapsulation key. 
+Intermediate data other than the shared secret key and the matrix A_hat must be securely deleted.
+The matrix A_hat may be saved for later Decapsulation operations with the same decapsulation key.
 
 If the exchange is successful, the 32-byte key generated on both sides will
 be the same. The shared secret key is always 32 bytes for all parameter sets.
