@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-26T00:51:54.366335+00:00",
+  "timestamp": "2024-12-29T00:57:30.280667+00:00",
   "repo": "sfluhrer/ml-kem-security-considerations",
   "labels": [
     {
@@ -140,15 +140,15 @@
       "id": "I_kwDOM54HI86kbfjX",
       "title": "Should mention that ML-KEM is variable time",
       "url": "https://github.com/sfluhrer/ml-kem-security-considerations/issues/17",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "emanjon",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Should mention that ML-KEM is variable time. This is likely something readers would like to know. The variable time in ML-KEM does not affect Confidentiality but it can affect Availability.",
       "createdAt": "2024-12-25T09:30:23Z",
-      "updatedAt": "2024-12-25T14:25:33Z",
-      "closedAt": null,
+      "updatedAt": "2024-12-26T07:26:39Z",
+      "closedAt": "2024-12-26T07:26:39Z",
       "comments": [
         {
           "author": "sfluhrer",
@@ -156,6 +156,13 @@
           "body": "The only variable time part of ML-KEM I\u2019m aware of is the SampleNTT subcomponent (actually, it could be made constant time by oversampling, but let\u2019s talk about the straight-forward approach).\r\n\r\nHowever, the time delta will be tiny; I haven\u2019t run the numbers, but given that you do that sampling a large number of times, the total time taken should be close to a normal distribution, with a fairly small variance.  I don\u2019t personally know if that\u2019s worth mentioning.  Thoughts?\r\n",
           "createdAt": "2024-12-25T14:25:32Z",
           "updatedAt": "2024-12-25T14:25:32Z"
+        },
+        {
+          "author": "emanjon",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Yes, I think I confused ML-KEM with ML-DSA very the delta is large. I agree that the total varience is probably low and therefore not worth mentioning",
+          "createdAt": "2024-12-26T07:26:39Z",
+          "updatedAt": "2024-12-26T07:26:39Z"
         }
       ]
     }
