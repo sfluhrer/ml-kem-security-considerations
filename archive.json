@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-09T00:52:30.824883+00:00",
+  "timestamp": "2025-01-12T00:57:55.941697+00:00",
   "repo": "sfluhrer/ml-kem-security-considerations",
   "labels": [
     {
@@ -598,7 +598,7 @@
       "labels": [],
       "body": "Included an overview of binding properties for KEMs and for ML-KEM specifically.\r\n\r\n@bwesterb @sophieschmieg might have opinions to improve the text",
       "createdAt": "2024-10-23T18:52:16Z",
-      "updatedAt": "2024-11-15T14:49:53Z",
+      "updatedAt": "2025-01-10T20:47:42Z",
       "baseRepository": "sfluhrer/ml-kem-security-considerations",
       "baseRefName": "main",
       "baseRefOid": "8c6cc706f78a98043e53acbb574a5715711123a9",
@@ -658,6 +658,13 @@
           "body": "This text is still too targeted towards academics (it doesn't even define what MAL-BIND-K-CT or MAL-BIND-K-PT is, and instead refers to some paper which nonacademics will not understand), and doesn't talk about when some protocol designer would need to be concerned.  I did add a paragraph to the main text trying to describe the situation (in terms that a protocol designer would understand) - you might want to review that.\r\n\r\nAlso, I have to wonder - if MAL-BIND-* assumes that the attacker has control of the private key, why should we assume that there's any security properties at all?",
           "createdAt": "2024-11-15T14:49:52Z",
           "updatedAt": "2024-11-15T14:49:52Z"
+        },
+        {
+          "author": "sophieschmieg",
+          "authorAssociation": "NONE",
+          "body": "No disagreement with you or the decision to close, just as additional context: I did have a scenario where an attacker controlled private key having or not having certain properties mattered, although it was not MAL-BIND-* in that case:\r\n\r\nThe scenario was that the protocol used a implicitly authenticated key exchange, i.e. both parties know a static public key of the other party. It computed the shared secret as KDF(ECDH(static_Alice, static_Bob) || ECDH(ephemeral_Alice, ephemeral_Bob)). This is a valid, two side authenticated, forward secret key exchange. Another team wanted to have a one side authenticated version of this protocol, and they did this by using a shared static key for Alice. This would technically be only a \"LEAK\" scenario in the terms of Cas' paper, but you could imagine that shared static key sitting on a writeable network share. The problem is that the handshake above has key compromise impersonation, so instead of degenerating into a one-side authenticated key exchange if one private key is compromised, it degenerates into an unauthenticated key exchange, since Eve can impersonate Bob to Alice and compute the shared secret using Alice's static private key and her ephemeral private key. A 3DH handshake KDF(ECDH(static_Alice, ephemeral_Bob) || ECDH(ephemeral_Alice, static_Bob) || ECDH(ephemeral_Alice, ephemeral_Bob)) degenerates as expected in this case.\r\n\r\nThe other, similar scenario where attacker controlled secret keys play a role is in the case of invisible salamanders. You can formulate those as various AEADs, AES-GCM most of all, not having LEAK-BIND-CT-PT, i.e. an attacker with knowledge of the key can craft a ciphertext that will decrypt to a different plaintext under a different key. That property also has caused real world vulnerabilities, but it doesn't apply to implicitly rejecting KEMs to begin with, as they never bind the ciphertext to the shared secret.\r\n\r\nSo in the end, while there are relevant examples of vulnerabilities that require the attacker to know the private key, none of the examples I am aware of, even in hypothetical protocols designed only to be vulnerable to misbinding attacks require KEMs binding against maliciously formed keys. In a document aimed at developers in particular, it would be hard to convey these nuances in a non-academic fashion, and the advice more or less becomes \"Have cryptographers look at your protocol, protocol design is hard and can introduce vulnerabilities even if secure primitives are used\". Even a generic \"Always hash in everything\" imho doesn't quite capture the problems here, since it already presumes a specific use case (and one where you probably should use TLS or HPKE), and in ML-KEM's case does not even apply, as it has stronger binding guarantees than e.g. X25519 or RSA.",
+          "createdAt": "2025-01-10T20:47:41Z",
+          "updatedAt": "2025-01-10T20:47:41Z"
         }
       ],
       "reviews": [
