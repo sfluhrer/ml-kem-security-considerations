@@ -5,14 +5,14 @@
 Crypto Forum                                                  S. Fluhrer
 Internet-Draft                                             Cisco Systems
 Intended status: Informational                                   Q. Dang
-Expires: 12 June 2025                                               NIST
+Expires: 3 August 2025                                              NIST
                                                        J. Preuß Mattsson
                                                                 Ericsson
                                                                K. Milner
                                                               Quantinuum
                                                                  D. Shiu
                                                        Arqit Quantum Inc
-                                                         9 December 2024
+                                                         30 January 2025
 
 
                      ML-KEM Security Considerations
@@ -59,11 +59,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 June 2025.
+   This Internet-Draft will expire on 3 August 2025.
 
 Copyright Notice
 
-   Copyright (c) 2024 IETF Trust and the persons identified as the
+   Copyright (c) 2025 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -155,7 +155,7 @@ Table of Contents
    holder of the private key can decrypt the message.  To use ML-KEM for
    this task, it is recommended that you it within the Hybrid Public Key
    Encryption framework [RFC9180] to perform the operations.  You can
-   use draft-connolly-cfrg-hpke-mlkem, which is three ML-KEM perameter
+   use [I-D.connolly-cfrg-hpke-mlkem], which is three ML-KEM perameter
    sets that has been proposed for HPKE.
 
 2.  Using ML-KEM
@@ -452,6 +452,12 @@ Table of Contents
    [EBACS]    "eBACS: ECRYPT Benchmarking of Cryptographic Systems",
               n.d.,
               <https://bench.cr.yp.to/results-kem/amd64-hertz.html>.
+
+   [I-D.connolly-cfrg-hpke-mlkem]
+              Connolly, D., "ML-KEM for HPKE", Work in Progress,
+              Internet-Draft, draft-connolly-cfrg-hpke-mlkem-04, 18
+              October 2024, <https://datatracker.ietf.org/doc/html/
+              draft-connolly-cfrg-hpke-mlkem-04>.
 
    [I-D.ietf-core-oscore-groupcomm]
               Tiloca, M., Selander, G., Palombini, F., Mattsson, J. P.,
