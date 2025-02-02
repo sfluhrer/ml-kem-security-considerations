@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-30T00:50:19.220129+00:00",
+  "timestamp": "2025-02-02T00:54:13.341271+00:00",
   "repo": "sfluhrer/ml-kem-security-considerations",
   "labels": [
     {
@@ -100,15 +100,15 @@
       "id": "I_kwDOM54HI86eurkk",
       "title": "Turn the reference to draft-connolly-cfrg-hpke-mlkem into a citation",
       "url": "https://github.com/sfluhrer/ml-kem-security-considerations/issues/11",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "sfluhrer",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "I'm not how to cite an internet draft - someone help me here",
       "createdAt": "2024-11-15T20:28:44Z",
-      "updatedAt": "2024-11-15T20:28:45Z",
-      "closedAt": null,
+      "updatedAt": "2025-01-30T02:07:06Z",
+      "closedAt": "2025-01-30T02:07:06Z",
       "comments": []
     },
     {
@@ -869,26 +869,42 @@
       "id": "PR_kwDOM54HI86GNHw4",
       "title": "reference to draft-connolly-cfrg-hpke-mlkem",
       "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/16",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "emanjon",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Closes #11",
       "createdAt": "2024-12-25T09:27:31Z",
-      "updatedAt": "2024-12-25T09:27:32Z",
+      "updatedAt": "2025-01-30T02:07:05Z",
       "baseRepository": "sfluhrer/ml-kem-security-considerations",
       "baseRefName": "main",
       "baseRefOid": "d2af98f747ad06abf6f035d6d0a7a0807f079a28",
       "headRepository": "emanjon/ml-kem-security-considerations",
       "headRefName": "patch-4",
       "headRefOid": "2fb188de4f69b94303567c8484499cdcd8f87a4e",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-01-30T02:07:05Z",
+      "mergedAt": "2025-01-30T02:07:05Z",
+      "mergedBy": "sfluhrer",
+      "mergeCommit": {
+        "oid": "4f13a9f061923ea1d176017d9c8dfdbd429bc0b2"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOM54HI86Z8eln",
+          "commit": {
+            "abbreviatedOid": "2fb188d"
+          },
+          "author": "sfluhrer",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-01-30T02:06:57Z",
+          "updatedAt": "2025-01-30T02:06:57Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
