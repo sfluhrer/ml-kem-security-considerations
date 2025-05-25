@@ -300,7 +300,7 @@ important that the protocol that uses a KEM lets Bob be able to verify that
 the public key he obtains came from Alice and lets Alice verify that the ciphertext
 came from Bob (that is, an entity that Alice is willing to
 communicate with). Such verification can be performed by cryptographic
-methods such as digital signatures or a MAC to verify integrity of the
+methods such as a digital signature or a MAC to verify integrity of the
 protocol exchange.
 
 # ML-KEM Security Considerations
