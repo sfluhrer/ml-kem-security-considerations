@@ -5,14 +5,14 @@
 Crypto Forum                                                  S. Fluhrer
 Internet-Draft                                             Cisco Systems
 Intended status: Informational                                   Q. Dang
-Expires: 3 August 2025                                              NIST
+Expires: 26 November 2025                                           NIST
                                                        J. Preuß Mattsson
                                                                 Ericsson
                                                                K. Milner
                                                               Quantinuum
                                                                  D. Shiu
                                                        Arqit Quantum Inc
-                                                         30 January 2025
+                                                             25 May 2025
 
 
                      ML-KEM Security Considerations
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 August 2025.
+   This Internet-Draft will expire on 26 November 2025.
 
 Copyright Notice
 
@@ -320,8 +320,8 @@ Table of Contents
    uses a KEM lets Bob be able to verify that the public key he obtains
    came from Alice and lets Alice verify that the ciphertext came from
    Bob (that is, an entity that Alice is willing to communicate with).
-   Such verification can be performed by cryptographic methods such as
-   digital signatures or a MAC to verify integrity of the protocol
+   Such verification can be performed by cryptographic methods such as a
+   digital signature or a MAC to verify integrity of the protocol
    exchange.
 
 4.  ML-KEM Security Considerations
@@ -463,9 +463,9 @@ Table of Contents
               Tiloca, M., Selander, G., Palombini, F., Mattsson, J. P.,
               and R. Höglund, "Group Object Security for Constrained
               RESTful Environments (Group OSCORE)", Work in Progress,
-              Internet-Draft, draft-ietf-core-oscore-groupcomm-23, 26
-              September 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-core-oscore-groupcomm-23>.
+              Internet-Draft, draft-ietf-core-oscore-groupcomm-25, 16
+              March 2025, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-core-oscore-groupcomm-25>.
 
    [KEMMY24]  Schmieg, S., "Unbindable Kemmy Schmidt: ML-KEM is neither
               MAL-BIND-K-CT nor MAL-BIND-K-PK", 2024,
