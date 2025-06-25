@@ -155,7 +155,7 @@ establishment, but requires an encapulation key. Nor can participants compute
 parts of the key establishment in parallel as is the case with
 Diffie-Hellman. As long as the application can handle larger public keys and
 ciphertexts, a KEM is a drop-in replacement for &apos;ephemeral-ephemeral&apos; key
-exchange in protocols like TLS {{RFC8446}} and SSH {{RFC4253}} as well as
+exchange in protocols like TLS {{RFC8446}}, SSH {{RFC4253}}, Wireguard {{WIRE}}, and EDHOC {{RFC9528}} as well as
 &apos;static-ephemeral&apos; key exchange in protocols like ECIES/HPKE {{RFC9180}},
 that is, in cases where Alice has a long term public key, and Bob can use that long term public key to establish communication.
 A KEM is not a drop-in replacement in applications such as the Diffie-Hellman
