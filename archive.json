@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-01T01:03:26.231071+00:00",
+  "timestamp": "2025-06-26T01:02:09.050920+00:00",
   "repo": "sfluhrer/ml-kem-security-considerations",
   "labels": [
     {
@@ -905,6 +905,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 18,
+      "id": "PR_kwDOM54HI86b-1GK",
+      "title": "Minor update",
+      "url": "https://github.com/sfluhrer/ml-kem-security-considerations/pull/18",
+      "state": "OPEN",
+      "author": "emanjon",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Some people got confused that Wireguard {{WIRE}}, and EDHOC {{RFC9528}} was only in the \"not dropin list\".",
+      "createdAt": "2025-06-25T04:56:39Z",
+      "updatedAt": "2025-06-25T04:56:40Z",
+      "baseRepository": "sfluhrer/ml-kem-security-considerations",
+      "baseRefName": "main",
+      "baseRefOid": "cc151ad8fcccd741e1ecba590b669b1b07c14edd",
+      "headRepository": "emanjon/ml-kem-security-considerations",
+      "headRefName": "patch-5",
+      "headRefOid": "7bbd0c0201579ceac763dc2abdf88c4a29c917f6",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
