@@ -15,22 +15,22 @@
 how to use ML-KEM and how to use it within protocols - that is, what problem it solves,
 and what you need to do to use it securely. 
     " name="description">
-<meta content="xml2rfc 3.28.1" name="generator">
+<meta content="xml2rfc 3.30.0" name="generator">
 <meta content="ML-KEM" name="keyword">
 <meta content="draft-sfluhrer-cfrg-ml-kem-security-considerations-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.28.1
-    Python 3.12.10
+  xml2rfc 3.30.0
+    Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
-    lxml 5.3.0
+    lxml 5.3.1
     platformdirs 4.3.8
     pycountry 24.6.1
     PyYAML 6.0.2
-    requests 2.32.3
-    setuptools 70.3.0
+    requests 2.32.4
+    setuptools 80.9.0
     wcwidth 0.2.13
 -->
 <link href="draft-sfluhrer-cfrg-ml-kem-security-considerations.xml" rel="alternate" type="application/rfc+xml">
@@ -1050,11 +1050,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ML-KEM Security</td>
-<td class="right">May 2025</td>
+<td class="right">August 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Fluhrer, et al.</td>
-<td class="center">Expires 26 November 2025</td>
+<td class="center">Expires 16 February 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-sfluhrer-cfrg-ml-kem-security-considerations-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-05-25" class="published">25 May 2025</time>
+<time datetime="2025-08-15" class="published">15 August 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-11-26">26 November 2025</time></dd>
+<dd class="expires"><time datetime="2026-02-16">16 February 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1140,7 +1140,7 @@ and what you need to do to use it securely.<a href="#section-abstract-1" class="
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 26 November 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 16 February 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1412,7 +1412,7 @@ protocol).<a href="#section-2.4-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-2">
           <caption>
 <a href="#table-2" class="selfRef">Table 2</a>:
-<a href="#name-single-core-performance-in-" class="selfRef">Single-core performance in operation per second on AMD Ryzen 7 7700</a>
+<a href="#name-single-core-performance-in-" class="selfRef">Single-core performance in operation per second (higher is better) on AMD Ryzen 7 7700</a>
           </caption>
 <thead>
             <tr>
@@ -1463,10 +1463,13 @@ the keypair generation and ciphertext generation steps.  If an adversary can
 recover the random bits used in either of these processes, they can recover
 the shared secret.  If an adversary can recover the random bits used during
 key generation, they can also recover the secret key.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">Alice needs to keep her private key secret. It is recommended that they
+<p id="section-3-3">Standard cryptographical analysis assumes that the adversary has access only to the exchanged messages.
+Depending on the deployment scenario, the adversary may have access to various side channels, such as the amount of time taken during the cryptographical computations, or possibly the power used or the electrical noise generated.
+The implementor will need to assess this possibility, and possibly use an implementation that is resistant to such leakage.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">Alice needs to keep her private key secret. It is recommended that they
 zeroize the private key when they will have no further need of it,
-that is, when they know they never need to decapsulate any further ciphertexts with it.<a href="#section-3-3" class="pilcrow">¶</a></p>
-<p id="section-3-4">A KEM (including ML-KEM) provides no authentication of either communicating
+that is, when they know they never need to decapsulate any further ciphertexts with it.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">A KEM (including ML-KEM) provides no authentication of either communicating
 party. If an adversary could replace either the public key or the ciphertext
 with its own, it would generate a shared key with Alice or Bob.  Hence, it is
 important that the protocol that uses a KEM lets Bob be able to verify that
@@ -1474,7 +1477,7 @@ the public key he obtains came from Alice and lets Alice verify that the ciphert
 came from Bob (that is, an entity that Alice is willing to
 communicate with). Such verification can be performed by cryptographic
 methods such as a digital signature or a MAC to verify integrity of the
-protocol exchange.<a href="#section-3-4" class="pilcrow">¶</a></p>
+protocol exchange.<a href="#section-3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ml-kem-security-considerations">
@@ -1595,7 +1598,7 @@ If ML-KEM is used as an authentication method where the shared key is used for a
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-oscore-groupcomm">[I-D.ietf-core-oscore-groupcomm]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Mattsson, J. P.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Group Object Security for Constrained RESTful Environments (Group OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-groupcomm-25</span>, <time datetime="2025-03-16" class="refDate">16 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-25">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-25</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Mattsson, J. P.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Group Object Security for Constrained RESTful Environments (Group OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-groupcomm-26</span>, <time datetime="2025-07-05" class="refDate">5 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-26">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-26</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="KEMMY24">[KEMMY24]</dt>
         <dd>
