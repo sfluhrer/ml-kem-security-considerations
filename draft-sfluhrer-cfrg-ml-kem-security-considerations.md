@@ -271,7 +271,7 @@ protocol).
 | ML-KEM-512  |   244000 |  153000 |   202000 |
 | ML-KEM-768  |   142000 |  103000 |   134000 |
 | ML-KEM-1024 |   109000 |   77000 |    99000 |
-{: #par-perf title="Single-core performance in operation per second on AMD Ryzen 7 7700"}
+{: #par-perf title="Single-core performance in operation per second (higher is better) on AMD Ryzen 7 7700"}
 Data sourced from {{EBACS}}
 
 
@@ -288,6 +288,10 @@ the keypair generation and ciphertext generation steps.  If an adversary can
 recover the random bits used in either of these processes, they can recover
 the shared secret.  If an adversary can recover the random bits used during
 key generation, they can also recover the secret key.
+
+Standard cryptographical analysis assumes that the adversary has access only to the exchanged messages.
+Depending on the deployment scenario, the adversary may have access to various side channels, such as the amount of time taken during the cryptographical computations, or possibly the power used or the electrical noise generated.
+The implementor will need to assess this possibility, and possibly use an implementation that is resistant to such leakage.
 
 Alice needs to keep her private key secret. It is recommended that they
 zeroize the private key when they will have no further need of it,
