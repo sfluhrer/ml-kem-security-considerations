@@ -15,23 +15,22 @@
 how to use ML-KEM and how to use it within protocols - that is, what problem it solves,
 and what you need to do to use it securely. 
     " name="description">
-<meta content="xml2rfc 3.30.0" name="generator">
+<meta content="xml2rfc 3.31.0" name="generator">
 <meta content="ML-KEM" name="keyword">
 <meta content="draft-sfluhrer-cfrg-ml-kem-security-considerations-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.30.0
-    Python 3.12.11
+  xml2rfc 3.31.0
+    Python 3.12.12
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
     lxml 5.3.1
-    platformdirs 4.3.8
+    platformdirs 4.5.0
     pycountry 24.6.1
     PyYAML 6.0.2
-    requests 2.32.4
-    setuptools 80.9.0
-    wcwidth 0.2.13
+    requests 2.32.5
+    wcwidth 0.2.14
 -->
 <link href="draft-sfluhrer-cfrg-ml-kem-security-considerations.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1050,11 +1049,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ML-KEM Security</td>
-<td class="right">August 2025</td>
+<td class="right">October 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Fluhrer, et al.</td>
-<td class="center">Expires 16 February 2026</td>
+<td class="center">Expires 1 May 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-sfluhrer-cfrg-ml-kem-security-considerations-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-08-15" class="published">15 August 2025</time>
+<time datetime="2025-10-28" class="published">28 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-02-16">16 February 2026</time></dd>
+<dd class="expires"><time datetime="2026-05-01">1 May 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1140,7 +1139,7 @@ and what you need to do to use it securely.<a href="#section-abstract-1" class="
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 16 February 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 1 May 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1236,12 +1235,13 @@ Bob then sends the ciphertext to Alice, who uses her private key to generate the
 The idea is that someone in the middle, listening into the exchanged public keys and ciphertexts will not be able to recovered the shared secret key that Alice and Bob learns.
 Hence, Alice and Bob can use their shared secret key to establish secure symmetric communication.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <p id="section-1-4">One common misunderstanding of the term KEM is the expectation that Bob freely chooses the
-shared secret, and encrypts that when sending to Alice. What actually happens in
-ML-KEM is that randomness from both sides are used to contribute to the
+shared secret, and encrypts that when sending to Alice.
+While there do exist KEMs where this is true, this is not true for ML-KEM.
+In ML-KEM is that randomness from both sides are used to contribute to the
 shared secret. That is, ML-KEM internally generates the shared secret in a
 way that Bob cannot select the value. Now, Bob can generate a number of
 ciphertext/shared secret pairs, and select the shared secret that he prefers,
-but he cannot freely choose it or make secrets shared with two parties be
+but he cannot freely choose it or make the secrets across two different ML-KEM exchanges be
 equal.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">A KEM (such as ML-KEM) sounds like it may be a drop-in replacement for
 Diffie-Hellman (and in some scenarios, it can be).
@@ -1598,7 +1598,7 @@ If ML-KEM is used as an authentication method where the shared key is used for a
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-oscore-groupcomm">[I-D.ietf-core-oscore-groupcomm]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Mattsson, J. P.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Group Object Security for Constrained RESTful Environments (Group OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-groupcomm-26</span>, <time datetime="2025-07-05" class="refDate">5 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-26">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-26</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Mattsson, J. P.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Group Object Security for Constrained RESTful Environments (Group OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-groupcomm-27</span>, <time datetime="2025-09-12" class="refDate">12 September 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-27">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-27</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="KEMMY24">[KEMMY24]</dt>
         <dd>

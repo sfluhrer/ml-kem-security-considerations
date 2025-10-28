@@ -5,14 +5,14 @@
 Crypto Forum                                                  S. Fluhrer
 Internet-Draft                                             Cisco Systems
 Intended status: Informational                                   Q. Dang
-Expires: 16 February 2026                                           NIST
+Expires: 1 May 2026                                                 NIST
                                                        J. Preuß Mattsson
                                                                 Ericsson
                                                                K. Milner
                                                               Quantinuum
                                                                  D. Shiu
                                                        Arqit Quantum Inc
-                                                          15 August 2025
+                                                         28 October 2025
 
 
                      ML-KEM Security Considerations
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 February 2026.
+   This Internet-Draft will expire on 1 May 2026.
 
 Copyright Notice
 
@@ -118,13 +118,14 @@ Table of Contents
 
    One common misunderstanding of the term KEM is the expectation that
    Bob freely chooses the shared secret, and encrypts that when sending
-   to Alice.  What actually happens in ML-KEM is that randomness from
-   both sides are used to contribute to the shared secret.  That is, ML-
-   KEM internally generates the shared secret in a way that Bob cannot
-   select the value.  Now, Bob can generate a number of ciphertext/
-   shared secret pairs, and select the shared secret that he prefers,
-   but he cannot freely choose it or make secrets shared with two
-   parties be equal.
+   to Alice.  While there do exist KEMs where this is true, this is not
+   true for ML-KEM.  In ML-KEM is that randomness from both sides are
+   used to contribute to the shared secret.  That is, ML-KEM internally
+   generates the shared secret in a way that Bob cannot select the
+   value.  Now, Bob can generate a number of ciphertext/shared secret
+   pairs, and select the shared secret that he prefers, but he cannot
+   freely choose it or make the secrets across two different ML-KEM
+   exchanges be equal.
 
    A KEM (such as ML-KEM) sounds like it may be a drop-in replacement
    for Diffie-Hellman (and in some scenarios, it can be).  However this
@@ -471,9 +472,9 @@ Table of Contents
               Tiloca, M., Selander, G., Palombini, F., Mattsson, J. P.,
               and R. Höglund, "Group Object Security for Constrained
               RESTful Environments (Group OSCORE)", Work in Progress,
-              Internet-Draft, draft-ietf-core-oscore-groupcomm-26, 5
-              July 2025, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-core-oscore-groupcomm-26>.
+              Internet-Draft, draft-ietf-core-oscore-groupcomm-27, 12
+              September 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-core-oscore-groupcomm-27>.
 
    [KEMMY24]  Schmieg, S., "Unbindable Kemmy Schmidt: ML-KEM is neither
               MAL-BIND-K-CT nor MAL-BIND-K-PK", 2024,
