@@ -135,12 +135,13 @@ The idea is that someone in the middle, listening into the exchanged public keys
 Hence, Alice and Bob can use their shared secret key to establish secure symmetric communication.
 
 One common misunderstanding of the term KEM is the expectation that Bob freely chooses the
-shared secret, and encrypts that when sending to Alice. What actually happens in
-ML-KEM is that randomness from both sides are used to contribute to the
+shared secret, and encrypts that when sending to Alice.
+While there do exist KEMs where this is true, this is not true for ML-KEM.
+In ML-KEM is that randomness from both sides are used to contribute to the
 shared secret. That is, ML-KEM internally generates the shared secret in a
 way that Bob cannot select the value. Now, Bob can generate a number of
 ciphertext/shared secret pairs, and select the shared secret that he prefers,
-but he cannot freely choose it or make secrets shared with two parties be
+but he cannot freely choose it or make the secrets across two different ML-KEM exchanges be
 equal.
 
 A KEM (such as ML-KEM) sounds like it may be a drop-in replacement for
