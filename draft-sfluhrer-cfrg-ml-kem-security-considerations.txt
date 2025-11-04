@@ -5,14 +5,14 @@
 Crypto Forum                                                  S. Fluhrer
 Internet-Draft                                             Cisco Systems
 Intended status: Informational                                   Q. Dang
-Expires: 1 May 2026                                                 NIST
+Expires: 8 May 2026                                                 NIST
                                                        J. Preuß Mattsson
                                                                 Ericsson
                                                                K. Milner
                                                               Quantinuum
                                                                  D. Shiu
                                                        Arqit Quantum Inc
-                                                         28 October 2025
+                                                         4 November 2025
 
 
                      ML-KEM Security Considerations
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 May 2026.
+   This Internet-Draft will expire on 8 May 2026.
 
 Copyright Notice
 
@@ -91,7 +91,7 @@ Table of Contents
 
 1.  Introduction
 
-   A Cryptographically Relevent Quantum Computer (CRQC) is a large and
+   A Cryptographically Relevant Quantum Computer (CRQC) is a large and
    reliable Quantum Computer that can break protocols which rely on the
    traditional RSA, DH, or ECDH methods of securely exchanging keys.
    Even though it is not believed that, at the time of this writing,
@@ -112,7 +112,7 @@ Table of Contents
    Bob then sends the ciphertext to Alice, who uses her private key to
    generate the shared secret key.  The idea is that someone in the
    middle, listening into the exchanged public keys and ciphertexts will
-   not be able to recovered the shared secret key that Alice and Bob
+   not be able to recover the shared secret key that Alice and Bob
    learns.  Hence, Alice and Bob can use their shared secret key to
    establish secure symmetric communication.
 
@@ -136,7 +136,7 @@ Table of Contents
    Hellman which is asynchronous and non-interactive.  In particular,
    for an 'ephemeral-ephemeral' key establishment, an encapsulator
    cannot pre-emptively initiate a key establishment, but requires an
-   encapulation key.  Nor can participants compute parts of the key
+   encapsulation key.  Nor can participants compute parts of the key
    establishment in parallel as is the case with Diffie-Hellman.  As
    long as the application can handle larger public keys and
    ciphertexts, a KEM is a drop-in replacement for 'ephemeral-ephemeral'
@@ -146,7 +146,7 @@ Table of Contents
    and Bob can use that long term public key to establish communication.
    A KEM is not a drop-in replacement in applications such as the
    Diffie-Hellman ratchet in Signal [SIGNAL], implicit 'ephemeral-
-   static' DH authentication in Noise [NOISE], Wireguard [WIRE], and
+   static' DH authentication in Noise [NOISE], WireGuard [WIRE], and
    EDHOC [RFC9528], and 'static-static' configurations in CMS [RFC6278]
    and Group OSCORE [I-D.ietf-core-oscore-groupcomm], where both sides
    have long-term public keys.
@@ -154,10 +154,10 @@ Table of Contents
    ML-KEM can also be used to perform public key encryption, that is,
    where a sender encrypts a message with a public key, and only the
    holder of the private key can decrypt the message.  To use ML-KEM for
-   this task, it is recommended that you it within the Hybrid Public Key
-   Encryption framework [RFC9180] to perform the operations.  You can
-   use [I-D.connolly-cfrg-hpke-mlkem], which is three ML-KEM perameter
-   sets that has been proposed for HPKE.
+   this task, it is recommended that you use it within the Hybrid Public
+   Key Encryption framework [RFC9180] to perform the operations.  You
+   can use [I-D.connolly-cfrg-hpke-mlkem], which is three ML-KEM
+   parameter sets that has been proposed for HPKE.
 
 2.  Using ML-KEM
 
@@ -175,7 +175,7 @@ Table of Contents
    treated with the same safeguards as the private key.  The seed format
    allows fast reconstruction of the expanded key pair format, and
    elides the need for format checks of the expanded key formats.  Other
-   intermediate data beside the matrix A_hat must be securely deleted.
+   intermediate data besides the matrix A_hat must be securely deleted.
    A_hat may be saved for repeated Decapsulation operation(s) with the
    same decapsulation key.
 
@@ -249,7 +249,7 @@ Table of Contents
    It may be that some libraries combine the validation and the
    encapsulation step; implementations should determine whether the
    library they are using does.  For static public keys, the
-   Encapsulation Key Check only needs to be performed once.
+   Decapsulation Key Check only needs to be performed once.
 
 2.4.  ML-KEM Parameter Sets
 
@@ -288,7 +288,7 @@ Table of Contents
      | ML-KEM-1024 |         109000 |         77000 |         99000 |
      +-------------+----------------+---------------+---------------+
 
-         Table 2: Single-core performance in operation per second
+        Table 2: Single-core performance in operations per second
                   (higher is better) on AMD Ryzen 7 7700
 
    Data sourced from [EBACS]
@@ -421,8 +421,8 @@ Table of Contents
    speaking this will never happen.  For all three parameter sets, the
    probability is so low that most likely an actual decapsulation
    failure because of this will never be seen for any ML-KEM exchange
-   anywhere (not only for your protocol, but over all protocols that
-   uses ML-KEM).
+   anywhere (not only for your protocol, but over all protocols that use
+   ML-KEM).
 
    If the adversary has control over the ML-KEM private key, it has been
    shown that adversary can cause a ‘misbinding’ between the shared key
