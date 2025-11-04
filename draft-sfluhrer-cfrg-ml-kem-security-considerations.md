@@ -117,7 +117,7 @@ and what you need to do to use it securely.
 
 # Introduction
 
-A Cryptographically Relevent Quantum Computer (CRQC) is a large and reliable Quantum Computer that can break protocols which rely on the
+A Cryptographically Relevant Quantum Computer (CRQC) is a large and reliable Quantum Computer that can break protocols which rely on the
 traditional RSA, DH, or ECDH methods of securely exchanging keys.  Even
 though it is not believed that, at the time of this writing, there exists a CRQC,
 there still remains the possibility that an adversary may record the protocol
@@ -131,7 +131,7 @@ ML-KEM is a Key Encapsulation Mechanism (KEM), which can be used to generate a s
 A KEM is a public key mechanism where one side (Alice) can generate a public/private key pair, and send the public key to the other side (Bob).
 Bob then can use it to generate both a ciphertext and a shared secret key.
 Bob then sends the ciphertext to Alice, who uses her private key to generate the shared secret key.
-The idea is that someone in the middle, listening into the exchanged public keys and ciphertexts will not be able to recovered the shared secret key that Alice and Bob learns.
+The idea is that someone in the middle, listening into the exchanged public keys and ciphertexts will not be able to recover the shared secret key that Alice and Bob learns.
 Hence, Alice and Bob can use their shared secret key to establish secure symmetric communication.
 
 One common misunderstanding of the term KEM is the expectation that Bob freely chooses the
@@ -152,7 +152,7 @@ function of Alice&apos;s public key, and thus can only be useful only with that
 specific public key. Additionally, a KEM differs from Diffie-Hellman which is
 asynchronous and non-interactive. In particular, for an &apos;ephemeral-ephemeral&apos;
 key establishment, an encapsulator cannot pre-emptively initiate a key
-establishment, but requires an encapulation key. Nor can participants compute
+establishment, but requires an encapsulation key. Nor can participants compute
 parts of the key establishment in parallel as is the case with
 Diffie-Hellman. As long as the application can handle larger public keys and
 ciphertexts, a KEM is a drop-in replacement for &apos;ephemeral-ephemeral&apos; key
@@ -161,14 +161,14 @@ exchange in protocols like TLS {{RFC8446}} and SSH {{RFC4253}} as well as
 that is, in cases where Alice has a long term public key, and Bob can use that long term public key to establish communication.
 A KEM is not a drop-in replacement in applications such as the Diffie-Hellman
 ratchet in Signal {{SIGNAL}}, implicit &apos;ephemeral-static&apos; DH authentication
-in Noise {{NOISE}}, Wireguard {{WIRE}}, and EDHOC {{RFC9528}}, and
+in Noise {{NOISE}}, WireGuard {{WIRE}}, and EDHOC {{RFC9528}}, and
 &apos;static-static&apos; configurations in CMS {{RFC6278}} and Group OSCORE
 {{I-D.ietf-core-oscore-groupcomm}}, where both sides have long-term public
 keys.
 
 ML-KEM can also be used to perform public key encryption, that is, where a sender encrypts a message with a public key, and only the holder of the private key can decrypt the message.
-To use ML-KEM for this task, it is recommended that you it within the Hybrid Public Key Encryption framework {{RFC9180}} to perform the operations.
-You can use {{I-D.connolly-cfrg-hpke-mlkem}}, which is three ML-KEM perameter sets that has been proposed for HPKE.
+To use ML-KEM for this task, it is recommended that you use it within the Hybrid Public Key Encryption framework {{RFC9180}} to perform the operations.
+You can use {{I-D.connolly-cfrg-hpke-mlkem}}, which is three ML-KEM parameter sets that has been proposed for HPKE.
 
 # Using ML-KEM
 
@@ -186,7 +186,7 @@ but must be treated with the same safeguards as the private key.
 The seed format allows fast
 reconstruction of the expanded key pair format, and elides the need for
 format checks of the expanded key formats.
-Other intermediate data beside the matrix A_hat must be securely deleted.
+Other intermediate data besides the matrix A_hat must be securely deleted.
 A_hat may be saved for repeated Decapsulation operation(s) with the same decapsulation key.
 
 The public key can be freely published (and Bob will need it for his part of
@@ -247,7 +247,7 @@ be the same. The shared secret key is always 32 bytes for all parameter sets.
 
 It may be that some libraries combine the validation and the encapsulation
 step; implementations should determine whether the library they are using does. For static
-public keys, the Encapsulation Key Check only needs to be performed once.
+public keys, the Decapsulation Key Check only needs to be performed once.
 
 ## ML-KEM Parameter Sets
 
@@ -272,7 +272,7 @@ protocol).
 | ML-KEM-512  |   244000 |  153000 |   202000 |
 | ML-KEM-768  |   142000 |  103000 |   134000 |
 | ML-KEM-1024 |   109000 |   77000 |    99000 |
-{: #par-perf title="Single-core performance in operation per second (higher is better) on AMD Ryzen 7 7700"}
+{: #par-perf title="Single-core performance in operations per second (higher is better) on AMD Ryzen 7 7700"}
 Data sourced from {{EBACS}}
 
 
@@ -378,7 +378,7 @@ operation, where the output is distinguishable from random.
 With ML-KEM, there is a tiny probability of decapsulation failure.
 That is, even if Alice and Bob perform their roles honestly and the public key and ciphertext are transmitted correctly, there is a tiny probability that Alice and Bob will not derive the same shared key.
 However, even though that is a theoretical possibility, practically speaking this will never happen.
-For all three parameter sets, the probability is so low that most likely an actual decapsulation failure because of this will never be seen for any ML-KEM exchange anywhere (not only for your protocol, but over all protocols that uses ML-KEM).
+For all three parameter sets, the probability is so low that most likely an actual decapsulation failure because of this will never be seen for any ML-KEM exchange anywhere (not only for your protocol, but over all protocols that use ML-KEM).
 
 If the adversary has control over the ML-KEM private key, it has been shown that adversary can cause a ‘misbinding’ between the shared key and either the ciphertext or the public key.
 That is, by generating an impossible private key (a key that cannot occur with the standard ML-KEM key generation process), the adversary could be able to create public keys for which different ciphertexts or public keys may result in the same shared secret (these security notions are called MAL-BIND-K-CT and MAL-BIND-K-PK in the cryptographical literature {{CDM23}} {{KEMMY24}}).
