@@ -5,14 +5,14 @@
 Crypto Forum                                                  S. Fluhrer
 Internet-Draft                                             Cisco Systems
 Intended status: Informational                                   Q. Dang
-Expires: 8 May 2026                                                 NIST
+Expires: 10 May 2026                                                NIST
                                                        J. Preuß Mattsson
                                                                 Ericsson
                                                                K. Milner
                                                               Quantinuum
                                                                  D. Shiu
                                                        Arqit Quantum Inc
-                                                         4 November 2025
+                                                         6 November 2025
 
 
                      ML-KEM Security Considerations
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 May 2026.
+   This Internet-Draft will expire on 10 May 2026.
 
 Copyright Notice
 
@@ -140,16 +140,17 @@ Table of Contents
    establishment in parallel as is the case with Diffie-Hellman.  As
    long as the application can handle larger public keys and
    ciphertexts, a KEM is a drop-in replacement for 'ephemeral-ephemeral'
-   key exchange in protocols like TLS [RFC8446] and SSH [RFC4253] as
-   well as 'static-ephemeral' key exchange in protocols like ECIES/HPKE
-   [RFC9180], that is, in cases where Alice has a long term public key,
-   and Bob can use that long term public key to establish communication.
-   A KEM is not a drop-in replacement in applications such as the
-   Diffie-Hellman ratchet in Signal [SIGNAL], implicit 'ephemeral-
-   static' DH authentication in Noise [NOISE], WireGuard [WIRE], and
-   EDHOC [RFC9528], and 'static-static' configurations in CMS [RFC6278]
-   and Group OSCORE [I-D.ietf-core-oscore-groupcomm], where both sides
-   have long-term public keys.
+   key exchange in protocols like TLS [RFC8446], SSH [RFC4253],
+   Wireguard [WIRE], and EDHOC [RFC9528] as well as 'static-ephemeral'
+   key exchange in protocols like ECIES/HPKE [RFC9180], that is, in
+   cases where Alice has a long term public key, and Bob can use that
+   long term public key to establish communication.  A KEM is not a
+   drop-in replacement in applications such as the Diffie-Hellman
+   ratchet in Signal [SIGNAL], implicit 'ephemeral-static' DH
+   authentication in Noise [NOISE], WireGuard [WIRE], and EDHOC
+   [RFC9528], and 'static-static' configurations in CMS [RFC6278] and
+   Group OSCORE [I-D.ietf-core-oscore-groupcomm], where both sides have
+   long-term public keys.
 
    ML-KEM can also be used to perform public key encryption, that is,
    where a sender encrypts a message with a public key, and only the
