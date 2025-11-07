@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>ML-KEM Security Considerations</title>
+<meta content="Scott Fluhrer" name="author">
+<meta content="Quynh Dang" name="author">
+<meta content="John Preuß Mattsson" name="author">
+<meta content="Kevin Milner" name="author">
+<meta content="Daniel Shiu" name="author">
+<meta content="
+       NIST standardized ML-KEM as FIPS 203 in August 2024.  This document discusses
+how to use ML-KEM and how to use it within protocols - that is, what problem it solves,
+and what you need to do to use it securely. 
+    " name="description">
+<meta content="xml2rfc 3.31.0" name="generator">
+<meta content="ML-KEM" name="keyword">
+<meta content="draft-sfluhrer-cfrg-ml-kem-security-considerations-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.31.0
+    Python 3.12.12
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.1
+    intervaltree 3.1.0
+    Jinja2 3.1.6
+    lxml 5.3.1
+    platformdirs 4.5.0
+    pycountry 24.6.1
+    PyYAML 6.0.2
+    requests 2.32.5
+    wcwidth 0.2.14
+-->
+<link href="draft-sfluhrer-cfrg-ml-kem-security-considerations.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Lora SemiBold'), local('Lora-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light dark;
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  --font-mono: 'Oxygen Mono', monospace;
+  --font-title: "Sofia Sans Semi Condensed", sans-serif;
+  scrollbar-color: #bbb #eee;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+section {
+  clear: both;
+}
+.section-number {
+  padding-right: 0.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 680;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+h1#title {
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1#title, h1#rfcnum {
+  margin: 1.5em 0 0.2em;
+}
+h1#rfcnum + h1#title {
+  margin: 0.2em 0;
+}
+
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+#abstract+p {
+  font-size: 18px;
+  line-height: 24px;
+}
+#abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 16px;
+  line-height: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+/* font-family isn't space-separated, but =~ will have to do */
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+  & :is(ol, ul) {
+    margin-left: 1em;
+  }
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+  & li {
+    margin-top: 0.5em;
+  }
+}
+:is(ul, ol).compact, .ulCompact, .olCompact {
+  margin: 0 0 0 2em;
+  & li {
+    margin: 0;
+    & :first-child { margin-top: 0; }
+    & :last-child { margin-bottom: 0; }
+  }
+}
+
+/* definition lists */
+dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+  &.olPercent {
+    --indent: 5ch;
+    & > dt {
+      min-width: calc(var(--indent) - 2ch);
+    }
+  }
+  &.olPercent > dt {
+    float: none;
+  }
+
+  dl > dd > & {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+  }
+}
+dl:not(.dlNewline) > dt {
+  float: left;
+  margin-right: 2ch;
+  min-width: 8ch;
+}
+dl > dd {
+  margin-bottom: .8em;
+  margin-left: var(--indent) !important; /* stupid element overrides */
+  min-height: 2ex;
+}
+:is(dl.compact, .dlCompact) > dd {
+  margin-bottom: 0;
+  & > :is(:first-child, .break:first-child + *) {
+    margin-top: 0;
+  }
+  & > :is(:last-child) {
+    margin-bottom: 0;
+  }
+}
+:is(dd, span).break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href].selfRef, .iref + a[href].internal {
+  color: var(--text-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px var(--font-mono);
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines
+     note: this fails if these blocks take an entire line,
+     a different solution would be great */
+  line-height: 0;
+}
+:is(h1, h2, h3, h4, h5, h6) :is(tt, code) {
+  font-size: 84%;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+  caption-side: bottom;
+}
+@media screen {
+  /* Auto-collapse boilerplate. */
+  :is(#status-of-memo, #copyright) p {
+    margin: -2px 0;
+    max-height: 0;
+    transition: max-height 2s ease, margin 0.5s ease 0.5s;
+    overflow: hidden;
+  }
+  :is(#status-of-memo, #copyright):hover p,
+  :is(#status-of-memo, #copyright) h2:target ~ p {
+    margin: 0.5em 0;
+    max-height: 500px;
+    overflow: auto;
+  }
+  pre, svg {
+    display: inline-block;
+    /* In the horizontal direction, sometimes people make over-sized figures.
+       Scrollbars for those is therefore necessary: auto adds them as necessary..
+       In the vertical direction, the line-height can combine with the font
+       asender/descender height to produce scrollbars: hidden avoids that. */
+    overflow: auto hidden;
+  }
+  pre {
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  svg {
+    max-width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  :is(pre, svg) + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  width: auto;
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+table .text-left {
+  text-align: left;
+}
+table .text-center {
+  text-align: center;
+}
+table .text-right {
+  text-align: right;
+}
+
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+:is(tr:nth-child(2n), thead+tbody > tr:nth-child(2n+1)) > td {
+  background-color: var(--background-color);
+}
+:is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
+  background-color: var(--highlight-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 0 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+  &[href] {
+    color: var(--pilcrow-weak);
+    &:hover { text-decoration: none; }
+  }
+}
+@media not print {
+  :hover > a.pilcrow {
+    opacity: 1;
+  }
+  a.pilcrow[href]:hover {
+    color: var(--pilcrow-strong);
+    background-color: transparent;
+  }
+}
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: var(--small-font-size);
+}
+.role {
+  font-variant: all-small-caps;
+}
+sub, sup {
+  line-height: 1;
+  font-size: 80%;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 15ch;
+  & dt {
+    width: var(--identifier-width);
+    min-width: var(--identifier-width);
+    clear: left;
+    float: left;
+    text-align: right;
+    margin-right: 1ch;
+  }
+  & dd {
+    margin: 0;
+    margin-left: calc(1em + var(--identifier-width)) !important;
+    min-width: 5em;
+  }
+  & .authors {
+    & .author {
+      display: inline-block;
+      margin-right: 1.5em;
+    }
+    & .org {
+      font-style: italic;
+    }
+  }
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+
+  & nav {
+    & ul {
+      margin: 0 0.5em 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    & li {
+      line-height: 1.3em;
+      margin: 2px 0;
+      padding-left: 1.2em;
+      text-indent: -1.2em;
+    }
+  }
+  & a.xref {
+    white-space: normal;
+  }
+}
+
+.references {
+  & > dt {
+    text-align: right;
+    font-weight: bold;
+    min-width: 10ch;
+    margin-right: 1.5ch;
+    &:target::before {
+      content: "⇒";
+      margin: 0 10px 0 -25px;
+    }
+  }
+  & > dd {
+    margin-left: 12ch !important;
+    overflow: visible;
+    & .refInstance {
+      margin-bottom: 0.8em;
+    }
+    & .ascii {
+      margin-bottom: 0.25em;
+    }
+  }
+}
+
+#rfc\.index\.index + ul {
+  margin-left: 0;
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  max-width: 20em;
+  margin: 1em auto 1em 0;
+
+  & .nameRole {
+    font-weight: 700;
+    margin-left: 0;
+  }
+  & .label {
+    margin: 0.5em 0;
+  }
+  & .type {
+    display: none;
+  }
+  & .alternative-contact {
+    margin: 0.5em 0 0.25em 0;
+  }
+  & .non-ascii {
+    margin: 0 0 0 2em;
+  }
+  & div.left {
+    text-align: left;
+  }
+  & div.right {
+    text-align: right;
+  }
+}
+
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+/* Comments */
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+
+@media screen {
+  #toc nav {
+    font-family: var(--font-title);
+    font-weight: 360;
+    & > ul { margin-bottom: 2em; }
+    & ul {
+      margin: 0 0 0 4px;
+      & :is(p, li) {
+        margin: 2px 0;
+      }
+    }
+  }
+  #toc a.toplink {
+    float: right;
+  }
+}
+@media not screen {
+  #toc a.toplink {
+    display: none;
+  }
+}
+
+
+/* TOC layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 1px 0 0 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+    &::before { /* css hamburger */
+      float: right;
+      position: relative;
+      width: 1em;
+      height: 1px;
+      left: -164px;
+      margin: 8px 0 0 0;
+      background: white none repeat scroll 0 0;
+      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+      content: "";
+    }
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active {
+    opacity: 1;
+    & nav { display: block; }
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:is(:link, :focus, :hover),
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin: 2px 0.5em 0;
+  }
+}
+
+/* TOC layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+  #toc a.toplink {
+    margin: 8px 0.5em 0;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre, .vcard {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  :is(h2, h3, h4, h5, h6)+*, dd {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Dark mode. */
+@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
+
+/* SVG Trick: a prefix match works because only black and white are allowed */
+svg :is([stroke="black"], [stroke^="#000"]) {
+  stroke: var(--text-color);
+}
+svg :is([stroke="white"], [stroke^="#fff"]) {
+  stroke: var(--background-color);
+}
+svg :is([fill="black"], [fill^="#000"], :not([fill])) {
+  fill: var(--text-color);
+}
+svg :is([fill="white"], [fill^="#fff"]) {
+  fill: var(--background-color);
+}
+</style>
+
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">ML-KEM Security</td>
+<td class="right">November 2025</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Fluhrer, et al.</td>
+<td class="center">Expires 11 May 2026</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Crypto Forum</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-sfluhrer-cfrg-ml-kem-security-considerations-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2025-11-07" class="published">7 November 2025</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Informational</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2026-05-11">11 May 2026</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">S. Fluhrer</div>
+<div class="org">Cisco Systems</div>
+</div>
+<div class="author">
+      <div class="author-name">Q. Dang</div>
+<div class="org">NIST</div>
+</div>
+<div class="author">
+      <div class="author-name">J. Preuß Mattsson</div>
+<div class="org">Ericsson</div>
+</div>
+<div class="author">
+      <div class="author-name">K. Milner</div>
+<div class="org">Quantinuum</div>
+</div>
+<div class="author">
+      <div class="author-name">D. Shiu</div>
+<div class="org">Arqit Quantum Inc</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">ML-KEM Security Considerations</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">NIST standardized ML-KEM as FIPS 203 in August 2024.  This document discusses
+how to use ML-KEM and how to use it within protocols - that is, what problem it solves,
+and what you need to do to use it securely.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-about-this-document">
+<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">
+        The latest revision of this draft can be found at <span><a href="https://sfluhrer.github.io/ml-kem-security-considerations/draft-sfluhrer-cfrg-ml-kem-security-considerations.html">https://sfluhrer.github.io/ml-kem-security-considerations/draft-sfluhrer-cfrg-ml-kem-security-considerations.html</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-sfluhrer-cfrg-ml-kem-security-considerations/">https://datatracker.ietf.org/doc/draft-sfluhrer-cfrg-ml-kem-security-considerations/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">
+        Discussion of this document takes place on the
+        Crypto Forum Research Group mailing list (<span><a href="mailto:cfrg@irtf.org">mailto:cfrg@irtf.org</a></span>),
+        which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/cfrg/">https://mailarchive.ietf.org/arch/browse/cfrg/</a></span>.
+        Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/cfrg/">https://www.ietf.org/mailman/listinfo/cfrg/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+<p id="section-note.1-4">Source for this draft and an issue tracker can be found at
+        <span><a href="https://github.com/sfluhrer/ml-kem-security-considerations">https://github.com/sfluhrer/ml-kem-security-considerations</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 11 May 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2025 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-using-ml-kem" class="internal xref">Using ML-KEM</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-ml-kem-key-generation" class="internal xref">ML-KEM Key Generation</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
+                <p id="section-toc.1-1.2.2.2.1" class="keepWithNext"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-ml-kem-encapsulation" class="internal xref">ML-KEM Encapsulation</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-ml-kem-decapsulation" class="internal xref">ML-KEM Decapsulation</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-ml-kem-parameter-sets" class="internal xref">ML-KEM Parameter Sets</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-kem-security-considerations" class="internal xref">KEM Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-ml-kem-security-considerati" class="internal xref">ML-KEM Security Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-issues-that-are-likely-not-" class="internal xref">Issues that are likely not a concern</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.1">
+                    <p id="section-toc.1-1.4.2.1.2.1.1"><a href="#section-4.1.1" class="auto internal xref">4.1.1</a>.  <a href="#name-decapsulation-failure" class="internal xref">Decapsulation failure</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.2">
+                    <p id="section-toc.1-1.4.2.1.2.2.1"><a href="#section-4.1.2" class="auto internal xref">4.1.2</a>.  <a href="#name-ml-kem-operations-not-being" class="internal xref">ML-KEM operations not being constant time</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">A Cryptographically Relevant Quantum Computer (CRQC) is a large and reliable Quantum Computer that can break protocols which rely on the
+traditional RSA, DH, or ECDH methods of securely exchanging keys.  Even
+though it is not believed that, at the time of this writing, there exists a CRQC,
+there still remains the possibility that an adversary may record the protocol
+exchange, and then later (when they have access to a CRQC) go ahead and read
+the traffic.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Because of this threat, NIST has published FIPS 203 <span>[<a href="#FIPS203" class="cite xref">FIPS203</a>]</span>, which standardizes a method for allowing two systems to securely exchange keying material and which is not vulnerable to a CRQC.
+This method is based on module lattices, and is called ML-KEM.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">ML-KEM is a Key Encapsulation Mechanism (KEM), which can be used to generate a shared secret key between two parties.
+A KEM is a public key mechanism where one side (Alice) can generate a public/private key pair, and send the public key to the other side (Bob).
+Bob then can use it to generate both a ciphertext and a shared secret key.
+Bob then sends the ciphertext to Alice, who uses her private key to generate the shared secret key.
+The idea is that someone in the middle, listening into the exchanged public keys and ciphertexts will not be able to recover the shared secret key that Alice and Bob learns.
+Hence, Alice and Bob can use their shared secret key to establish secure symmetric communication.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">One common misunderstanding of the term KEM is the expectation that Bob freely chooses the
+shared secret, and encrypts that when sending to Alice.
+While there do exist KEMs where this is true, this is not true for ML-KEM.
+In ML-KEM is that randomness from both sides are used to contribute to the
+shared secret. That is, ML-KEM internally generates the shared secret in a
+way that Bob cannot select the value. Now, Bob can generate a number of
+ciphertext/shared secret pairs, and select the shared secret that he prefers,
+but he cannot freely choose it or make the secrets across two different ML-KEM exchanges be
+equal.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">A KEM (such as ML-KEM) sounds like it may be a drop-in replacement for
+Diffie-Hellman (and in some scenarios, it can be).
+However this is not always the case. In Diffie-Hellman, the parties
+exchange two public keys, whereas in a KEM, the ciphertext is necessarily a
+function of Alice's public key, and thus can only be useful only with that
+specific public key. Additionally, a KEM differs from Diffie-Hellman which is
+asynchronous and non-interactive. In particular, for an 'ephemeral-ephemeral'
+key establishment, an encapsulator cannot pre-emptively initiate a key
+establishment, but requires an encapsulation key. Nor can participants compute
+parts of the key establishment in parallel as is the case with
+Diffie-Hellman. As long as the application can handle larger public keys and
+ciphertexts, a KEM is a drop-in replacement for 'ephemeral-ephemeral' key
+exchange in protocols like TLS <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>, SSH <span>[<a href="#RFC4253" class="cite xref">RFC4253</a>]</span>, Wireguard <span>[<a href="#WIRE" class="cite xref">WIRE</a>]</span>, and EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span> as well as
+'static-ephemeral' key exchange in protocols like ECIES/HPKE <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span>,
+that is, in cases where Alice has a long term public key, and Bob can use that long term public key to establish communication.
+A KEM is not a drop-in replacement in applications such as the Diffie-Hellman
+ratchet in Signal <span>[<a href="#SIGNAL" class="cite xref">SIGNAL</a>]</span>, implicit 'ephemeral-static' DH authentication
+in Noise <span>[<a href="#NOISE" class="cite xref">NOISE</a>]</span>, WireGuard <span>[<a href="#WIRE" class="cite xref">WIRE</a>]</span>, and EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, and
+'static-static' configurations in CMS <span>[<a href="#RFC6278" class="cite xref">RFC6278</a>]</span> and Group OSCORE
+<span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>, where both sides have long-term public
+keys.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">ML-KEM can also be used to perform public key encryption, that is, where a sender encrypts a message with a public key, and only the holder of the private key can decrypt the message.
+To use ML-KEM for this task, it is recommended that you use it within the Hybrid Public Key Encryption framework <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span> to perform the operations.
+You can use <span>[<a href="#I-D.connolly-cfrg-hpke-mlkem" class="cite xref">I-D.connolly-cfrg-hpke-mlkem</a>]</span>, which is three ML-KEM parameter sets that has been proposed for HPKE.<a href="#section-1-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="using-ml-kem">
+<section id="section-2">
+      <h2 id="name-using-ml-kem">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-using-ml-kem" class="section-name selfRef">Using ML-KEM</a>
+      </h2>
+<p id="section-2-1">To use ML-KEM, there are three steps involved:<a href="#section-2-1" class="pilcrow">¶</a></p>
+<div id="ml-kem-key-generation">
+<section id="section-2.1">
+        <h3 id="name-ml-kem-key-generation">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-ml-kem-key-generation" class="section-name selfRef">ML-KEM Key Generation</a>
+        </h3>
+<p id="section-2.1-1">The first step for Alice is to generate a public and private keypair.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">In FIPS 203, the key generation function is <code>ML-KEM.KeyGen()</code> (see section 7.1 of
+<span>[<a href="#FIPS203" class="cite xref">FIPS203</a>]</span>).  It internally calls the random number generator for a seed and
+produces both a public key (known as an encapsulation key in FIPS 203) and a
+private key (known as a decapsulation key). The seed can be securely stored,
+but must be treated with the same safeguards as the private key.
+The seed format allows fast
+reconstruction of the expanded key pair format, and elides the need for
+format checks of the expanded key formats.
+Other intermediate data besides the matrix A_hat must be securely deleted.
+A_hat may be saved for repeated Decapsulation operation(s) with the same decapsulation key.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1-3">The public key can be freely published (and Bob will need it for his part of
+the process); this step may be performed simply by transmitting the key to
+Bob.  However, the private key (in either format) must be kept secret.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.1-4">It is essential that the public key is generated correctly when the initial
+key generation is performed. Lattice public keys consist of a lattice and a secret
+hidden by an error term; if additional error can be introduced into the
+public key generation stage, then the success of decapsulation can reveal
+enough of the secret that successive queries determine the private
+key. Notably, this means a public key can be 'poisoned' such that a future
+adversary can recover the private key even though it will appear correct in
+normal usage.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="ml-kem-encapsulation">
+<section id="section-2.2">
+        <h3 id="name-ml-kem-encapsulation">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-ml-kem-encapsulation" class="section-name selfRef">ML-KEM Encapsulation</a>
+        </h3>
+<p id="section-2.2-1">The second step is for Bob to generate a ciphertext and a shared secret key.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2-2">To perform this step, Bob would first run the Encapsulation Key Check on
+Alice's public key as outlined at the beginning of section 7.2 of
+<span>[<a href="#FIPS203" class="cite xref">FIPS203</a>]</span>.  If that test passes, then Bob would perform what FIPS 203
+terms as ML-KEM.Encaps() (see section 7.2 of <span>[<a href="#FIPS203" class="cite xref">FIPS203</a>]</span>).  This step takes
+the validated public key, internally calls the random number generator for a
+seed, and produces both a ciphertext and a 32-byte shared secret
+key.
+Intermediate data other than the ciphertext, shared secret key and the matrix A_hat (and the "matrix data" internal to ML-KEM, which can be deduced from the public key) must be securely deleted.
+The matrix A_hat may be saved and reused for later encapsulation operations with the same encapsulation key.<a href="#section-2.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.2-3">The ciphertext can be transmitted back to Alice; if the exchange is
+successful, the 32-byte shared secret key will be the key shared with Alice.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.2-4">It may be that some libraries combine the validation and the encapsulation
+step; implementations should determine whether the library they are using does. For static
+public keys, the Encapsulation Key Check only needs to be performed once.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="ml-kem-decapsulation">
+<section id="section-2.3">
+        <h3 id="name-ml-kem-decapsulation">
+<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-ml-kem-decapsulation" class="section-name selfRef">ML-KEM Decapsulation</a>
+        </h3>
+<p id="section-2.3-1">The third and final step is for Alice to take the ciphertext and generate the
+shared secret key.<a href="#section-2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.3-2">To perform this step, Alice would first run the Decapsulation Key Check on
+Bob's ciphertext as outlined at the beginning of section 7.3 of <span>[<a href="#FIPS203" class="cite xref">FIPS203</a>]</span>.
+If that test passes, then Alice would perform what FIPS 203 terms as
+<code>ML-KEM.Decaps()</code> (see section 7.3 of <span>[<a href="#FIPS203" class="cite xref">FIPS203</a>]</span>).  This step takes the
+ciphertext from Bob and the private key that was previously generated by
+Alice, and produces a 32-byte shared secret key. It also repeats the
+encapsulation process to ensure that the ciphertext was created strictly
+according to the specification, with invalid ciphertexts generating an unrelated 32 byte value that gives no information.
+Although not necessary for the correctness of the key establishment,
+this step should not be skipped as a maliciously generated ciphertext could
+induce decapsulation failures that can allow an attacker to deduce the private key with a sufficient number of exchanges.
+Intermediate data other than the shared secret key and the matrix A_hat must be securely deleted.
+The matrix A_hat may be saved for later Decapsulation operations with the same decapsulation key.<a href="#section-2.3-2" class="pilcrow">¶</a></p>
+<p id="section-2.3-3">If the exchange is successful, the 32-byte key generated on both sides will
+be the same. The shared secret key is always 32 bytes for all parameter sets.<a href="#section-2.3-3" class="pilcrow">¶</a></p>
+<p id="section-2.3-4">It may be that some libraries combine the validation and the encapsulation
+step; implementations should determine whether the library they are using does. For static
+public keys, the Decapsulation Key Check only needs to be performed once.<a href="#section-2.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="ml-kem-parameter-sets">
+<section id="section-2.4">
+        <h3 id="name-ml-kem-parameter-sets">
+<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-ml-kem-parameter-sets" class="section-name selfRef">ML-KEM Parameter Sets</a>
+        </h3>
+<p id="section-2.4-1">FIPS 203 specifies three parameter sets; ML-KEM-512, ML-KEM-768 and
+ML-KEM-1024.  It is assumed that Alice and Bob both know which parameter set
+they use (either by negotiation or by having one selection fixed in the
+protocol).<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.4-2"><a href="#par-sets" class="auto internal xref">Table 1</a> shows the sizes of the cryptographic material of ML-KEM for each parameter set, as well as their relative cryptographic strength:<a href="#section-2.4-2" class="pilcrow">¶</a></p>
+<span id="name-pk-public-key-sk-private-ke"></span><div id="par-sets">
+<table class="center" id="table-1">
+          <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-pk-public-key-sk-private-ke" class="selfRef">pk = public key, sk = private key, expanded form, ct = ciphertext, ss = shared key, all lengths in bytes</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1"> </th>
+              <th class="text-right" rowspan="1" colspan="1">pk size</th>
+              <th class="text-right" rowspan="1" colspan="1">sk size</th>
+              <th class="text-right" rowspan="1" colspan="1">ct size</th>
+              <th class="text-center" rowspan="1" colspan="1">ss size</th>
+              <th class="text-center" rowspan="1" colspan="1">as strong as</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ML-KEM-512</td>
+              <td class="text-right" rowspan="1" colspan="1">800</td>
+              <td class="text-right" rowspan="1" colspan="1">1632</td>
+              <td class="text-right" rowspan="1" colspan="1">768</td>
+              <td class="text-center" rowspan="1" colspan="1">32</td>
+              <td class="text-center" rowspan="1" colspan="1">AES-128</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ML-KEM-768</td>
+              <td class="text-right" rowspan="1" colspan="1">1184</td>
+              <td class="text-right" rowspan="1" colspan="1">2400</td>
+              <td class="text-right" rowspan="1" colspan="1">1088</td>
+              <td class="text-center" rowspan="1" colspan="1">32</td>
+              <td class="text-center" rowspan="1" colspan="1">AES-192</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ML-KEM-1024</td>
+              <td class="text-right" rowspan="1" colspan="1">1568</td>
+              <td class="text-right" rowspan="1" colspan="1">3168</td>
+              <td class="text-right" rowspan="1" colspan="1">1568</td>
+              <td class="text-center" rowspan="1" colspan="1">32</td>
+              <td class="text-center" rowspan="1" colspan="1">AES-256</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<p id="section-2.4-4"><a href="#par-perf" class="auto internal xref">Table 2</a> shows an example of ML-KEM performance of each parameter set on one specific platform:<a href="#section-2.4-4" class="pilcrow">¶</a></p>
+<span id="name-single-core-performance-in-"></span><div id="par-perf">
+<table class="center" id="table-2">
+          <caption>
+<a href="#table-2" class="selfRef">Table 2</a>:
+<a href="#name-single-core-performance-in-" class="selfRef">Single-core performance in operations per second (higher is better) on AMD Ryzen 7 7700</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1"> </th>
+              <th class="text-right" rowspan="1" colspan="1">key generation</th>
+              <th class="text-right" rowspan="1" colspan="1">encapsulation</th>
+              <th class="text-right" rowspan="1" colspan="1">decapsulation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ML-KEM-512</td>
+              <td class="text-right" rowspan="1" colspan="1">244000</td>
+              <td class="text-right" rowspan="1" colspan="1">153000</td>
+              <td class="text-right" rowspan="1" colspan="1">202000</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ML-KEM-768</td>
+              <td class="text-right" rowspan="1" colspan="1">142000</td>
+              <td class="text-right" rowspan="1" colspan="1">103000</td>
+              <td class="text-right" rowspan="1" colspan="1">134000</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ML-KEM-1024</td>
+              <td class="text-right" rowspan="1" colspan="1">109000</td>
+              <td class="text-right" rowspan="1" colspan="1">77000</td>
+              <td class="text-right" rowspan="1" colspan="1">99000</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<p id="section-2.4-6">Data sourced from <span>[<a href="#EBACS" class="cite xref">EBACS</a>]</span><a href="#section-2.4-6" class="pilcrow">¶</a></p>
+<p id="section-2.4-7">As can be seen from <a href="#par-sets" class="auto internal xref">Table 1</a> and <a href="#par-perf" class="auto internal xref">Table 2</a>, ML-KEM has significantly
+larger public keys and ciphertexts than ECDH but very good performance.<a href="#section-2.4-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="kem-security-considerations">
+<section id="section-3">
+      <h2 id="name-kem-security-considerations">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-kem-security-considerations" class="section-name selfRef">KEM Security Considerations</a>
+      </h2>
+<p id="section-3-1">This section pertains to KEM (Key Encapsulation Mechanisms) in general,
+including ML-KEM.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">A KEM requires high-quality source of entropy during both
+the keypair generation and ciphertext generation steps.  If an adversary can
+recover the random bits used in either of these processes, they can recover
+the shared secret.  If an adversary can recover the random bits used during
+key generation, they can also recover the secret key.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">Standard cryptographical analysis assumes that the adversary has access only to the exchanged messages.
+Depending on the deployment scenario, the adversary may have access to various side channels, such as the amount of time taken during the cryptographical computations, or possibly the power used or the electrical noise generated.
+The implementor will need to assess this possibility, and possibly use an implementation that is resistant to such leakage.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">Alice needs to keep her private key secret. It is recommended that they
+zeroize the private key when they will have no further need of it,
+that is, when they know they never need to decapsulate any further ciphertexts with it.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">A KEM (including ML-KEM) provides no authentication of either communicating
+party. If an adversary could replace either the public key or the ciphertext
+with its own, it would generate a shared key with Alice or Bob.  Hence, it is
+important that the protocol that uses a KEM lets Bob be able to verify that
+the public key he obtains came from Alice and lets Alice verify that the ciphertext
+came from Bob (that is, an entity that Alice is willing to
+communicate with). Such verification can be performed by cryptographic
+methods such as a digital signature or a MAC to verify integrity of the
+protocol exchange.<a href="#section-3-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="ml-kem-security-considerations">
+<section id="section-4">
+      <h2 id="name-ml-kem-security-considerati">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-ml-kem-security-considerati" class="section-name selfRef">ML-KEM Security Considerations</a>
+      </h2>
+<p id="section-4-1">This section pertains specifically to ML-KEM, and may not be true of KEMs in
+general.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">The fundamental security property of ML-KEM is that someone listening to the exchanges
+(and thus obtains both the public key and the ciphertext) cannot reconstruct
+the shared secret key, and this is true even if the adversary has access to a
+CRQC. ML-KEM is IND-CCA2 secure; that is, it remains secure even if an
+adversary is able to submit arbitrary ciphertexts used a fixed public key and observe the resulting
+shared key. Submitting invalid ciphertexts to <code>ML-KEM.Decaps()</code> does not help
+the attacker obtain information about the decryption key of the PKE-Decrypt
+function inside the ML-KEM.Decaps(). Substituting the public key Alice sends
+Bob by another public key chosen by the attacker will not help the attacker
+get any information about Alice's private key, it would just make Alice and
+Bob not have a same shared secret key. However, if it is possible to
+substitute the copy of the public key for both Alice and Bob, an attacker can
+introduce a malicious public key where the same private key can be used for
+decapsulation, but the probability of decryption failure is marginally
+higher. As decryption failures can leak information about the secret
+decapulation key, it is important that Alice keeps a secure copy of the
+public key as part of her secret key. For practical purposes, IND-CCA2 means
+that ML-KEM is secure to use with static public keys.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">ML-KEM requires that a source of random bits with security strength greater than or equal to the security strength of the ML-KEM parameter set be used when generating the keypair and ciphertext during ML-KEM.KeyGen() and ML-KEM.Encaps() respectively.
+The cryptographic library that implements ML-KEM
+may access this source of randomness internally. A fresh string of bytes must
+be used for every sampling of random bytes in key generation and
+encapsulation.
+The random bytes should be generated securely [RFC 4086].<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">Alice must keep her private key secret (both private and secure from
+modification).  A copy of the public key and its hash are
+included in the private key and must be protected from modification.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5">If the ciphertext that Alice receives from Bob is tampered with (either by
+small modification or by replacing it with an entirely different ciphertext),
+the shared secret key that Alice derives will be uncorrelated with the shared
+secret key that Bob obtains.  An attacker will not be able to determine any
+information about the correct shared secret key or Alice's private key, even
+if the attacker obtains Alice's modified shared secret key which is the
+output of the <code>ML-KEM.Decaps()</code> function taking the modified ciphertext as input.<a href="#section-4-5" class="pilcrow">¶</a></p>
+<p id="section-4-6">It is secure to reuse a public key multiple times.  That is, instead of Alice
+generating a fresh public and private keypair for each exchange, Alice may
+generate a public key once, and then publish that public key, and use it for
+multiple incoming ciphertexts, generating multiple shared secret keys.  While
+this is safe, it is recommended that if the protocol already has Alice send Bob her unauthenticated public key, they should generate a fresh keypair each time
+(and zeroize the private key immediately after ML-KEM.Decaps()) to obtain Perfect Forward
+Secrecy. Generally key generation of ML-KEM is very fast (see
+<a href="#par-perf" class="auto internal xref">Table 2</a>). Hence, if Alice generates a fresh ML-KEM key each time, then even if Alice's system is subverted (either by a hacker or
+a legal warrant), the previous communications remain secure (because Alice no
+longer has the information needed to recover the shared secret keys).<a href="#section-4-6" class="pilcrow">¶</a></p>
+<p id="section-4-7">Alice and Bob must perform the Key Check steps (the Encapsulation Key Check
+on the public key for Bob, the Decapsulation Key Check on the ciphertext for
+Alice).  The cryptographic libraries that Alice and Bob use may
+automatically perform such checks; they should each verify that is the case.<a href="#section-4-7" class="pilcrow">¶</a></p>
+<p id="section-4-8">The shared secret key for all three parameter sets, ML-KEM-512, ML-KEM-768
+and ML-KEM-1024 is 32 bytes which are indistinguishable from 32-byte
+pseudorandom byte-strings of 128, 192 and 256 bits of strengths
+respectively. As such, the 32-byte string is suitable for both directly as a symmetric key
+(for use by a symmetric cipher such as AES or a MAC), and also as input into
+a Key Derivation Function.  This is in contrast to a Diffie-Hellman (or ECDH)
+operation, where the output is distinguishable from random.<a href="#section-4-8" class="pilcrow">¶</a></p>
+<p id="section-4-9">If the adversary has control over the ML-KEM private key, it has been shown that adversary can cause a ‘misbinding’ between the shared key and either the ciphertext or the public key.
+That is, by generating an impossible private key (a key that cannot occur with the standard ML-KEM key generation process), the adversary could be able to create public keys for which different ciphertexts or public keys may result in the same shared secret (these security notions are called MAL-BIND-K-CT and MAL-BIND-K-PK in the cryptographical literature <span>[<a href="#CDM23" class="cite xref">CDM23</a>]</span> <span>[<a href="#KEMMY24" class="cite xref">KEMMY24</a>]</span>).
+This is not a threat to normal uses of ML-KEM as a key exchange or a public key encryption method.
+If ML-KEM is used as an authentication method where the shared key is used for authentication (and adversary control of the private key is possible), it may be advisable if the protocol also authenticates the public key and ciphertext as well.<a href="#section-4-9" class="pilcrow">¶</a></p>
+<div id="issues-that-are-likely-not-a-concern">
+<section id="section-4.1">
+        <h3 id="name-issues-that-are-likely-not-">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-issues-that-are-likely-not-" class="section-name selfRef">Issues that are likely not a concern</a>
+        </h3>
+<p id="section-4.1-1">This section contains issues that you may have heard of, but are quite unlikely to be a concern in your use case.
+This is here to discuss them, and show why they are not practical issues.
+If you have not heard of them, you may ignore this<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<div id="decapsulation-failure">
+<section id="section-4.1.1">
+          <h4 id="name-decapsulation-failure">
+<a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-decapsulation-failure" class="section-name selfRef">Decapsulation failure</a>
+          </h4>
+<p id="section-4.1.1-1">With ML-KEM, there is a tiny probability of decapsulation failure.
+That is, even if Alice and Bob perform their roles honestly and the public key and ciphertext are transmitted correctly, there is a tiny probability that Alice and Bob will not derive the same shared key.
+However, even though that is a theoretical possibility, practically speaking this will never happen.
+For all three parameter sets, the probability is so low that most likely an actual decapsulation failure because of this will never be seen for any ML-KEM exchange anywhere (not only for your protocol, but over all protocols that use ML-KEM).
+Hence, the advice we give is to ignore the possibility.<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="ml-kem-operations-not-being-constant-time">
+<section id="section-4.1.2">
+          <h4 id="name-ml-kem-operations-not-being">
+<a href="#section-4.1.2" class="section-number selfRef">4.1.2. </a><a href="#name-ml-kem-operations-not-being" class="section-name selfRef">ML-KEM operations not being constant time</a>
+          </h4>
+<p id="section-4.1.2-1">During the ML-KEM key generation and the encapsulation process, rejection sampling is used to generate the coefficients of the matricies.
+Because of how this is done, the straight-forward implementation will take a variable amount of time to find values that are in range, and converting this into a constant time operation would be expensive enough that it is rarely done.
+On the other hand, this operation depends on the public seed, which appears in the encapsulation (public) key.
+If this encapsulation key is published (which it usually is), this timing variation does not leak any information about any secret data.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-5">
+      <h2 id="name-iana-considerations">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-5-1">This document has no IANA actions.<a href="#section-5-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-combined-references">
+<section id="section-6">
+      <h2 id="name-references">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<div id="sec-normative-references">
+<section id="section-6.1">
+        <h3 id="name-normative-references">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="FIPS203">[FIPS203]</dt>
+      <dd>
+<span class="refTitle">"Module-Lattice-Based Key-Encapsulation Mechanism Standard"</span>, <span class="seriesInfo">NIST FIPS 203</span>, <time datetime="2024-08" class="refDate">August 2024</time>, <span>&lt;<a href="https://doi.org/10.6028/NIST.FIPS.203">https://doi.org/10.6028/NIST.FIPS.203</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-6.2">
+        <h3 id="name-informative-references">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="CDM23">[CDM23]</dt>
+        <dd>
+<span class="refAuthor">Cremers, C.</span>, <span class="refAuthor">Dax, A.</span>, and <span class="refAuthor">N. Medinger</span>, <span class="refTitle">"Keeping Up with the KEMs: Stronger Security Notions for KEMs and automated analysis of KEM-based protocols"</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://eprint.iacr.org/2023/1933.pdf">https://eprint.iacr.org/2023/1933.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="EBACS">[EBACS]</dt>
+        <dd>
+<span class="refTitle">"eBACS: ECRYPT Benchmarking of Cryptographic Systems"</span>, <span>n.d.</span>, <span>&lt;<a href="https://bench.cr.yp.to/results-kem/amd64-hertz.html">https://bench.cr.yp.to/results-kem/amd64-hertz.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.connolly-cfrg-hpke-mlkem">[I-D.connolly-cfrg-hpke-mlkem]</dt>
+        <dd>
+<span class="refAuthor">Connolly, D.</span>, <span class="refTitle">"ML-KEM for HPKE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-connolly-cfrg-hpke-mlkem-04</span>, <time datetime="2024-10-18" class="refDate">18 October 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-connolly-cfrg-hpke-mlkem-04">https://datatracker.ietf.org/doc/html/draft-connolly-cfrg-hpke-mlkem-04</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-core-oscore-groupcomm">[I-D.ietf-core-oscore-groupcomm]</dt>
+        <dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Mattsson, J. P.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Group Object Security for Constrained RESTful Environments (Group OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-groupcomm-27</span>, <time datetime="2025-09-12" class="refDate">12 September 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-27">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-27</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="KEMMY24">[KEMMY24]</dt>
+        <dd>
+<span class="refAuthor">Schmieg, S.</span>, <span class="refTitle">"Unbindable Kemmy Schmidt: ML-KEM is neither MAL-BIND-K-CT nor MAL-BIND-K-PK"</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="https://eprint.iacr.org/2024/523.pdf">https://eprint.iacr.org/2024/523.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="NOISE">[NOISE]</dt>
+        <dd>
+<span class="refTitle">"Noise Protocol Framework"</span>, <span>n.d.</span>, <span>&lt;<a href="http://www.noiseprotocol.org/">http://www.noiseprotocol.org/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4086">[RFC4086]</dt>
+        <dd>
+<span class="refAuthor">Eastlake 3rd, D.</span>, <span class="refAuthor">Schiller, J.</span>, and <span class="refAuthor">S. Crocker</span>, <span class="refTitle">"Randomness Requirements for Security"</span>, <span class="seriesInfo">BCP 106</span>, <span class="seriesInfo">RFC 4086</span>, <span class="seriesInfo">DOI 10.17487/RFC4086</span>, <time datetime="2005-06" class="refDate">June 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4086">https://www.rfc-editor.org/rfc/rfc4086</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4253">[RFC4253]</dt>
+        <dd>
+<span class="refAuthor">Ylonen, T.</span> and <span class="refAuthor">C. Lonvick, Ed.</span>, <span class="refTitle">"The Secure Shell (SSH) Transport Layer Protocol"</span>, <span class="seriesInfo">RFC 4253</span>, <span class="seriesInfo">DOI 10.17487/RFC4253</span>, <time datetime="2006-01" class="refDate">January 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4253">https://www.rfc-editor.org/rfc/rfc4253</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6278">[RFC6278]</dt>
+        <dd>
+<span class="refAuthor">Herzog, J.</span> and <span class="refAuthor">R. Khazan</span>, <span class="refTitle">"Use of Static-Static Elliptic Curve Diffie-Hellman Key Agreement in Cryptographic Message Syntax"</span>, <span class="seriesInfo">RFC 6278</span>, <span class="seriesInfo">DOI 10.17487/RFC6278</span>, <time datetime="2011-06" class="refDate">June 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6278">https://www.rfc-editor.org/rfc/rfc6278</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8446">[RFC8446]</dt>
+        <dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9180">[RFC9180]</dt>
+        <dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Lipp, B.</span>, and <span class="refAuthor">C. Wood</span>, <span class="refTitle">"Hybrid Public Key Encryption"</span>, <span class="seriesInfo">RFC 9180</span>, <span class="seriesInfo">DOI 10.17487/RFC9180</span>, <time datetime="2022-02" class="refDate">February 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9180">https://www.rfc-editor.org/rfc/rfc9180</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9528">[RFC9528]</dt>
+        <dd>
+<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Preuß Mattsson, J.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="seriesInfo">RFC 9528</span>, <span class="seriesInfo">DOI 10.17487/RFC9528</span>, <time datetime="2024-03" class="refDate">March 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9528">https://www.rfc-editor.org/rfc/rfc9528</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="SIGNAL">[SIGNAL]</dt>
+        <dd>
+<span class="refTitle">"The Double Ratchet Algorithm"</span>, <time datetime="2011-11" class="refDate">November 2011</time>, <span>&lt;<a href="https://signal.org/docs/specifications/doubleratchet/">https://signal.org/docs/specifications/doubleratchet/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="WIRE">[WIRE]</dt>
+      <dd>
+<span class="refTitle">"WireGuard"</span>, <span>n.d.</span>, <span>&lt;<a href="https://www.wireguard.com/">https://www.wireguard.com/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+</div>
+<div id="acknowledgments">
+<section id="appendix-A">
+      <h2 id="name-acknowledgments">
+<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="appendix-A-1">The authors would like to thank Rebecca Guthrie and Thom Wiggers for their valuable comments and feedback.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-B">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Scott Fluhrer</span></div>
+<div dir="auto" class="left"><span class="org">Cisco Systems</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:sfluhrer@cisco.com" class="email">sfluhrer@cisco.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Quynh Dang</span></div>
+<div dir="auto" class="left"><span class="org">National Institute of Standards and Technology</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:Quynh.Dang@nist.gov" class="email">Quynh.Dang@nist.gov</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">John Preuß Mattsson</span></div>
+<div dir="auto" class="left"><span class="org">Ericsson</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:john.mattsson@ericsson.com" class="email">john.mattsson@ericsson.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Kevin Milner</span></div>
+<div dir="auto" class="left"><span class="org">Quantinuum</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:kamilner@kamilner.ca" class="email">kamilner@kamilner.ca</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Daniel Shiu</span></div>
+<div dir="auto" class="left"><span class="org">Arqit Quantum Inc</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:daniel.shiu@arqit.uk" class="email">daniel.shiu@arqit.uk</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
