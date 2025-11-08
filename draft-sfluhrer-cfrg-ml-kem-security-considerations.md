@@ -202,6 +202,8 @@ key. Notably, this means a public key can be &apos;poisoned&apos; such that a fu
 adversary can recover the private key even though it will appear correct in
 normal usage.
 
+Note that the expansion of the seed into the public key uses rejection sampling of XOF (extendable-output function) output to achieve value that are uniformly distribtued. This means that a variable number of calls must be made to produce output. One consequence of this is that public key expansion is not constant time and this timing sidechannel can provide information about both the seed and expanded key in cases where they are not publicly known (such as in the case of Password Authenticated Key Exchanges). Another consequence is that the amount of output needed form the XOF is not known in advance whereas some XOF specifications require the amount of output to be specified up front. This may require regeneration of output every time that the requiremetns for output exceed the output currently provided.
+
 ## ML-KEM Encapsulation
 
 The second step is for Bob to generate a ciphertext and a shared secret key.
