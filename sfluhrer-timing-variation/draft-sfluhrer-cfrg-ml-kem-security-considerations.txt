@@ -5,14 +5,14 @@
 Crypto Forum                                                  S. Fluhrer
 Internet-Draft                                             Cisco Systems
 Intended status: Informational                                   Q. Dang
-Expires: 11 May 2026                                                NIST
+Expires: 17 May 2026                                                NIST
                                                        J. Preuß Mattsson
                                                                 Ericsson
                                                                K. Milner
                                                               Quantinuum
                                                                  D. Shiu
                                                        Arqit Quantum Inc
-                                                         7 November 2025
+                                                        13 November 2025
 
 
                      ML-KEM Security Considerations
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 May 2026.
+   This Internet-Draft will expire on 17 May 2026.
 
 Copyright Notice
 
@@ -454,16 +454,23 @@ Table of Contents
 
 4.1.2.  ML-KEM operations not being constant time
 
-   During the ML-KEM key generation and the encapsulation process,
-   rejection sampling is used to generate the coefficients of the
-   matricies.  Because of how this is done, the straight-forward
-   implementation will take a variable amount of time to find values
-   that are in range, and converting this into a constant time operation
-   would be expensive enough that it is rarely done.  On the other hand,
-   this operation depends on the public seed, which appears in the
-   encapsulation (public) key.  If this encapsulation key is published
-   (which it usually is), this timing variation does not leak any
-   information about any secret data.
+   During the ML-KEM key generation and the encapsulation process, the
+   public seed is expanded, and this involves rejection sampling of XOF
+   (extendable-output function) output to achieve coefficient values
+   that are uniformly distributed.  This means that a straight-forward
+   implementation will perform a variable number of XOF calls to
+   generate this output to find values that are in range.  Converting
+   this into a constant time operation is expensive enough that it is
+   rarely done.  One consequence of this is that public key expansion is
+   not constant time and this timing sidechannel can be used to provide
+   information about the seed (and the expanded key, which is a function
+   of the seed) in cases where they are not publicly known.  On the
+   other hand, this public seed is in the public key, which is almost
+   always publicly known, and so this timing variation does not leak any
+   information about any secret data.  One exception is in some methods
+   that implement Password Authenticated Key Exchange with ML-KEM, where
+   the public key may be encrypted with the password.  In this rather
+   narrow use case, this variable timing needs to be taken into account.
 
 5.  IANA Considerations
 
