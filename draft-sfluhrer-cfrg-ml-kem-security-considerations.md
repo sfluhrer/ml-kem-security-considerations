@@ -375,15 +375,34 @@ respectively. As such, the 32-byte string is suitable for both directly as a sym
 a Key Derivation Function.  This is in contrast to a Diffie-Hellman (or ECDH)
 operation, where the output is distinguishable from random.
 
-With ML-KEM, there is a tiny probability of decapsulation failure.
-That is, even if Alice and Bob perform their roles honestly and the public key and ciphertext are transmitted correctly, there is a tiny probability that Alice and Bob will not derive the same shared key.
-However, even though that is a theoretical possibility, practically speaking this will never happen.
-For all three parameter sets, the probability is so low that most likely an actual decapsulation failure because of this will never be seen for any ML-KEM exchange anywhere (not only for your protocol, but over all protocols that use ML-KEM).
-
 If the adversary has control over the ML-KEM private key, it has been shown that adversary can cause a ‘misbinding’ between the shared key and either the ciphertext or the public key.
 That is, by generating an impossible private key (a key that cannot occur with the standard ML-KEM key generation process), the adversary could be able to create public keys for which different ciphertexts or public keys may result in the same shared secret (these security notions are called MAL-BIND-K-CT and MAL-BIND-K-PK in the cryptographical literature {{CDM23}} {{KEMMY24}}).
 This is not a threat to normal uses of ML-KEM as a key exchange or a public key encryption method.
 If ML-KEM is used as an authentication method where the shared key is used for authentication (and adversary control of the private key is possible), it may be advisable if the protocol also authenticates the public key and ciphertext as well.
+
+## Issues that are likely not a concern
+
+This section contains issues that you may have heard of, but are quite unlikely to be a concern in your use case.
+This is here to discuss them, and show why they are not practical issues.
+If you have not heard of them, you may ignore this
+
+### Decapsulation failure
+
+With ML-KEM, there is a tiny probability of decapsulation failure.
+That is, even if Alice and Bob perform their roles honestly and the public key and ciphertext are transmitted correctly, there is a tiny probability that Alice and Bob will not derive the same shared key.
+However, even though that is a theoretical possibility, practically speaking this will never happen.
+For all three parameter sets, the probability is so low that most likely an actual decapsulation failure because of this will never be seen for any ML-KEM exchange anywhere (not only for your protocol, but over all protocols that use ML-KEM).
+Hence, the advice we give is to ignore the possibility.
+
+### ML-KEM operations not being constant time
+
+During the ML-KEM key generation and the encapsulation process, the public seed is expanded, and this involves rejection sampling of XOF (extendable-output function) output to achieve coefficient values that are uniformly distributed.
+This means that a straight-forward implementation will perform a variable number of XOF calls to generate this output to find values that are in range.
+Converting this into a constant time operation is expensive enough that it is rarely done.
+One consequence of this is that public key expansion is not constant time and this timing sidechannel can be used to provide information about the seed (and the expanded key, which is a function of the seed) in cases where they are not publicly known.
+On the other hand, this public seed is in the public key, which is almost always publicly known, and so this timing variation does not leak any information about any secret data.
+One exception is in some methods that implement Password Authenticated Key Exchange with ML-KEM, where the public key may be encrypted with the password.
+In this rather narrow use case, this variable timing needs to be taken into account.
 
 # IANA Considerations
 
