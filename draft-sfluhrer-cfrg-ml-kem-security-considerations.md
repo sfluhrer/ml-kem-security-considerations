@@ -62,7 +62,7 @@ informative:
   RFC9180:
   RFC9528:
   I-D.ietf-core-oscore-groupcomm:
-  I-D.connolly-cfrg-hpke-mlkem:
+  I-D.draft-ietf-hpke-pq:
   CDM23:
     title: "Keeping Up with the KEMs: Stronger Security Notions for KEMs and automated analysis of KEM-based protocols"
     target: https://eprint.iacr.org/2023/1933.pdf
@@ -110,7 +110,7 @@ informative:
 --- abstract
 
 NIST standardized ML-KEM as FIPS 203 in August 2024.  This document discusses
-how to use ML-KEM and how to use it within protocols - that is, what problem it solves,
+how to use ML-KEM within protocols - that is, what problem it solves,
 and what you need to do to use it securely.
 
 --- middle
@@ -133,11 +133,12 @@ Bob then can use it to generate both a ciphertext and a shared secret key.
 Bob then sends the ciphertext to Alice, who uses her private key to generate the shared secret key.
 The idea is that someone in the middle, listening into the exchanged public keys and ciphertexts will not be able to recover the shared secret key that Alice and Bob learns.
 Hence, Alice and Bob can use their shared secret key to establish secure symmetric communication.
+For ML-KEM, this shared secret is always 32 bytes, and is indistinguishable from random by an adversary (that is, it could be used directly as a symmetric key).
 
 One common misunderstanding of the term KEM is the expectation that Bob freely chooses the
 shared secret, and encrypts that when sending to Alice.
 While there do exist KEMs where this is true, this is not true for ML-KEM.
-In ML-KEM is that randomness from both sides are used to contribute to the
+In ML-KEM, randomness from both sides are used to contribute to the
 shared secret. That is, ML-KEM internally generates the shared secret in a
 way that Bob cannot select the value. Now, Bob can generate a number of
 ciphertext/shared secret pairs, and select the shared secret that he prefers,
@@ -168,7 +169,7 @@ keys.
 
 ML-KEM can also be used to perform public key encryption, that is, where a sender encrypts a message with a public key, and only the holder of the private key can decrypt the message.
 To use ML-KEM for this task, it is recommended that you use it within the Hybrid Public Key Encryption framework {{RFC9180}} to perform the operations.
-You can use {{I-D.connolly-cfrg-hpke-mlkem}}, which is three ML-KEM parameter sets that has been proposed for HPKE.
+You can use {{I-D.draft-ietf-hpke-pq}}, which is three ML-KEM parameter sets that has been proposed for HPKE.
 
 # Using ML-KEM
 
@@ -243,7 +244,7 @@ Intermediate data other than the shared secret key and the matrix A_hat must be 
 The matrix A_hat may be saved for later Decapsulation operations with the same decapsulation key.
 
 If the exchange is successful, the 32-byte key generated on both sides will
-be the same. The shared secret key is always 32 bytes for all parameter sets.
+be the same. 
 
 It may be that some libraries combine the validation and the encapsulation
 step; implementations should determine whether the library they are using does. For static
