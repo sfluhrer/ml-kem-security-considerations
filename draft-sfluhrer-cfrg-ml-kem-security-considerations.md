@@ -419,7 +419,7 @@ However, even though that is a theoretical possibility, practically speaking thi
 For all three parameter sets, the probability is so low that most likely an actual decapsulation failure because of this will never be seen for any ML-KEM exchange anywhere (not only for your protocol, but over all protocols that use ML-KEM).
 Hence, the advice we give is to ignore the possibility.
 
-### ML-KEM operations not being constant time
+### ML-KEM public key expansion not being constant time
 
 During the ML-KEM key generation and the encapsulation process, the public seed is expanded, and this involves rejection sampling of XOF (extendable-output function) output to achieve coefficient values that are uniformly distributed.
 This means that a straight-forward implementation will perform a variable number of XOF calls to generate this output to find values that are in range.
