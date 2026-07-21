@@ -61,6 +61,7 @@ informative:
   RFC8446:
   RFC9180:
   RFC9528:
+  RFC8937:
   I-D.ietf-core-oscore-groupcomm:
   I-D.draft-ietf-hpke-pq:
   CDM23:
@@ -106,6 +107,11 @@ informative:
   EBACS:
     target: https://bench.cr.yp.to/results-kem/amd64-hertz.html
     title: "eBACS: ECRYPT Benchmarking of Cryptographic Systems"
+
+  DUALECTLS:
+    title: "On the Practical Exploitability of Dual EC in TLS Implementations"
+    target: <https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-checkoway.pdf>
+    date: 2014
 
 --- abstract
 
@@ -355,12 +361,26 @@ secret decapsulation key, it is important that Alice keeps a secure copy
 of the public key as part of her secret key. For practical purposes, IND-CCA2 means
 that ML-KEM is secure to use with static public keys.
 
-ML-KEM requires that a source of random bits with security strength greater than or equal to the security strength of the ML-KEM parameter set be used when generating the keypair and ciphertext during ML-KEM.KeyGen() and ML-KEM.Encaps() respectively.
-The cryptographic library that implements ML-KEM
-may access this source of randomness internally. A fresh string of bytes must
-be used for every sampling of random bytes in key generation and
-encapsulation.
-The random bytes should be generated securely {{RFC4086}}.
+ML-KEM requires that a source of random bits with security strength greater than or
+equal to the security strength of the ML-KEM parameter set be used when generating
+the keypair and ciphertext in ML-KEM.KeyGen() and ML-KEM.Encaps() respectively.
+The cryptographic library that implements ML-KEM may access this source of randomness
+internally. A fresh string of bytes must be used for every sampling of random bytes
+in key generation and encapsulation. The random bytes should be generated securely.
+
+During ML-KEM encapsulation, encapsulation randomness `m` drawn from a random bit
+generator is encrypted (see Algorithms 17 and 20 in {{FIPS203}}); Alice (the decapsulator),
+who holds the decapsulation key, recovers `m` exactly during decapsulation (see Algorithm
+18 in {{FIPS203}}). Consequently, any information `m` carries about the generator's other
+outputs is also exposed to the decapsulator.
+
+The disclosure of the output(s) of an insecure random number generator (RNG) can be
+used in an attack to compromise the state of the insecure RNG itself, as demonstrated
+for TLS in {{DUALECTLS}}. The `m` value in ML-KEM is an additional place where RNG
+output is disclosed to an active attacker. Because the `m` value in ML-KEM is randomly
+generated and transmitted to the client, it is important to follow the RBG guidance
+in {{FIPS203}}. Implementers MAY choose to implement mechanisms from {{RFC8937}} for
+additional protection across sessions.
 
 Alice must keep her private key secret (both private and secure from
 modification).  A copy of the public key and its hash are
