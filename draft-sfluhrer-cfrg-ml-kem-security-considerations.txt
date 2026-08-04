@@ -5,14 +5,14 @@
 Crypto Forum                                                  S. Fluhrer
 Internet-Draft                                             Cisco Systems
 Intended status: Informational                                   Q. Dang
-Expires: 14 November 2026                                           NIST
+Expires: 5 February 2027                                            NIST
                                                        J. Preuß Mattsson
                                                                 Ericsson
                                                                K. Milner
                                                               Individual
                                                                  D. Shiu
                                                        Arqit Quantum Inc
-                                                             13 May 2026
+                                                           4 August 2026
 
 
                      ML-KEM Security Considerations
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 November 2026.
+   This Internet-Draft will expire on 5 February 2027.
 
 Copyright Notice
 
@@ -389,12 +389,29 @@ Table of Contents
 
    ML-KEM requires that a source of random bits with security strength
    greater than or equal to the security strength of the ML-KEM
-   parameter set be used when generating the keypair and ciphertext
-   during ML-KEM.KeyGen() and ML-KEM.Encaps() respectively.  The
-   cryptographic library that implements ML-KEM may access this source
-   of randomness internally.  A fresh string of bytes must be used for
-   every sampling of random bytes in key generation and encapsulation.
-   The random bytes should be generated securely [RFC4086].
+   parameter set be used when generating the keypair and ciphertext in
+   ML-KEM.KeyGen() and ML-KEM.Encaps() respectively.  The cryptographic
+   library that implements ML-KEM may access this source of randomness
+   internally.  A fresh string of bytes must be used for every sampling
+   of random bytes in key generation and encapsulation.  The random
+   bytes should be generated securely.
+
+   During ML-KEM encapsulation, encapsulation randomness m drawn from a
+   random bit generator is encrypted (see Algorithms 17 and 20 in
+   [FIPS203]); Alice (the decapsulator), who holds the decapsulation
+   key, recovers m exactly during decapsulation (see Algorithm 18 in
+   [FIPS203]).  Consequently, any information m carries about the
+   generator's other outputs is also exposed to the decapsulator.
+
+   The disclosure of the output(s) of an insecure random number
+   generator (RNG) can be used in an attack to compromise the state of
+   the insecure RNG itself, as demonstrated for TLS in [DUALECTLS].  The
+   m value in ML-KEM is an additional place where RNG output is
+   disclosed to an active attacker.  Because the m value in ML-KEM is
+   randomly generated and transmitted to the client, it is important to
+   follow the RBG guidance in [FIPS203].  Implementers MAY choose to
+   implement mechanisms from [RFC8937] for additional protection across
+   sessions.
 
    Alice must keep her private key secret (both private and secure from
    modification).  A copy of the public key and its hash are included in
@@ -516,6 +533,12 @@ Table of Contents
               analysis of KEM-based protocols", 2023,
               <https://eprint.iacr.org/2023/1933.pdf>.
 
+   [DUALECTLS]
+              "On the Practical Exploitability of Dual EC in TLS
+              Implementations", 2014,
+              <<https://www.usenix.org/system/files/conference/
+              usenixsecurity14/sec14-paper-checkoway.pdf>>.
+
    [EBACS]    "eBACS: ECRYPT Benchmarking of Cryptographic Systems",
               n.d.,
               <https://bench.cr.yp.to/results-kem/amd64-hertz.html>.
@@ -523,9 +546,9 @@ Table of Contents
    [I-D.draft-ietf-hpke-pq]
               Barnes, R. and D. Connolly, "Post-Quantum and Post-
               Quantum/Traditional Hybrid Algorithms for HPKE", Work in
-              Progress, Internet-Draft, draft-ietf-hpke-pq-04, 2 March
+              Progress, Internet-Draft, draft-ietf-hpke-pq-05, 6 July
               2026, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              hpke-pq-04>.
+              hpke-pq-05>.
 
    [I-D.ietf-core-oscore-groupcomm]
               Tiloca, M., Selander, G., Palombini, F., Mattsson, J. P.,
@@ -559,6 +582,11 @@ Table of Contents
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/rfc/rfc8446>.
+
+   [RFC8937]  Cremers, C., Garratt, L., Smyshlyaev, S., Sullivan, N.,
+              and C. Wood, "Randomness Improvements for Security
+              Protocols", RFC 8937, DOI 10.17487/RFC8937, October 2020,
+              <https://www.rfc-editor.org/rfc/rfc8937>.
 
    [RFC9180]  Barnes, R., Bhargavan, K., Lipp, B., and C. Wood, "Hybrid
               Public Key Encryption", RFC 9180, DOI 10.17487/RFC9180,
