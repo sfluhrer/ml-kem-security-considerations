@@ -3,7 +3,7 @@ title: "ML-KEM Security Considerations"
 abbrev: "ML-KEM Security"
 category: info
 
-docname: draft-sfluhrer-cfrg-ml-kem-security-considerations-latest
+docname: draft-irtf-cfrg-ml-kem-security-considerations-latest
 submissiontype: IRTF
 consensus: true
 date:
@@ -21,7 +21,7 @@ venue:
   mail: "cfrg@irtf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/cfrg/"
   github: "sfluhrer/ml-kem-security-considerations"
-  latest: "https://sfluhrer.github.io/ml-kem-security-considerations/draft-sfluhrer-cfrg-ml-kem-security-considerations.html"
+  latest: "https://sfluhrer.github.io/ml-kem-security-considerations/draft-irtf-cfrg-ml-kem-security-considerations.html"
 
 author:
 - fullname: Scott Fluhrer
