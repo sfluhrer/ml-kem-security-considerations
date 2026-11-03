@@ -5,18 +5,18 @@
 Crypto Forum                                                  S. Fluhrer
 Internet-Draft                                             Cisco Systems
 Intended status: Informational                                   Q. Dang
-Expires: 5 February 2027                                            NIST
+Expires: 7 May 2027                                                 NIST
                                                        J. Preuß Mattsson
                                                                 Ericsson
                                                                K. Milner
                                                               Individual
                                                                  D. Shiu
                                                        Arqit Quantum Inc
-                                                           4 August 2026
+                                                         3 November 2026
 
 
                      ML-KEM Security Considerations
-       draft-sfluhrer-cfrg-ml-kem-security-considerations-latest
+         draft-irtf-cfrg-ml-kem-security-considerations-latest
 
 Abstract
 
@@ -29,11 +29,10 @@ About This Document
    This note is to be removed before publishing as an RFC.
 
    The latest revision of this draft can be found at
-   https://sfluhrer.github.io/ml-kem-security-considerations/draft-
-   sfluhrer-cfrg-ml-kem-security-considerations.html.  Status
-   information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-sfluhrer-cfrg-ml-kem-security-
-   considerations/.
+   https://sfluhrer.github.io/ml-kem-security-considerations/draft-irtf-
+   cfrg-ml-kem-security-considerations.html.  Status information for
+   this document may be found at https://datatracker.ietf.org/doc/draft-
+   irtf-cfrg-ml-kem-security-considerations/.
 
    Discussion of this document takes place on the Crypto Forum Research
    Group mailing list (mailto:cfrg@irtf.org), which is archived at
@@ -58,7 +57,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 February 2027.
+   This Internet-Draft will expire on 7 May 2027.
 
 Copyright Notice
 
