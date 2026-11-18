@@ -527,11 +527,6 @@ Table of Contents
    [NOISE]    "Noise Protocol Framework", n.d.,
               <http://www.noiseprotocol.org/>.
 
-   [RFC4086]  Eastlake 3rd, D., Schiller, J., and S. Crocker,
-              "Randomness Requirements for Security", BCP 106, RFC 4086,
-              DOI 10.17487/RFC4086, June 2005,
-              <https://www.rfc-editor.org/rfc/rfc4086>.
-
    [RFC4253]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
               Transport Layer Protocol", RFC 4253, DOI 10.17487/RFC4253,
               January 2006, <https://www.rfc-editor.org/rfc/rfc4253>.
