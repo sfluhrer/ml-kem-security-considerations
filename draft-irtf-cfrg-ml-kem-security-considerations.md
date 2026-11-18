@@ -304,35 +304,6 @@ Data sourced from {{EBACS}}
 As can be seen from {{par-sets}} and {{par-perf}}, ML-KEM has significantly
 larger public keys and ciphertexts than ECDH but very good performance.
 
-# KEM Security Considerations
-
-This section pertains to KEM (Key Encapsulation Mechanisms) in general,
-including ML-KEM.
-
-A KEM requires high-quality source of entropy during both
-the keypair generation and ciphertext generation steps.  If an adversary can
-recover the random bits used in either of these processes, they can recover
-the shared secret.  If an adversary can recover the random bits used during
-key generation, they can also recover the secret key.
-
-Standard cryptographical analysis assumes that the adversary has access only to the exchanged messages.
-Depending on the deployment scenario, the adversary may have access to various side channels, such as the amount of time taken during the cryptographical computations, or possibly the power used or the electrical noise generated.
-The implementor will need to assess this possibility, and possibly use an implementation that is resistant to such leakage.
-
-Alice needs to keep her private key secret. It is recommended that they
-zeroize the private key when they will have no further need of it,
-that is, when they know they never need to decapsulate any further ciphertexts with it.
-
-A KEM (including ML-KEM) provides no authentication of either communicating
-party. If an adversary could replace either the public key or the ciphertext
-with its own, it would generate a shared key with Alice or Bob.  Hence, it is
-important that the protocol that uses a KEM lets Bob be able to verify that
-the public key he obtains came from Alice and lets Alice verify that the ciphertext
-came from Bob (that is, an entity that Alice is willing to
-communicate with). Such verification can be performed by cryptographic
-methods such as a digital signature or a MAC to verify integrity of the
-protocol exchange.
-
 # ML-KEM Security Considerations
 
 This section pertains specifically to ML-KEM, and may not be true of KEMs in
