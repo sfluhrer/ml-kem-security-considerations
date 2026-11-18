@@ -5,14 +5,14 @@
 Crypto Forum                                                  S. Fluhrer
 Internet-Draft                                             Cisco Systems
 Intended status: Informational                                   Q. Dang
-Expires: 7 May 2027                                                 NIST
+Expires: 22 May 2027                                                NIST
                                                        J. Preuß Mattsson
                                                                 Ericsson
                                                                K. Milner
                                                               Individual
                                                                  D. Shiu
                                                        Arqit Quantum Inc
-                                                         3 November 2026
+                                                        18 November 2026
 
 
                      ML-KEM Security Considerations
@@ -57,7 +57,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 May 2027.
+   This Internet-Draft will expire on 22 May 2027.
 
 Copyright Notice
 
@@ -78,15 +78,14 @@ Table of Contents
      2.2.  ML-KEM Encapsulation
      2.3.  ML-KEM Decapsulation
      2.4.  ML-KEM Parameter Sets
-   3.  KEM Security Considerations
-   4.  ML-KEM Security Considerations
-     4.1.  Issues that are likely not a concern
-       4.1.1.  Decapsulation failure
-       4.1.2.  ML-KEM public key expansion not being constant time
-   5.  IANA Considerations
-   6.  References
-     6.1.  Normative References
-     6.2.  Informative References
+   3.  ML-KEM Security Considerations
+     3.1.  Issues that are likely not a concern
+       3.1.1.  Decapsulation failure
+       3.1.2.  ML-KEM public key expansion not being constant time
+   4.  IANA Considerations
+   5.  References
+     5.1.  Normative References
+     5.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -318,43 +317,7 @@ Table of Contents
    larger public keys and ciphertexts than ECDH but very good
    performance.
 
-3.  KEM Security Considerations
-
-   This section pertains to KEM (Key Encapsulation Mechanisms) in
-   general, including ML-KEM.
-
-   A KEM requires high-quality source of entropy during both the keypair
-   generation and ciphertext generation steps.  If an adversary can
-   recover the random bits used in either of these processes, they can
-   recover the shared secret.  If an adversary can recover the random
-   bits used during key generation, they can also recover the secret
-   key.
-
-   Standard cryptographical analysis assumes that the adversary has
-   access only to the exchanged messages.  Depending on the deployment
-   scenario, the adversary may have access to various side channels,
-   such as the amount of time taken during the cryptographical
-   computations, or possibly the power used or the electrical noise
-   generated.  The implementor will need to assess this possibility, and
-   possibly use an implementation that is resistant to such leakage.
-
-   Alice needs to keep her private key secret.  It is recommended that
-   they zeroize the private key when they will have no further need of
-   it, that is, when they know they never need to decapsulate any
-   further ciphertexts with it.
-
-   A KEM (including ML-KEM) provides no authentication of either
-   communicating party.  If an adversary could replace either the public
-   key or the ciphertext with its own, it would generate a shared key
-   with Alice or Bob.  Hence, it is important that the protocol that
-   uses a KEM lets Bob be able to verify that the public key he obtains
-   came from Alice and lets Alice verify that the ciphertext came from
-   Bob (that is, an entity that Alice is willing to communicate with).
-   Such verification can be performed by cryptographic methods such as a
-   digital signature or a MAC to verify integrity of the protocol
-   exchange.
-
-4.  ML-KEM Security Considerations
+3.  ML-KEM Security Considerations
 
    This section pertains specifically to ML-KEM, and may not be true of
    KEMs in general.
@@ -473,14 +436,14 @@ Table of Contents
    advisable if the protocol also authenticates the public key and
    ciphertext as well.
 
-4.1.  Issues that are likely not a concern
+3.1.  Issues that are likely not a concern
 
    This section contains issues that you may have heard of, but are
    quite unlikely to be a concern in your use case.  This is here to
    discuss them, and show why they are not practical issues.  Readers
    who have not encountered these issues can safely skip this section.
 
-4.1.1.  Decapsulation failure
+3.1.1.  Decapsulation failure
 
    With ML-KEM, there is a tiny probability of decapsulation failure.
    That is, even if Alice and Bob perform their roles honestly and the
@@ -493,7 +456,7 @@ Table of Contents
    anywhere (not only for your protocol, but over all protocols that use
    ML-KEM).  Hence, the advice we give is to ignore the possibility.
 
-4.1.2.  ML-KEM public key expansion not being constant time
+3.1.2.  ML-KEM public key expansion not being constant time
 
    During the ML-KEM key generation and the encapsulation process, the
    public seed is expanded, and this involves rejection sampling of XOF
@@ -513,19 +476,19 @@ Table of Contents
    the public key may be encrypted with the password.  In this rather
    narrow use case, this variable timing needs to be taken into account.
 
-5.  IANA Considerations
+4.  IANA Considerations
 
    This document has no IANA actions.
 
-6.  References
+5.  References
 
-6.1.  Normative References
+5.1.  Normative References
 
    [FIPS203]  "Module-Lattice-Based Key-Encapsulation Mechanism
               Standard", NIST FIPS 203, August 2024,
               <https://doi.org/10.6028/NIST.FIPS.203>.
 
-6.2.  Informative References
+5.2.  Informative References
 
    [CDM23]    Cremers, C., Dax, A., and N. Medinger, "Keeping Up with
               the KEMs: Stronger Security Notions for KEMs and automated
